@@ -10,20 +10,26 @@ from PIL import Image, ImageDraw, ImageFont
 #as well as during troubleshooting
 
 #First test the OLED screen
+print("Now testing the OLED screen...\n")
 try: #attempt to detect the OLED
+    print("Attempting to detect OLED...\n")
     i2c = board.I2C() #these next few lines initialize the OLED
     oled = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c, addr=0x3c,reset=oled_reset) #specify oled we're using
+    print("OLED detected\n")
 except:
     print("Error occured while detecting board") #throw error if one occurs
 
 try: #attempt to clear the OLED
+    print("Attempting to clear the OLED...\n")
     oled_reset = digitalio.DigitalInOut(board.D4) #reset oled
     oled.fill(0) #clear display
     oled.show() #update the display
+    print("OLED cleared\n")
 except:
     print("Error occured while clearing board") #throw error if one occurs
 
 try: #attempt to write to the oled
+    print("Attempting to write to OLED...\n")
     image = Image.new("1", (oled.width, oled.height))
     draw = ImageDraw.Draw(image)
     font = ImageFont.load_default()
@@ -33,9 +39,16 @@ try: #attempt to write to the oled
     draw.text((oled.width // 2 - font_width // 2, oled.height // 2 - font_height // 2),text,font=font,fill=255)
     oled.image(image)
     oled.show()
+    user_test = input('Was the text "Gardinette!" shown? (Y/N)')
+    while (user_test != "Y" or user_test != NO):
+        print('Please enter only "Y" or "N"')
+        user_test = input('Was the text "Gardinette!" shown? (Y/N)')
+    if (user_test == "N"):
+        print("Error occured while writing to OLED screen\n")
+    print("Successfully wrote to OLED\n")
 except:
     print("Error occured while writing text to the OLED")
-
+print("OLED tests have succeeded\n")
 
 
 adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
