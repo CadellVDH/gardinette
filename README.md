@@ -5,9 +5,11 @@ Gardinette is a work-in-progress gardening automation platform. The goal of this
 # Download and Installation
 Download the github repository
 1. ```bash git clone https://github.com/CadellVDH/gardinette.git```
+
 Ensure your OS is up to date
 2. ```bash sudo apt-get upgrade```
 3. ```bash sudo apt-get update```
+
 Install the requirements
 4. ```bash sudo pip install -r requirements.txt```
 
