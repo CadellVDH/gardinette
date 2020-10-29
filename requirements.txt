@@ -1,6 +1,7 @@
 Adafruit_DHT #temp and hunidity sensor
 board #oled tools
 adafruit_ssd1306 #oled screen
-digitalio #oled tools
+RPI.GPIO
+adafruit-blinka
 Adafruit_ADS1x15 #soil moisture sensor
 PIL #oled tools
