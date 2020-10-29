@@ -1,16 +1,22 @@
 import Adafruit_DHT #temp and hunidity sensor
-import board
+import board #oled tools
 import adafruit_ssd1306 #oled screen
-import digitalio
+import digitalio #oled tools
 import Adafruit_ADS1x15 #soil moisture sensor
-from PIL import Image, ImageDraw, ImageFont
+import os #tools for working with the CLI
+from PIL import Image, ImageDraw, ImageFont #oled tools
 
 #The purpose of this script is to ensure that all peripheral hardware
 #components are connected and functioning properly, prior to startup
 #as well as during troubleshooting
+
+#Get current directory for log files and for pin file
+PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+
 #Initialize all pin variables
 ADC_PIN=1
 ADC_GAIN=1
+
 #First test the OLED screen
 print("Now testing the OLED screen...\n")
 try: #attempt to detect the OLED
