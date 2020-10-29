@@ -5,7 +5,7 @@ Gardinette is a work-in-progress gardening automation platform. The goal of this
 # Download and Installation
 Download the github command line tool if you do not already have it
 
-```apt-get install git```
+```sudo apt-get install git```
 
 Download the github repository
 
