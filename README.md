@@ -13,8 +13,8 @@ Download the github repository
 
 Ensure your OS is up to date
 
-2. ```sudo apt-get upgrade```
-3. ```sudo apt-get update```
+2. ```sudo apt-get update```
+3. ```sudo apt-get upgrade```
 
 Enter the gardinette directory
 
