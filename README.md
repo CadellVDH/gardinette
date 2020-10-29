@@ -16,9 +16,13 @@ Ensure your OS is up to date
 2. ```sudo apt-get upgrade```
 3. ```sudo apt-get update```
 
+Enter the gardinette directory
+
+4. ```cd gardinette```
+
 Install the requirements
 
-4. ```sudo pip install -r requirements.txt```
+5. ```sudo pip install -r requirements.txt```
 
 # Usage
 After installation, ensure the hardware device is powered on and connected to the internet. Also insure all peripherals are connected. 
