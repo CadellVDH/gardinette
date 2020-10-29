@@ -43,7 +43,7 @@ except:
     print("Error occured while writing text to the OLED")
 
 user_test = input('Was the text "Gardinette!" shown? (Y/N)') #ask user to verify real world
-while (user_test != "Y" or user_test != "N):
+while (user_test != "Y" or user_test != "N"):
     print('Please enter only "Y" or "N"')
     user_test = input('Was the text "Gardinette!" shown? (Y/N)')
 if (user_test == "N"):
