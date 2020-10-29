@@ -4,4 +4,4 @@ adafruit_ssd1306 #oled screen
 RPI.GPIO
 adafruit-blinka
 Adafruit_ADS1x15 #soil moisture sensor
-PIL #oled tools
+
