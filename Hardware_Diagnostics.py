@@ -39,19 +39,45 @@ try: #attempt to write to the oled
     draw.text((oled.width // 2 - font_width // 2, oled.height // 2 - font_height // 2),text,font=font,fill=255)
     oled.image(image)
     oled.show()
-    user_test = input('Was the text "Gardinette!" shown? (Y/N)')
-    while (user_test != "Y" or user_test != NO):
-        print('Please enter only "Y" or "N"')
-        user_test = input('Was the text "Gardinette!" shown? (Y/N)')
-    if (user_test == "N"):
-        print("Error occured while writing to OLED screen\n")
-    print("Successfully wrote to OLED\n")
 except:
     print("Error occured while writing text to the OLED")
-print("OLED tests have succeeded\n")
 
+user_test = input('Was the text "Gardinette!" shown? (Y/N)') #ask user to verify real world
+while (user_test != "Y" or user_test != NO):
+    print('Please enter only "Y" or "N"')
+    user_test = input('Was the text "Gardinette!" shown? (Y/N)')
+if (user_test == "N"):
+    print("Error occured while writing to OLED screen\n")
+else:
+    print("OLED tests have succeeded\n")
 
+print("All OLED tests have been completed\n")
+
+#Next test the ADC/moisture sensor
+print("Now testing the ADC/Moisture Sensor\n")
 adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
+print("Attempting to read value from ADC\n")
+try:
+    ADCvalue = adc.read_adc(0, gain=GAIN) #ATTEMPT TO READ ADC
+    print("ADC value: %f\n" % ADCvalue)
+    print("ADC succesffully read")
+except:
+    print("Error occured while reading ADC value")
 
+print("All ADC tests have been completed\n")
+
+#Test the temperature and humidity sensor
+print("Now testing the temperature and humidity sensor\n")
 DHT_SENSOR = Adafruit_DHT.DHT22 #store temp and humidity sensor to  variable
 DHT_PIN = 23 #set temp/hum pin
+try:
+    humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, DHT_PIN) #attempt to read temp and humidity sensor
+    print("Temp: %f\n" % temperature)
+    print("Humidity: %f\n" % humidity)
+    print("Temp and humidity tests have succeeded\n")
+except:
+    print("An error occured while reading the temperature or humidity\n")
+
+print("All temperature and humidity tests have been completed\n")
+
+print("All tests have been completed\n")
