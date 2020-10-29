@@ -7,14 +7,14 @@ Download the github command line tool if you do not already have it
 
 ```sudo apt-get install git```
 
-Download the github repository
-
-1. ```git clone https://github.com/CadellVDH/gardinette.git```
-
 Ensure your OS is up to date
 
-2. ```sudo apt-get update```
-3. ```sudo apt-get upgrade```
+1. ```sudo apt-get update```
+2. ```sudo apt-get upgrade```
+
+Download the github repository
+
+3. ```git clone https://github.com/CadellVDH/gardinette.git```
 
 Enter the gardinette directory
 
