@@ -8,7 +8,9 @@ from PIL import Image, ImageDraw, ImageFont
 #The purpose of this script is to ensure that all peripheral hardware
 #components are connected and functioning properly, prior to startup
 #as well as during troubleshooting
-
+#Initialize all pin variables
+ADC_PIN=1
+ADC_GAIN=1
 #First test the OLED screen
 print("Now testing the OLED screen...\n")
 try: #attempt to detect the OLED
@@ -58,9 +60,7 @@ print("Now testing the ADC/Moisture Sensor\n")
 adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
 print("Attempting to read value from ADC\n")
 try:
-    ADC_PIN=1
-    GAIN=1
-    ADCvalue = adc.read_adc(ADC_PIN, gain=GAIN) #ATTEMPT TO READ ADC
+    ADCvalue = adc.read_adc(ADC_PIN, gain=ADC_GAIN) #ATTEMPT TO READ ADC
     print("ADC value: %f\n" % ADCvalue)
     print("ADC succesffully read")
 except:
