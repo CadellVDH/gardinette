@@ -13,8 +13,10 @@ from PIL import Image, ImageDraw, ImageFont #oled tools
 #Get current directory for log files and for pin file
 PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 PATH = "%s/Pinout.txt" % PROJECT_DIRECTORY
+
+#Look for pinout file and create one if it does not exist. Otherwise, write the file values to variables
 if (os.path.isfile(PATH) == False): #check if file already exists
-    Pinout = open(PATH, "r+") #create file if none exists
+    Pinout = open(PATH, "w+") #create file if none exists
     Pinout.write("OLED_ADDRESS=0x3c\n")
     Pinout.write("FANONE=13\n")
     Pinout.write("FANTWO=12\n")
@@ -25,6 +27,10 @@ if (os.path.isfile(PATH) == False): #check if file already exists
     Pinout.write("BUTTTONONE=6\n")
     Pinout.write("BUTTONTWO=16\n")
     Pinout.write("BUTTONTHREE=26\n")
+    Pinout.close()
+Pinout = open(PATH, "r")    
+Pinout_String = Pinout.read()
+
 
 #Initialize all pin variables
 ADC_PIN=1
