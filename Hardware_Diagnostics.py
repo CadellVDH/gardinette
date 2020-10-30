@@ -12,11 +12,16 @@ from PIL import Image, ImageDraw, ImageFont #oled tools
 
 #Get current directory for log files and for pin file
 PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
-PATH = "%s/Pinout.txt" % PROJECT_DIRECTORY
+PATH = "%s/Pinout.ini" % PROJECT_DIRECTORY
 
 #Look for pinout file and create one if it does not exist. Otherwise, write the file values to variables
 if (os.path.isfile(PATH) == False): #check if file already exists
     Pinout = open(PATH, "w+") #create file if none exists
+    Pinout.close()
+    Config = ConfigParser()
+    Config.add_section('Pin_Values')
+    Config.add_section('Address_Values')
+    Config.set('Pin_Values', 'FANONE', 13) #set value of FANONE in ini file
     Pinout.write("OLED_ADDRESS=0x3c\n")
     Pinout.write("FANONE=13\n")
     Pinout.write("FANTWO=12\n")
