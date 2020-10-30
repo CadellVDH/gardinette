@@ -12,6 +12,19 @@ from PIL import Image, ImageDraw, ImageFont #oled tools
 
 #Get current directory for log files and for pin file
 PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+PATH = "%s/Pinout.txt" % PROJECT_DIRECTORY
+if (os.path.isfile(PATH) == False): #check if file already exists
+    Pinout = open(PATH, "r+") #create file if none exists
+    Pinout.write("OLED_ADDRESS=0x3c\n")
+    Pinout.write("FANONE=13\n")
+    Pinout.write("FANTWO=12\n")
+    Pinout.write("PUMP=17\n")
+    Pinout.write("LIGHT=27\n")
+    Pinout.write("FLOAT=22\n")
+    Pinout.write("TEMP=23\n")
+    Pinout.write("BUTTTONONE=6\n")
+    Pinout.write("BUTTONTWO=16\n")
+    Pinout.write("BUTTONTHREE=26\n")
 
 #Initialize all pin variables
 ADC_PIN=1
@@ -89,4 +102,3 @@ except:
 print("All temperature and humidity tests have been completed\n")
 
 print("All tests have been completed\n")
-
