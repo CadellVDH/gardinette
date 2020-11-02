@@ -35,7 +35,8 @@ if (os.path.isfile(PATH) == False): #check if file already exists
     Config.set('Pin_Values', 'BUTTON_THREE', '26') #set value of BUTTON_THREE in ini file
     Config.set('Address_Values', 'OLED', '0x3c') #set value of OLED in ini file
     with open('Pinout.ini', 'w') as configfile: #open pinout.ini as file object
-        Config.write(configfile) #save inifile
+        Config.write(configfile) #save ini file
+        
 #Open a log file to save diagnostic data
 TODAY = datetime.now() #get current date and time
 DAY = TODAY.strftime("%d") #format day as string
