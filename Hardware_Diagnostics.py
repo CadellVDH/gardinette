@@ -36,19 +36,32 @@ if (os.path.isfile(PATH) == False): #check if file already exists
     Config.set('Address_Values', 'OLED', '0x3c') #set value of OLED in ini file
     with open('Pinout.ini', 'w') as configfile: #open pinout.ini as file object
         Config.write(configfile) #save inifile
-Config.read(PATH)
-FAN_ONE = Config.get('Pin_Values', 'FAN_ONE')
-FAN_TWO = Config.get('Pin_Values', 'FAN_TWO')
-ADC_PIN = Config.get('Pin_Values', 'ADC_PIN')
-ADC_GAIN = Config.get('Pin_Values', 'ADC_GAIN')
-PUMP = Config.get('Pin_Values', 'PUMP')
-LIGHT = Config.get('Pin_Values', 'LIGHT')
-FLOAT = Config.get('Pin_Values', 'FLOAT')
-TEMP = Config.get('Pin_Values', 'TEMP')
-BUTTON_ONE = Config.get('Pin_Values', 'BUTTON_ONE')
-BUTTON_TWO =  Config.get('Pin_Values', 'BUTTON_TWO')
-BUTTON_THREE = Config.get('Pin_Values', 'BUTTON_THREE')
-OLED = Config.get('Address_Values', 'OLED')
+#Open a log file to save diagnostic data
+TODAY = datetime.now() #get current date and time
+DAY = TODAY.strftime("%d") #format day as string
+MONTH = TODAY.strftime("%m") #format month as string
+YEAR = TODAY.strftime("%y") #format year as string
+HOUR = TODAY.strftime("%H") #format hour as string
+MINUTE = TODAY.strftime("%M") #format minute as string
+LOG_FILE = MONTH + "-" + DAY + "-" + YEAR + "-H" + HOUR + "-M" + MINUTE + ".log"
+logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG)
+
+#set all needed pins based on config file
+Config.read(PATH) #begin reading the config file
+FAN_ONE = Config.get('Pin_Values', 'FAN_ONE') #set FAN_ONE to value read in config file
+FAN_TWO = Config.get('Pin_Values', 'FAN_TWO') #set FAN_TWO to value read in config file
+ADC_PIN = Config.get('Pin_Values', 'ADC_PIN') #set ADC_PIN to value read in config file
+ADC_GAIN = Config.get('Pin_Values', 'ADC_GAIN') #set ADC_GAIN to value read in config file
+PUMP = Config.get('Pin_Values', 'PUMP') #set PUMP to value read in config file
+LIGHT = Config.get('Pin_Values', 'LIGHT') #set LIGHT to value read in config file
+FLOAT = Config.get('Pin_Values', 'FLOAT') #set FLOAT to value read in config file
+TEMP = Config.get('Pin_Values', 'TEMP') #set TEMP to value read in config file
+BUTTON_ONE = Config.get('Pin_Values', 'BUTTON_ONE') #set BUTTON_ONE to value read in config file
+BUTTON_TWO =  Config.get('Pin_Values', 'BUTTON_TWO') #set BUTTON_TWO to value read in config file
+BUTTON_THREE = Config.get('Pin_Values', 'BUTTON_THREE') #set BUTTON_THREE to value read in config file
+OLED = Config.get('Address_Values', 'OLED') #set OLED address to value read in config file
+
+#Begin hardware diagnostics
 
 #First test the OLED screen
 print("Now testing the OLED screen...\n")
