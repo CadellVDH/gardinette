@@ -4,6 +4,7 @@ import adafruit_ssd1306 #oled screen
 import digitalio #oled tools
 import Adafruit_ADS1x15 #soil moisture sensor
 import os #tools for working with the CLI
+from configparser import ConfigParser #ini file manipulation tools
 from PIL import Image, ImageDraw, ImageFont #oled tools
 
 #The purpose of this script is to ensure that all peripheral hardware
@@ -15,31 +16,39 @@ PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 PATH = "%s/Pinout.ini" % PROJECT_DIRECTORY
 
 #Look for pinout file and create one if it does not exist. Otherwise, write the file values to variables
+Config = ConfigParser()
 if (os.path.isfile(PATH) == False): #check if file already exists
     Pinout = open(PATH, "w+") #create file if none exists
     Pinout.close()
-    Config = ConfigParser()
     Config.add_section('Pin_Values')
     Config.add_section('Address_Values')
-    Config.set('Pin_Values', 'FANONE', 13) #set value of FANONE in ini file
-    Pinout.write("OLED_ADDRESS=0x3c\n")
-    Pinout.write("FANONE=13\n")
-    Pinout.write("FANTWO=12\n")
-    Pinout.write("PUMP=17\n")
-    Pinout.write("LIGHT=27\n")
-    Pinout.write("FLOAT=22\n")
-    Pinout.write("TEMP=23\n")
-    Pinout.write("BUTTTONONE=6\n")
-    Pinout.write("BUTTONTWO=16\n")
-    Pinout.write("BUTTONTHREE=26\n")
-    Pinout.close()
-Pinout = open(PATH, "r")    
-Pinout_String = Pinout.read()
-
-
-#Initialize all pin variables
-ADC_PIN=1
-ADC_GAIN=1
+    Config.set('Pin_Values', 'FAN_ONE', '13') #set value of FAN_ONE in ini file
+    Config.set('Pin_Values', 'FAN_TWO', '12') #set value of FAN_TWO in ini file
+    Config.set('Pin_Values', 'ADC_PIN', '1') #set value of ADC_PIN in ini file
+    Config.set('Pin_Values', 'ADC_GAIN', '1') #set value of ADC_GAIN in ini file
+    Config.set('Pin_Values', 'PUMP', '17') #set value of PUMP in ini file
+    Config.set('Pin_Values', 'LIGHT', '27') #set value of LIGHT in ini file
+    Config.set('Pin_Values', 'FLOAT', '22') #set value of FLOAT in ini file
+    Config.set('Pin_Values', 'TEMP', '23') #set value of TEMP in ini file
+    Config.set('Pin_Values', 'BUTTON_ONE', '6') #set value of BUTTON_ONE in ini file
+    Config.set('Pin_Values', 'BUTTON_TWO', '16') #set value of BUTTON_TWO in ini file
+    Config.set('Pin_Values', 'BUTTON_THREE', '26') #set value of BUTTON_THREE in ini file
+    Config.set('Address_Values', 'OLED', '0x3c') #set value of OLED in ini file
+    with open('Pinout.ini', 'w') as configfile: #open pinout.ini as file object
+        Config.write(configfile) #save inifile
+Config.read(PATH)
+FAN_ONE = Config.get('Pin_Values', 'FAN_ONE')
+FAN_TWO = Config.get('Pin_Values', 'FAN_TWO')
+ADC_PIN = Config.get('Pin_Values', 'ADC_PIN')
+ADC_GAIN = Config.get('Pin_Values', 'ADC_GAIN')
+PUMP = Config.get('Pin_Values', 'PUMP')
+LIGHT = Config.get('Pin_Values', 'LIGHT')
+FLOAT = Config.get('Pin_Values', 'FLOAT')
+TEMP = Config.get('Pin_Values', 'TEMP')
+BUTTON_ONE = Config.get('Pin_Values', 'BUTTON_ONE')
+BUTTON_TWO =  Config.get('Pin_Values', 'BUTTON_TWO')
+BUTTON_THREE = Config.get('Pin_Values', 'BUTTON_THREE')
+OLED = Config.get('Address_Values', 'OLED')
 
 #First test the OLED screen
 print("Now testing the OLED screen...\n")
