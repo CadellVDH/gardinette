@@ -73,7 +73,7 @@ try: #attempt to detect the OLED
     print("OLED detected\n")
     logging.debug("OLED detected") #log results
 except:
-    print("Error occured while detecting board") #throw error if one occurs
+    print("Error occured while detecting board\n") #throw error if one occurs
     logging.error("Error detecting OLED") #log results
 
 try: #attempt to clear the OLED
@@ -83,7 +83,7 @@ try: #attempt to clear the OLED
     print("OLED cleared\n")
     logging.debug("OLED cleared") #log results
 except:
-    print("Error occured while clearing OLED") #throw error if one occurs
+    print("Error occured while clearing OLED\n") #throw error if one occurs
     logging.error("Error clearing OLED") #log results
 
 try: #attempt to write to the oled
@@ -99,12 +99,12 @@ try: #attempt to write to the oled
     oled.show() #print image to OLED
     logging.debug("All functions for writing to the OLED executed succesffully") #log results
 except:
-    print("Error occured while writing text to the OLED")
+    print("Error occured while writing text to the OLED\n")
     logging.error("Error, some functions failed to execute while writing to the OLED") #log results
 
 user_test = input('Was the text "Gardinette!" shown? (Y/N)') #ask user to verify real world
 while (user_test != "Y" and user_test != "N"): #ask user for input until they input the correct format
-    print('Please enter only "Y" or "N"')
+    print('Please enter only "Y" or "N"\n')
     user_test = input('Was the text "Gardinette!" shown? (Y/N)')
 if (user_test == "N"):
     print("Error occured while writing to OLED screen\n")
@@ -122,10 +122,10 @@ print("Attempting to read value from ADC\n")
 try:
     ADCvalue = adc.read_adc(ADC_PIN, gain=ADC_GAIN) #ATTEMPT TO READ ADC
     print("ADC value: %f\n" % ADCvalue) #print ADC value to console
-    print("ADC succesffully read")
+    print("ADC succesffully read\n")
     logging.debug("ADC succesffully read") #log results
 except:
-    print("Error occured while reading ADC value")
+    print("Error occured while reading ADC value\n")
     logging.error("Error occured while reading ADC") #log results
 
 print("All ADC tests have been completed\n")
