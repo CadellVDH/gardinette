@@ -120,7 +120,9 @@ print("Now testing the ADC/Moisture Sensor\n")
 adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
 print("Attempting to read value from ADC\n")
 try:
+    print("setting ADCvalue variable")
     ADCvalue = adc.read_adc(ADC_PIN, gain=ADC_GAIN) #ATTEMPT TO READ ADC
+    print("printing to console")
     print("ADC value: %f\n" % ADCvalue) #print ADC value to console
     print("ADC succesffully read\n")
     logging.debug("ADC succesffully read") #log results
