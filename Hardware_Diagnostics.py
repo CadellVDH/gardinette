@@ -4,7 +4,9 @@ import adafruit_ssd1306 #oled screen
 import digitalio #oled tools
 import Adafruit_ADS1x15 #soil moisture sensor
 import os #tools for working with the CLI
-from configparser import ConfigParser #ini file manipulation tools
+import logging #needed for logging
+from configparser import ConfigParser #ini file manipulation
+from datetime import date #needed for logging
 from PIL import Image, ImageDraw, ImageFont #oled tools
 
 #The purpose of this script is to ensure that all peripheral hardware
@@ -53,14 +55,11 @@ BUTTON_THREE = Config.get('Pin_Values', 'BUTTON_THREE') #set BUTTON_THREE to val
 OLED = Config.get('Address_Values', 'OLED') #set OLED address to value read in config file
 
 #Open a log file to save diagnostic data
-TODAY = datetime.now() #get current date and time
-DAY = TODAY.strftime("%d") #format day as string
-MONTH = TODAY.strftime("%m") #format month as string
-YEAR = TODAY.strftime("%y") #format year as string
-HOUR = TODAY.strftime("%H") #format hour as string
-MINUTE = TODAY.strftime("%M") #format minute as string
-LOG_FILE = MONTH + "-" + DAY + "-" + YEAR + "-H" + HOUR + "-M" + MINUTE + ".log"
-logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG)
+LOG_FILE = TODAY.strftime("%d-%m-%y-%H:%M") #name log file based on date and time
+loging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG, filemode='w')
+
+logging.debug('Test message')
+logging.error('test error')
 
 #Begin hardware diagnostics
 
