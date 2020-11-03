@@ -38,6 +38,15 @@ if (os.path.isfile(PATH) == False): #check if file already exists
     Config.set('Address_Values', 'OLED', '0x3c') #set value of OLED in ini file
     with open('Pinout.ini', 'w') as configfile: #open pinout.ini as file object
         Config.write(configfile) #save inifile
+#Open a log file to save diagnostic data
+TODAY = datetime.now() #get current date and time
+DAY = TODAY.strftime("%d") #format day as string
+MONTH = TODAY.strftime("%m") #format month as string
+YEAR = TODAY.strftime("%y") #format year as string
+HOUR = TODAY.strftime("%H") #format hour as string
+MINUTE = TODAY.strftime("%M") #format minute as string
+LOG_FILE = MONTH + "-" + DAY + "-" + YEAR + "-H" + HOUR + "-M" + MINUTE + ".log"
+logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG)
 
 #set all needed pins based on config file
 Config.read(PATH) #begin reading the config file
