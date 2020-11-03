@@ -61,9 +61,6 @@ if (os.path.isdir("%s/Logs/" % PROJECT_DIRECTORY) == False):
     os.mkdir("%s/Logs/" % PROJECT_DIRECTORY)
 logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG, filemode='w')
 
-logging.debug('Test message')
-logging.error('test error')
-
 #Begin hardware diagnostics
 
 #First test the OLED screen
@@ -74,16 +71,20 @@ try: #attempt to detect the OLED
     i2c = board.I2C() #these next few lines initialize the OLED
     oled = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c, addr=0x3c,reset=oled_reset) #specify oled we're using
     print("OLED detected\n")
+    logging.debug("OLED detected") #log results
 except:
     print("Error occured while detecting board") #throw error if one occurs
+    logging.error("Error detecting OLED") #log results
 
 try: #attempt to clear the OLED
     print("Attempting to clear the OLED...\n")
     oled.fill(0) #clear display
     oled.show() #update the display
     print("OLED cleared\n")
+    logging.debug("OLED cleared") #log results
 except:
-    print("Error occured while clearing board") #throw error if one occurs
+    print("Error occured while clearing OLED") #throw error if one occurs
+    logging.error("Error clearing OLED") #log results
 
 try: #attempt to write to the oled
     print("Attempting to write to OLED...\n")
@@ -95,18 +96,22 @@ try: #attempt to write to the oled
     (font_width, font_height) = font.getsize(text)
     draw.text((oled.width // 2 - font_width // 2, oled.height // 2 - font_height // 2),text,font=font,fill=255)
     oled.image(image)
-    oled.show()
+    oled.show() #print image to OLED
+    logging.debug("All functions for writing to the OLED executed succesffully") #log results
 except:
     print("Error occured while writing text to the OLED")
+    logging.error("Error, some functions failed to execute while writing to the OLED") #log results
 
 user_test = input('Was the text "Gardinette!" shown? (Y/N)') #ask user to verify real world
-while (user_test != "Y" and user_test != "N"):
+while (user_test != "Y" and user_test != "N"): #ask user for input until they input the correct format
     print('Please enter only "Y" or "N"')
     user_test = input('Was the text "Gardinette!" shown? (Y/N)')
 if (user_test == "N"):
     print("Error occured while writing to OLED screen\n")
+    logging.error("Error, OLED hardware seems to have failed") #log results
 else:
     print("OLED tests have succeeded\n")
+    logging.debug("OLED hardware is operational") #log results
 
 print("All OLED tests have been completed\n")
 
@@ -116,10 +121,12 @@ adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
 print("Attempting to read value from ADC\n")
 try:
     ADCvalue = adc.read_adc(ADC_PIN, gain=ADC_GAIN) #ATTEMPT TO READ ADC
-    print("ADC value: %f\n" % ADCvalue)
+    print("ADC value: %f\n" % ADCvalue) #print ADC value to console
     print("ADC succesffully read")
+    logging.debug("ADC succesffully read") #log results
 except:
     print("Error occured while reading ADC value")
+    logging.error("Error occured while reading ADC") log results
 
 print("All ADC tests have been completed\n")
 
@@ -129,11 +136,13 @@ DHT_SENSOR = Adafruit_DHT.DHT22 #store temp and humidity sensor to  variable
 DHT_PIN = 23 #set temp/hum pin
 try:
     humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, DHT_PIN) #attempt to read temp and humidity sensor
-    print("Temp: %f\n" % temperature)
-    print("Humidity: %f\n" % humidity)
+    print("Temp: %f\n" % temperature) #print temperature to console
+    print("Humidity: %f\n" % humidity) #print humidity to console
     print("Temp and humidity tests have succeeded\n")
+    logging.debug("Temp and humidity tests have succeeded") #log results
 except:
     print("An error occured while reading the temperature or humidity\n")
+    logging.error("Error, Temp and humidity sensor failed to read")
 
 print("All temperature and humidity tests have been completed\n")
 
