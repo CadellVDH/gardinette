@@ -41,17 +41,17 @@ if (os.path.isfile(PATH) == False): #check if file already exists
 
 #set all needed pins based on config file
 Config.read(PATH) #begin reading the config file
-FAN_ONE = Config.get('Pin_Values', 'FAN_ONE') #set FAN_ONE to value read in config file
-FAN_TWO = Config.get('Pin_Values', 'FAN_TWO') #set FAN_TWO to value read in config file
-ADC_PIN = Config.get('Pin_Values', 'ADC_PIN') #set ADC_PIN to value read in config file
-ADC_GAIN = Config.get('Pin_Values', 'ADC_GAIN') #set ADC_GAIN to value read in config file
-PUMP = Config.get('Pin_Values', 'PUMP') #set PUMP to value read in config file
-LIGHT = Config.get('Pin_Values', 'LIGHT') #set LIGHT to value read in config file
-FLOAT = Config.get('Pin_Values', 'FLOAT') #set FLOAT to value read in config file
-TEMP = Config.get('Pin_Values', 'TEMP') #set TEMP to value read in config file
-BUTTON_ONE = Config.get('Pin_Values', 'BUTTON_ONE') #set BUTTON_ONE to value read in config file
-BUTTON_TWO =  Config.get('Pin_Values', 'BUTTON_TWO') #set BUTTON_TWO to value read in config file
-BUTTON_THREE = Config.get('Pin_Values', 'BUTTON_THREE') #set BUTTON_THREE to value read in config file
+FAN_ONE = int(Config.get('Pin_Values', 'FAN_ONE')) #set FAN_ONE to value read in config file
+FAN_TWO = int(Config.get('Pin_Values', 'FAN_TWO')) #set FAN_TWO to value read in config file
+ADC_PIN = int(Config.get('Pin_Values', 'ADC_PIN')) #set ADC_PIN to value read in config file
+ADC_GAIN = int(Config.get('Pin_Values', 'ADC_GAIN')) #set ADC_GAIN to value read in config file
+PUMP = int(Config.get('Pin_Values', 'PUMP')) #set PUMP to value read in config file
+LIGHT = int(Config.get('Pin_Values', 'LIGHT')) #set LIGHT to value read in config file
+FLOAT = int(Config.get('Pin_Values', 'FLOAT')) #set FLOAT to value read in config file
+TEMP = int(Config.get('Pin_Values', 'TEMP')) #set TEMP to value read in config file
+BUTTON_ONE = int(Config.get('Pin_Values', 'BUTTON_ONE')) #set BUTTON_ONE to value read in config file
+BUTTON_TWO =  int(Config.get('Pin_Values', 'BUTTON_TWO')) #set BUTTON_TWO to value read in config file
+BUTTON_THREE = int(Config.get('Pin_Values', 'BUTTON_THREE')) #set BUTTON_THREE to value read in config file
 OLED = Config.get('Address_Values', 'OLED') #set OLED address to value read in config file
 
 #Open a log file to save diagnostic data
@@ -120,7 +120,7 @@ print("Now testing the ADC/Moisture Sensor\n")
 adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
 print("Attempting to read value from ADC\n")
 try:
-    ADCvalue = adc.read_adc(int(ADC_PIN), gain=ADC_GAIN) #ATTEMPT TO READ ADC
+    ADCvalue = adc.read_adc(ADC_PIN, gain=ADC_GAIN) #ATTEMPT TO READ ADC
     print("ADC value: %f\n" % ADCvalue) #print ADC value to console
     print("ADC succesffully read\n")
     logging.debug("ADC succesffully read") #log results
