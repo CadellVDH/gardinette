@@ -6,7 +6,7 @@ import Adafruit_ADS1x15 #soil moisture sensor
 import os #tools for working with the CLI
 import logging #needed for logging
 from configparser import ConfigParser #ini file manipulation
-from datetime import date #needed for logging
+from datetime import datetime #needed for logging
 from PIL import Image, ImageDraw, ImageFont #oled tools
 
 #The purpose of this script is to ensure that all peripheral hardware
