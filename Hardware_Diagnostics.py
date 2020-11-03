@@ -124,8 +124,9 @@ try:
     print("ADC value: %f\n" % ADCvalue) #print ADC value to console
     print("ADC succesffully read\n")
     logging.debug("ADC succesffully read") #log results
-except:
+except Exception as e:
     print("Error occured while reading ADC value\n")
+    print(e)
     logging.error("Error occured while reading ADC") #log results
 
 print("All ADC tests have been completed\n")
