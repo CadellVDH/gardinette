@@ -120,13 +120,12 @@ print("Now testing the ADC/Moisture Sensor\n")
 adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
 print("Attempting to read value from ADC\n")
 try:
-    ADCvalue = adc.read_adc(ADC_PIN, gain=ADC_GAIN) #ATTEMPT TO READ ADC
+    ADCvalue = adc.read_adc(int(ADC_PIN), gain=ADC_GAIN) #ATTEMPT TO READ ADC
     print("ADC value: %f\n" % ADCvalue) #print ADC value to console
     print("ADC succesffully read\n")
     logging.debug("ADC succesffully read") #log results
-except Exception as e:
+except:
     print("Error occured while reading ADC value\n")
-    print(e)
     logging.error("Error occured while reading ADC") #log results
 
 print("All ADC tests have been completed\n")
