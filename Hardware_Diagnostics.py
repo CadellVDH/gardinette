@@ -55,6 +55,7 @@ BUTTON_THREE = Config.get('Pin_Values', 'BUTTON_THREE') #set BUTTON_THREE to val
 OLED = Config.get('Address_Values', 'OLED') #set OLED address to value read in config file
 
 #Open a log file to save diagnostic data
+TODAY = datetime.now()
 LOG_FILE = TODAY.strftime("%d-%m-%y-%H:%M") #name log file based on date and time
 loging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG, filemode='w')
 
