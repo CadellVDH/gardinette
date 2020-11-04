@@ -72,9 +72,9 @@ try: #attempt to detect the OLED
     oled = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c, addr=0x3c,reset=oled_reset) #specify oled we're using
     print("OLED detected\n")
     logging.debug("OLED detected") #log results
-except:
+except Exception as e:
     print("Error occured while detecting board\n") #throw error if one occurs
-    logging.error("Error detecting OLED") #log results
+    logging.error("Error detecting OLED: %s" % e) #log results
 
 try: #attempt to clear the OLED
     print("Attempting to clear the OLED...\n")
@@ -82,9 +82,10 @@ try: #attempt to clear the OLED
     oled.show() #update the display
     print("OLED cleared\n")
     logging.debug("OLED cleared") #log results
-except:
+    test bug
+except Exception as e:
     print("Error occured while clearing OLED\n") #throw error if one occurs
-    logging.error("Error clearing OLED") #log results
+    logging.error("Error clearing OLED: %s" % e) #log results
 
 try: #attempt to write to the oled
     print("Attempting to write to OLED...\n")
@@ -98,9 +99,9 @@ try: #attempt to write to the oled
     oled.image(image)
     oled.show() #print image to OLED
     logging.debug("All functions for writing to the OLED executed succesffully") #log results
-except:
+except Exception as e:
     print("Error occured while writing text to the OLED\n")
-    logging.error("Error, some functions failed to execute while writing to the OLED") #log results
+    logging.error("Error, some functions failed to execute while writing to the OLED: %s" % e) #log results
 
 user_test = input('Was the text "Gardinette!" shown? (Y/N)') #ask user to verify real world
 while (user_test != "Y" and user_test != "N"): #ask user for input until they input the correct format
@@ -124,10 +125,10 @@ try:
     print("ADC value: %f\n" % ADCvalue) #print ADC value to console
     print("ADC succesffully read\n")
     logging.debug("ADC succesffully read") #log results
-except:
+except Exception as e:
     print("Error occured while reading ADC value\n")
     print(e)
-    logging.error("Error occured while reading ADC") #log results
+    logging.error("Error occured while reading ADC: %s" % e) #log results
 
 print("All ADC tests have been completed\n")
 
@@ -141,9 +142,9 @@ try:
     print("Humidity: %f\n" % humidity) #print humidity to console
     print("Temp and humidity tests have succeeded\n")
     logging.debug("Temp and humidity tests have succeeded") #log results
-except:
+except Exception as e:
     print("An error occured while reading the temperature or humidity\n")
-    logging.error("Error, Temp and humidity sensor failed to read")
+    logging.error("Error, Temp and humidity sensor failed to read: %s" % e)
 
 print("All temperature and humidity tests have been completed\n")
 
