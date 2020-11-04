@@ -82,7 +82,6 @@ try: #attempt to clear the OLED
     oled.show() #update the display
     print("OLED cleared\n")
     logging.debug("OLED cleared") #log results
-    test bug
 except Exception as e:
     print("Error occured while clearing OLED\n") #throw error if one occurs
     logging.error("Error clearing OLED: %s" % e) #log results
@@ -122,6 +121,7 @@ adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
 print("Attempting to read value from ADC\n")
 try:
     ADCvalue = adc.read_adc(ADC_PIN, gain=ADC_GAIN) #ATTEMPT TO READ ADC
+    ADCvalue = adc.read_adc('1', gain=ADC_GAIN) #ATTEMPT TO READ ADC
     print("ADC value: %f\n" % ADCvalue) #print ADC value to console
     print("ADC succesffully read\n")
     logging.debug("ADC succesffully read") #log results
