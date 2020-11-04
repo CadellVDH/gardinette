@@ -153,7 +153,7 @@ print("Now testing the ventilation fans")
 try: #test if fan one turns on
     print("Checking if fan one turns on")
     pi = pigpio.pi() #create instance of pigpio.pi class
-    pi.setmode(FAN_ONE, pigpio.OUTPUT) #set FAN_ONE to output
+    pi.set_mode(FAN_ONE, pigpio.OUTPUT) #set FAN_ONE to output
 
     pi.write(FAN_ONE, 1) #set FAN_ONE GPIO to high
     user_test = input('Did fan one turn on (Y/N)') #ask user to verify real world
@@ -172,7 +172,7 @@ except Exception as e:
 
 try: #test if fan two turns on
     print("Checking if fan two turns on")
-    pi.setmode(FAN_TWO, pigpio.OUTPUT) #set FAN_TWO to output
+    pi.set_mode(FAN_TWO, pigpio.OUTPUT) #set FAN_TWO to output
 
     pi.write(FAN_TWO, 1) #set FAN_TWO GPIO to high
     user_test = input('Did fan two turn on (Y/N)') #ask user to verify real world
@@ -194,7 +194,6 @@ input("Please wait until both fans have stopped, then press [Enter]...")
 try: #test if fan one works with PWM
     print("Checking if fan one speed control works")
     pi = pigpio.pi() #create instance of pigpio.pi class
-    pi.setmode(FAN_ONE, pigpio.OUTPUT) #set FAN_ONE to output
 
     pi.set_PWM_dutycycle(FAN_ONE, 128) #set FAN_ONE GPIO 50% PWM
     user_test = input('Did fan one turn on (Y/N)') #ask user to verify real world
@@ -213,7 +212,6 @@ except Exception as e:
 
 try: #test if fan two works with PWM
     print("checking if fan two speed control works")
-    pi.setmode(FAN_TWO, pigpio.OUTPUT) #set FAN_TWO to output
 
     pi.set_PWM_dutycycle(FAN_TWO, 128) #set FAN_TWO GPIO 50% PWM
     user_test = input('Did fan two turn on (Y/N)') #ask user to verify real world
@@ -230,6 +228,6 @@ except Exception as e:
     print("Error occured while turning fan two on")
     logging.error("Error, failed to write to fan two GPIO: %s" % e)
 
-
+print("Fan tests have been completed")
 
 print("All tests have been completed\n")
