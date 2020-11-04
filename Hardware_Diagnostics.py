@@ -134,10 +134,9 @@ print("All ADC tests have been completed\n")
 #Test the temperature and humidity sensor
 print("Now testing the temperature and humidity sensor\n")
 DHT_SENSOR = Adafruit_DHT.DHT22 #store temp and humidity sensor to  variable
+humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, TEMP) #attempt to read temp and humidity sensor
 try:
-    print()
-    print(type(TEMP))
-    humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, TEMP) #attempt to read temp and humidity sensor
+
     print("Temp: %f\n" % temperature) #print temperature to console
     print("Humidity: %f\n" % humidity) #print humidity to console
     print("Temp and humidity tests have succeeded\n")
