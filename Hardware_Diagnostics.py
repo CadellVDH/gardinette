@@ -1,4 +1,3 @@
-import Adafruit_DHT #temp and hunidity sensor
 import board #oled tools
 import adafruit_ssd1306 #oled screen
 import digitalio #oled tools
@@ -6,6 +5,7 @@ import Adafruit_ADS1x15 #soil moisture sensor
 import os #tools for working with the CLI
 import logging #needed for logging
 import pigpio #needed for GPIO control
+from pigpio_dht import DHT22 #temp and humidity sensor
 from configparser import ConfigParser #ini file manipulation
 from datetime import datetime #needed for logging
 from PIL import Image, ImageDraw, ImageFont #oled tools
@@ -133,10 +133,10 @@ print("All ADC tests have been completed\n")
 
 #Test the temperature and humidity sensor
 print("Now testing the temperature and humidity sensor\n")
-DHT_SENSOR = Adafruit_DHT.DHT22 #store temp and humidity sensor to  variable
+DHT_SENSOR = DHT22(TEMP) #instantiate DHT sensor
 
 try:
-    humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, TEMP) #attempt to read temp and humidity sensor
+    humidity, temperature = DHT_SENSOR.sample(samples=3) #attempt to read temp and humidity sensor
     print("Temp: %f\n" % temperature) #print temperature to console
     print("Humidity: %f\n" % humidity) #print humidity to console
     print("Temp and humidity tests have succeeded\n")
