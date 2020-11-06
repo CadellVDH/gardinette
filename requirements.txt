@@ -1,7 +1,7 @@
-Adafruit_DHT #temp and hunidity sensor
+pigpio #GPIO interfacing
+pigpio-dht #temp and humidity sensor tools
 board #oled tools
 adafruit_ssd1306 #oled screen
-RPI.GPIO
 adafruit-blinka
 Adafruit_ADS1x15 #soil moisture sensor
 
