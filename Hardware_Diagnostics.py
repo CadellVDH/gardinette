@@ -5,6 +5,7 @@ import digitalio #oled tools
 import Adafruit_ADS1x15 #soil moisture sensor
 import os #tools for working with the CLI
 import logging #needed for logging
+import pigpio #needed for GPIO control
 from configparser import ConfigParser #ini file manipulation
 from datetime import datetime #needed for logging
 from PIL import Image, ImageDraw, ImageFont #oled tools
@@ -72,9 +73,9 @@ try: #attempt to detect the OLED
     oled = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c, addr=0x3c,reset=oled_reset) #specify oled we're using
     print("OLED detected\n")
     logging.debug("OLED detected") #log results
-except:
+except Exception as e:
     print("Error occured while detecting board\n") #throw error if one occurs
-    logging.error("Error detecting OLED") #log results
+    logging.error("Error detecting OLED: %s" % e) #log results
 
 try: #attempt to clear the OLED
     print("Attempting to clear the OLED...\n")
@@ -82,9 +83,9 @@ try: #attempt to clear the OLED
     oled.show() #update the display
     print("OLED cleared\n")
     logging.debug("OLED cleared") #log results
-except:
+except Exception as e:
     print("Error occured while clearing OLED\n") #throw error if one occurs
-    logging.error("Error clearing OLED") #log results
+    logging.error("Error clearing OLED: %s" % e) #log results
 
 try: #attempt to write to the oled
     print("Attempting to write to OLED...\n")
@@ -98,9 +99,9 @@ try: #attempt to write to the oled
     oled.image(image)
     oled.show() #print image to OLED
     logging.debug("All functions for writing to the OLED executed succesffully") #log results
-except:
+except Exception as e:
     print("Error occured while writing text to the OLED\n")
-    logging.error("Error, some functions failed to execute while writing to the OLED") #log results
+    logging.error("Error, some functions failed to execute while writing to the OLED: %s" % e) #log results
 
 user_test = input('Was the text "Gardinette!" shown? (Y/N)') #ask user to verify real world
 while (user_test != "Y" and user_test != "N"): #ask user for input until they input the correct format
@@ -124,27 +125,109 @@ try:
     print("ADC value: %f\n" % ADCvalue) #print ADC value to console
     print("ADC succesffully read\n")
     logging.debug("ADC succesffully read") #log results
-except:
+except Exception as e:
     print("Error occured while reading ADC value\n")
-    print(e)
-    logging.error("Error occured while reading ADC") #log results
+    logging.error("Error occured while reading ADC: %s" % e) #log results
 
 print("All ADC tests have been completed\n")
 
 #Test the temperature and humidity sensor
 print("Now testing the temperature and humidity sensor\n")
 DHT_SENSOR = Adafruit_DHT.DHT22 #store temp and humidity sensor to  variable
-DHT_PIN = 23 #set temp/hum pin
+
 try:
-    humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, DHT_PIN) #attempt to read temp and humidity sensor
+    humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, TEMP) #attempt to read temp and humidity sensor
     print("Temp: %f\n" % temperature) #print temperature to console
     print("Humidity: %f\n" % humidity) #print humidity to console
     print("Temp and humidity tests have succeeded\n")
     logging.debug("Temp and humidity tests have succeeded") #log results
-except:
+except Exception as e:
     print("An error occured while reading the temperature or humidity\n")
-    logging.error("Error, Temp and humidity sensor failed to read")
+    logging.error("Error, Temp and humidity sensor failed to read: %s" % e)
 
 print("All temperature and humidity tests have been completed\n")
+
+#Test both fans
+print("Now testing the ventilation fans")
+
+try: #test if fan one turns on
+    print("Checking if fan one turns on")
+    pi = pigpio.pi() #create instance of pigpio.pi class
+    pi.set_mode(FAN_ONE, pigpio.OUTPUT) #set FAN_ONE to output
+
+    pi.write(FAN_ONE, 1) #set FAN_ONE GPIO to high
+    user_test = input('Did fan one turn on (Y/N)') #ask user to verify real world
+    while (user_test != "Y" and user_test != "N"): #ask user for input until they input the correct format
+        print('Please enter only "Y" or "N"\n')
+        user_test = input('Did fan one turn on (Y/N)')
+    if (user_test == "N"):
+        print("Error occured while turning fan one on\n")
+        logging.error("Error, fan hardware seems to have failed") #log results
+    else:
+        pi.write(FAN_ONE, 0) #turn fan one back off
+        logging.debug("Fan one turns on") #log results
+except Exception as e:
+    print("Error occured while turning fan one on")
+    logging.error("Error, failed to write to fan one GPIO: %s" % e)
+
+try: #test if fan two turns on
+    print("Checking if fan two turns on")
+    pi.set_mode(FAN_TWO, pigpio.OUTPUT) #set FAN_TWO to output
+
+    pi.write(FAN_TWO, 1) #set FAN_TWO GPIO to high
+    user_test = input('Did fan two turn on (Y/N)') #ask user to verify real world
+    while (user_test != "Y" and user_test != "N"): #ask user for input until they input the correct format
+        print('Please enter only "Y" or "N"\n')
+        user_test = input('Did fan two turn on (Y/N)')
+    if (user_test == "N"):
+        print("Error occured while turning fan two on\n")
+        logging.error("Error, fan hardware seems to have failed") #log results
+    else:
+        pi.write(FAN_TWO, 0) #turn fan two back off
+        logging.debug("Fan two turns on") #log results
+except Exception as e:
+    print("Error occured while turning fan two on")
+    logging.error("Error, failed to write to fan two GPIO: %s" % e)
+
+input("Please wait until both fans have stopped, then press [Enter]...")
+
+try: #test if fan one works with PWM
+    print("Checking if fan one speed control works")
+    pi = pigpio.pi() #create instance of pigpio.pi class
+
+    pi.set_PWM_dutycycle(FAN_ONE, 128) #set FAN_ONE GPIO 50% PWM
+    user_test = input('Did fan one turn on (Y/N)') #ask user to verify real world
+    while (user_test != "Y" and user_test != "N"): #ask user for input until they input the correct format
+        print('Please enter only "Y" or "N"\n')
+        user_test = input('Did fan one turn on (Y/N)')
+    if (user_test == "N"):
+        print("Error occured while turning fan one on\n")
+        logging.error("Error, fan hardware seems to have failed") #log results
+    else:
+        pi.set_PWM_dutycycle(FAN_TWO, 0) #turn fan two back off
+        logging.debug("Fan one turns on") #log results
+except Exception as e:
+    print("Error occured while turning fan one on")
+    logging.error("Error, failed to write to fan one GPIO: %s" % e)
+
+try: #test if fan two works with PWM
+    print("checking if fan two speed control works")
+
+    pi.set_PWM_dutycycle(FAN_TWO, 128) #set FAN_TWO GPIO 50% PWM
+    user_test = input('Did fan two turn on (Y/N)') #ask user to verify real world
+    while (user_test != "Y" and user_test != "N"): #ask user for input until they input the correct format
+        print('Please enter only "Y" or "N"\n')
+        user_test = input('Did fan two turn on (Y/N)')
+    if (user_test == "N"):
+        print("Error occured while turning fan two on\n")
+        logging.error("Error, fan hardware seems to have failed") #log results
+    else:
+        pi.set_PWM_dutycycle(FAN_TWO, 0) #turn fan two back off
+        logging.debug("Fan two turns on") #log results
+except Exception as e:
+    print("Error occured while turning fan two on")
+    logging.error("Error, failed to write to fan two GPIO: %s" % e)
+
+print("Fan tests have been completed")
 
 print("All tests have been completed\n")
