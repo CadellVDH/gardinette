@@ -136,10 +136,11 @@ print("Now testing the temperature and humidity sensor\n")
 DHT_SENSOR = DHT22(TEMP) #instantiate DHT sensor
 
 try:
-    print( DHT_SENSOR.sample(samples=3))
-    #humidity, temperature = DHT_SENSOR.sample(samples=3) #attempt to read temp and humidity sensor
-    #print("Temp: %f\n" % temperature) #print temperature to console
-    #print("Humidity: %f\n" % humidity) #print humidity to console
+    result = DHT_SENSOR.sample(samples=3) #attempt to read temp and humidity sensor
+    temperature = result["temp_f"] #get temp separately in F
+    humidity = result["humidity"] #get humidity separately
+    print("Temp: %f\n" % temperature) #print temperature to console
+    print("Humidity: %f\n" % humidity) #print humidity to console
     print("Temp and humidity tests have succeeded\n")
     logging.debug("Temp and humidity tests have succeeded") #log results
 except Exception as e:
