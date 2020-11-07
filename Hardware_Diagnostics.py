@@ -206,7 +206,7 @@ try: #test if fan one works with PWM
         print("Error occured while turning fan one on\n")
         logging.error("Error, fan hardware seems to have failed") #log results
     else:
-        pi.set_PWM_dutycycle(FAN_TWO, 0) #turn fan two back off
+        pi.set_PWM_dutycycle(FAN_ONE, 0) #turn fan two back off
         logging.debug("Fan one turns on") #log results
 except Exception as e:
     print("Error occured while turning fan one on")
