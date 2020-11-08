@@ -235,7 +235,7 @@ print("Fan tests have been completed\n")
 #Test the pump
 print("Now testing the pump\n")
 try:
-    pi.write(PUMP, 1 #turn pump on
+    pi.write(PUMP, 1) #turn pump on
     user_test = input('Did the pump turn on (Y/N)') #ask user to verify real world
     while (user_test != "Y" and user_test != "N"): #ask user for input until they input the correct format
         print('Please enter only "Y" or "N"\n')
