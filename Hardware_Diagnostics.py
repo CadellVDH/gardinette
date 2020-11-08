@@ -153,7 +153,7 @@ print("All temperature and humidity tests have been completed\n")
 print("Now testing the ventilation fans")
 
 try: #test if fan one turns on
-    print("Checking if fan one turns on")
+    print("Checking if fan one turns on\n")
     pi = pigpio.pi() #create instance of pigpio.pi class
     pi.set_mode(FAN_ONE, pigpio.OUTPUT) #set FAN_ONE to output
 
@@ -169,11 +169,11 @@ try: #test if fan one turns on
         pi.write(FAN_ONE, 0) #turn fan one back off
         logging.debug("Fan one turns on") #log results
 except Exception as e:
-    print("Error occured while turning fan one on")
+    print("Error occured while turning fan one on\n")
     logging.error("Error, failed to write to fan one GPIO: %s" % e)
 
 try: #test if fan two turns on
-    print("Checking if fan two turns on")
+    print("Checking if fan two turns on\n")
     pi.set_mode(FAN_TWO, pigpio.OUTPUT) #set FAN_TWO to output
 
     pi.write(FAN_TWO, 1) #set FAN_TWO GPIO to high
@@ -188,13 +188,13 @@ try: #test if fan two turns on
         pi.write(FAN_TWO, 0) #turn fan two back off
         logging.debug("Fan two turns on") #log results
 except Exception as e:
-    print("Error occured while turning fan two on")
+    print("Error occured while turning fan two on\n")
     logging.error("Error, failed to write to fan two GPIO: %s" % e)
 
 input("Please wait until both fans have stopped, then press [Enter]...")
 
 try: #test if fan one works with PWM
-    print("Checking if fan one speed control works")
+    print("Checking if fan one speed control works\n")
     pi = pigpio.pi() #create instance of pigpio.pi class
 
     pi.set_PWM_dutycycle(FAN_ONE, 128) #set FAN_ONE GPIO 50% PWM
@@ -209,11 +209,11 @@ try: #test if fan one works with PWM
         pi.set_PWM_dutycycle(FAN_ONE, 0) #turn fan two back off
         logging.debug("Fan one turns on") #log results
 except Exception as e:
-    print("Error occured while turning fan one on")
+    print("Error occured while turning fan one on\n")
     logging.error("Error, failed to write to fan one GPIO: %s" % e)
 
 try: #test if fan two works with PWM
-    print("checking if fan two speed control works")
+    print("checking if fan two speed control works\n")
 
     pi.set_PWM_dutycycle(FAN_TWO, 128) #set FAN_TWO GPIO 50% PWM
     user_test = input('Did fan two turn on (Y/N)') #ask user to verify real world
@@ -227,9 +227,29 @@ try: #test if fan two works with PWM
         pi.set_PWM_dutycycle(FAN_TWO, 0) #turn fan two back off
         logging.debug("Fan two turns on") #log results
 except Exception as e:
-    print("Error occured while turning fan two on")
+    print("Error occured while turning fan two on\n")
     logging.error("Error, failed to write to fan two GPIO: %s" % e)
 
-print("Fan tests have been completed")
+print("Fan tests have been completed\n")
+
+#Test the pump
+print("Now testing the pump\n")
+try:
+    pi.write(PUMP, 1 #turn pump on
+    user_test = input('Did the pump turn on (Y/N)') #ask user to verify real world
+    while (user_test != "Y" and user_test != "N"): #ask user for input until they input the correct format
+        print('Please enter only "Y" or "N"\n')
+        user_test = input('Did the pump turn on (Y/N)')
+    if (user_test == "N"):
+        print("Error occured while turning the pump on\n")
+        logging.error("Error, pump hardware seems to have failed") #log results
+    else:
+        pi.write(PUMP, 0) #turn fan two back off
+        logging.debug("The pump turns on") #log results
+except Exception as e:
+    print("Error occured while writing to pump pin\n")
+    logging.error("Error, failed to write to pump pin: %s" % e)
+
+print("Pump tests have been completed\n")
 
 print("All tests have been completed\n")
