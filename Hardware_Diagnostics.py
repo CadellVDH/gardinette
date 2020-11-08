@@ -31,7 +31,7 @@ if (os.path.isfile(PATH) == False): #check if file already exists
     Config.set('Pin_Values', 'ADC_GAIN', '1') #set value of ADC_GAIN in ini file
     Config.set('Pin_Values', 'PUMP', '17') #set value of PUMP in ini file
     Config.set('Pin_Values', 'LIGHT', '27') #set value of LIGHT in ini file
-    Config.set('Pin_Values', 'FLOAT', '22') #set value of FLOAT in ini file
+    Config.set('Pin_Values', 'FLOAT', '4') #set value of FLOAT in ini file
     Config.set('Pin_Values', 'TEMP', '23') #set value of TEMP in ini file
     Config.set('Pin_Values', 'BUTTON_ONE', '6') #set value of BUTTON_ONE in ini file
     Config.set('Pin_Values', 'BUTTON_TWO', '16') #set value of BUTTON_TWO in ini file
