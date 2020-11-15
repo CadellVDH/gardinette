@@ -41,7 +41,7 @@ if(os.path.isfile(PATH) == False):
     Calibration.close()
 
 with open('Calibration.csv', mode="w") as Calibration:
-    Calibration_writer = csv.writer(Calibration, delimeter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    Calibration_writer = csv.writer(Calibration, quotechar='"', quoting=csv.QUOTE_MINIMAL)
     Calibration_writer.writerow(['Moisture Percent', 'ADC Reading'])
 
     user_test = 0
