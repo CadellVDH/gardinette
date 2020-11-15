@@ -1,4 +1,10 @@
 import Adafruit_ADS1x15 #soil moisture sensor
+import csv #file output
+import os #tools for working with the CLI
+
+#Get current directory for log files and for pin file
+PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+PATH = "%s/Calibration.csv" % PROJECT_DIRECTORY
 
 Config = ConfigParser()
 if (os.path.isfile(PATH) == False): #check if file already exists
@@ -24,3 +30,26 @@ if (os.path.isfile(PATH) == False): #check if file already exists
 Config.read(PATH) #begin reading the config file
 ADC_PIN = int(Config.get('Pin_Values', 'ADC_PIN')) #set ADC_PIN to value read in config file
 ADC_GAIN = int(Config.get('Pin_Values', 'ADC_GAIN')) #set ADC_GAIN to value read in config file
+adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
+
+
+print("Now beginning soil sensor calibration\n")
+
+if(os.path.isfile(PATH) == False):
+    Calibration = open(PATH, "w+") #create file if none exists
+    Calibration.close()
+
+with open('Calibration.csv', mode="w") as Calibration:
+    Calibration_writer = csv.writer(Calibration, delimeter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    Calibration_writer.writerow(['Moisture Percent', 'ADC Reading'])
+
+    user_test = 0
+    while (user_test != 'end'):
+        user_test = input("Enter the soil moisture percentage for the current test (or 'end' to end):")
+        while(isisnstance(user_test, int) == False or user_test != 'end'):
+            user_test = input("Please enter only integers\nEnter the soil moisture percentage for the current test (or 'end' to end):")
+
+        columnOne = user_test
+        columnTwo = adc.read_adc(ADC_PIN, gain=ADC_GAIN) #read ADC and store to column column two
+        print("ADC Value: %f" % columnTwo) #print ADC value to console
+        Calibration_writer.writerow([columnOne, columnTwo]) #write to csv
