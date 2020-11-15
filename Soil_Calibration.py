@@ -5,7 +5,7 @@ from configparser import ConfigParser #ini file manipulation
 
 #Get current directory for log files and for pin file
 PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
-PATH = "%s/Calibration.csv" % PROJECT_DIRECTORY
+PATH = "%s/Pinout.ini" % PROJECT_DIRECTORY
 
 Config = ConfigParser()
 if (os.path.isfile(PATH) == False): #check if file already exists
@@ -36,6 +36,7 @@ adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
 
 print("Now beginning soil sensor calibration\n")
 
+PATH = "%s/Calibration.csv" % PROJECT_DIRECTORY
 if(os.path.isfile(PATH) == False):
     Calibration = open(PATH, "w+") #create file if none exists
     Calibration.close()
