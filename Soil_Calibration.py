@@ -1,6 +1,7 @@
 import Adafruit_ADS1x15 #soil moisture sensor
 import csv #file output
 import os #tools for working with the CLI
+from configparser import ConfigParser #ini file manipulation
 
 #Get current directory for log files and for pin file
 PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
