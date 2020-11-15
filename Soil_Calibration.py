@@ -48,7 +48,7 @@ with open('Calibration.csv', mode="w") as Calibration:
     user_test = 0
     while (user_test != 'end'):
         user_test = input("Enter the soil moisture percentage for the current test (or 'end' to end):")
-        while(isisnstance(user_test, int) == False or user_test != 'end'):
+        while(isinstance(user_test, int) == False or user_test != 'end'):
             user_test = input("Please enter only integers\nEnter the soil moisture percentage for the current test (or 'end' to end):")
 
         columnOne = user_test
