@@ -52,7 +52,7 @@ with open('Calibration.csv', mode="w") as Calibration:
             user_test = int(user_test)
         except:
             pass
-            
+
         while(isinstance(user_test, int) == False and user_test != 'end'):
             user_test = input("Please enter only integers\nEnter the soil moisture percentage for the current test (or 'end' to end):")
 
@@ -60,3 +60,5 @@ with open('Calibration.csv', mode="w") as Calibration:
         columnTwo = adc.read_adc(ADC_PIN, gain=ADC_GAIN) #read ADC and store to column column two
         print("ADC Value: %f" % columnTwo) #print ADC value to console
         Calibration_writer.writerow([columnOne, columnTwo]) #write to csv
+
+print("Calibration.csv created!")
