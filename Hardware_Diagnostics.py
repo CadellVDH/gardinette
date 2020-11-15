@@ -70,7 +70,7 @@ try: #attempt to detect the OLED
     print("Attempting to detect OLED...\n")
     oled_reset = digitalio.DigitalInOut(board.D4) #reset oled
     i2c = board.I2C() #these next few lines initialize the OLED
-    oled = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c, addr=0x3c,reset=oled_reset) #specify oled we're using
+    oled = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c, addr=OLED,reset=oled_reset) #specify oled we're using
     print("OLED detected\n")
     logging.debug("OLED detected") #log results
 except Exception as e:
