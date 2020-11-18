@@ -128,7 +128,7 @@ sigY = numpy.sum(sensorValue) #Sum of all y for regression
 
 sigXSq = numpy.sum(numpy.power(actualMoisture, [2])) #Sum of all x^2 for regression
 
-slope = (n*sigXY - sigX*SigY)/(n*sigXSq - sigX**2) #calculate slope
+slope = (n*sigXY - sigX*sigY)/(n*sigXSq - sigX**2) #calculate slope
 
 intercept = (sigY - slope*sigX)/n #calculate y intercept
 
