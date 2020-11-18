@@ -110,6 +110,7 @@ with open('Calibration.csv', 'r') as Calibration:
     columnOne = []
     columnTwo = []
     for line in lines:
+        print(line)
         data = line.split(',')
         columnOne.append(data[0])
         columnTwo.append(data[1])
