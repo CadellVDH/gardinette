@@ -35,35 +35,74 @@ ADC_GAIN = int(Config.get('Pin_Values', 'ADC_GAIN')) #set ADC_GAIN to value read
 adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
 
 
-print("Now beginning soil sensor calibration\n")
+print("Now beginning soil sensor calibration...\n")
 
 PATH = "%s/Calibration.csv" % PROJECT_DIRECTORY
 if(os.path.isfile(PATH) == False):
     Calibration = open(PATH, "w+") #create file if none exists
     Calibration.close()
 
-with open('Calibration.csv', mode="w") as Calibration:
-    Calibration_writer = csv.writer(Calibration, quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    Calibration_writer.writerow(['Moisture Percent', 'ADC Reading'])
+    with open('Calibration.csv', mode="w") as Calibration: #open calibration file
+        Calibration_writer = csv.writer(Calibration, quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        Calibration_writer.writerow(['Moisture Percent', 'ADC Reading'])
 
-    user_test = 0 #initialize user_test to 0 to start loop
-    columnOne = [] #initialize arrays for calculating calibration coefficients
-    columnTwo = []
-    while (user_test != 'end'):
-        user_test = input("Enter the soil moisture percentage for the current test (or 'end' to end):")
-        try:
-            user_test = int(user_test)
-        except:
-            pass
+        user_test = 0 #initialize user_test to 0 to start loop
+        columnOne = [] #initialize arrays for calculating calibration coefficients
+        columnTwo = []
+        while (user_test != 'end'):
+            user_test = input("Enter the soil moisture percentage for the current test (or 'end' to end):")
+            try:
+                user_test = int(user_test)
+            except:
+                pass
 
-        while(isinstance(user_test, int) == False and user_test != 'end'):
-            user_test = input("Please enter only integers\nEnter the soil moisture percentage for the current test (or 'end' to end):")
+            while(isinstance(user_test, int) == False and user_test != 'end'):
+                user_test = input("Please enter only integers\nEnter the soil moisture percentage for the current test (or 'end' to end):")
 
-        if (user_test != 'end'):
-            columnOne.append(user_test) #store actual soil mositure content to column one
-        columnTwo.append(adc.read_adc(ADC_PIN, gain=ADC_GAIN)) #read ADC and store to column two
+            if (user_test != 'end'):
+                columnOne.append(user_test) #store actual soil mositure content to column one
+                columnTwo.append(adc.read_adc(ADC_PIN, gain=ADC_GAIN)) #read ADC and store to column two
 
-        print("ADC Value: %f" % columnTwo[len(columnTwo)-1]) #print ADC value to console
-        Calibration_writer.writerow([columnOne[len(columnOne)-1], columnTwo[len(columnTwo)-1]]) #write to csv
+                print("ADC Value: %f" % columnTwo[len(columnTwo)-1]) #print ADC value to console
+                Calibration_writer.writerow([columnOne[len(columnOne)-1], columnTwo[len(columnTwo)-1]]) #write to csv
 
-print("Calibration.csv created!")
+    print("Calibration.csv created!")
+
+else:
+    user_test = input("Would you like to create a new calibration table? \nWARNING! Doing so will overwrite any old calibration table. (Y/N)") #check if user would like to create a new calibration table
+    while (user_test.lower != "y" and user_test.lower != "n"): #check that user input is valid
+        print("Please enter only 'Y' or 'N'\n")
+        user_test = input("Would you like to create a new calibration table? \nWARNING! Doing so will overwrite any old calibration table. (Y/N)")
+
+    if (user_test.lower = "y"): #create new calibration table if one is desired
+
+        with open('Calibration.csv', mode="w") as Calibration: #open calibration file
+            Calibration_writer = csv.writer(Calibration, quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            Calibration_writer.writerow(['Moisture Percent', 'ADC Reading'])
+
+            user_test = 0 #initialize user_test to 0 to start loop
+            columnOne = [] #initialize arrays for calculating calibration coefficients
+            columnTwo = []
+            while (user_test != 'end'):
+                user_test = input("Enter the soil moisture percentage for the current test (or 'end' to end):")
+                try:
+                    user_test = int(user_test)
+                except:
+                    pass
+
+                while(isinstance(user_test, int) == False and user_test != 'end'):
+                    user_test = input("Please enter only integers\nEnter the soil moisture percentage for the current test (or 'end' to end):")
+
+                if (user_test != 'end'):
+                    columnOne.append(user_test) #store actual soil mositure content to column one
+                    columnTwo.append(adc.read_adc(ADC_PIN, gain=ADC_GAIN)) #read ADC and store to column two
+
+                    print("ADC Value: %f" % columnTwo[len(columnTwo)-1]) #print ADC value to console
+                    Calibration_writer.writerow([columnOne[len(columnOne)-1], columnTwo[len(columnTwo)-1]]) #write to csv
+
+        print("Calibration.csv created!")
+
+##Create linear regression from inputs
+print("Now creating a linear regression from the data...")
+actualMoisture = numpy.array(columnOne)
+sensorValue = numpy.array(columnTwo)
