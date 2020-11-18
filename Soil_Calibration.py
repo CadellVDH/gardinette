@@ -110,11 +110,11 @@ with open('Calibration.csv', 'r') as Calibration:
     columnOne = []
     columnTwo = []
     for line in lines:
-        if (isinstance(line[0], int)):
             data = line.split(',')
             columnOne.append(data[0])
             columnTwo.append(data[1])
-
+    del columnOne[0]
+    del columnTwo[0]        
 actualMoisture = numpy.array(columnOne) #get columns into numpy arrays
 sensorValue = numpy.array(columnTwo)
 
