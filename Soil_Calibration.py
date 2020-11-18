@@ -114,7 +114,7 @@ with open('Calibration.csv', 'r') as Calibration:
         columnOne.append(data[0])
         columnTwo.append(data[1])
         print(data[0])
-        print(date[1])
+        print(data[1])
 columnOne.remove('Moisture Percent')
 columnTwo.remove('ADC Reading')
 
