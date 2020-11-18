@@ -112,7 +112,7 @@ with open('Calibration.csv', 'r') as Calibration:
     for line in lines:
         data = line.split(',')
         columnOne.append(data[0])
-        columnTwo.append(data[1])
+        columnTwo.append(data[1].rstrip('\n'))
 
 columnOne.remove('Moisture Percent')
 columnTwo.remove('ADC Reading\n')
