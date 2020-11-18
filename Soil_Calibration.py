@@ -1,6 +1,7 @@
 import Adafruit_ADS1x15 #soil moisture sensor
 import csv #file output
 import os #tools for working with the CLI
+import numpy #math
 from configparser import ConfigParser #ini file manipulation
 
 #Get current directory for log files and for pin file
@@ -45,7 +46,9 @@ with open('Calibration.csv', mode="w") as Calibration:
     Calibration_writer = csv.writer(Calibration, quotechar='"', quoting=csv.QUOTE_MINIMAL)
     Calibration_writer.writerow(['Moisture Percent', 'ADC Reading'])
 
-    user_test = 0
+    user_test = 0 #initialize user_test to 0 to start loop
+    columnOne = numpy.empty(1) #initialize arrays for calculating calibration coefficients
+    columnTwo = numpy.empty(1)
     while (user_test != 'end'):
         user_test = input("Enter the soil moisture percentage for the current test (or 'end' to end):")
         try:
@@ -56,9 +59,12 @@ with open('Calibration.csv', mode="w") as Calibration:
         while(isinstance(user_test, int) == False and user_test != 'end'):
             user_test = input("Please enter only integers\nEnter the soil moisture percentage for the current test (or 'end' to end):")
 
-        columnOne = user_test
-        columnTwo = adc.read_adc(ADC_PIN, gain=ADC_GAIN) #read ADC and store to column column two
-        print("ADC Value: %f" % columnTwo) #print ADC value to console
-        Calibration_writer.writerow([columnOne, columnTwo]) #write to csv
+        numpy.append(columnOne, user_test) #store actual soil mositure content to column one
+        numpy.append(columnTwo, adc.read_adc(ADC_PIN, gain=ADC_GAIN)) #read ADC and store to column two
+
+        print("ADC Value: %f" % columnTwo[length-1]) #print ADC value to console
+        Calibration_writer.writerow([columnOne[length-1], columnTwo[length-1]]) #write to csv
 
 print("Calibration.csv created!")
+print(columnOne)
+print(columnTwo)
