@@ -117,8 +117,8 @@ with open('Calibration.csv', 'r') as Calibration:
 columnOne.remove('Moisture Percent')
 columnTwo.remove('ADC Reading')
 
-actualMoisture = numpy.array(columnOne) #get columns into numpy arrays
-sensorValue = numpy.array(columnTwo)
+actualMoisture = numpy.array(map(int, columnOne)) #get columns into numpy arrays
+sensorValue = numpy.array(map(int, columnTwo))
 
 n = len(columnOne) #number of terms is equal to column length
 
