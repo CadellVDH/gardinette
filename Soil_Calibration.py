@@ -47,8 +47,8 @@ with open('Calibration.csv', mode="w") as Calibration:
     Calibration_writer.writerow(['Moisture Percent', 'ADC Reading'])
 
     user_test = 0 #initialize user_test to 0 to start loop
-    columnOne = numpy.empty(1) #initialize arrays for calculating calibration coefficients
-    columnTwo = numpy.empty(1)
+    columnOne = [] #initialize arrays for calculating calibration coefficients
+    columnTwo = []
     while (user_test != 'end'):
         user_test = input("Enter the soil moisture percentage for the current test (or 'end' to end):")
         try:
@@ -59,10 +59,11 @@ with open('Calibration.csv', mode="w") as Calibration:
         while(isinstance(user_test, int) == False and user_test != 'end'):
             user_test = input("Please enter only integers\nEnter the soil moisture percentage for the current test (or 'end' to end):")
 
-        numpy.append(columnOne, numpy.array([user_test])) #store actual soil mositure content to column one
-        numpy.append(columnTwo, numpy.array([adc.read_adc(ADC_PIN, gain=ADC_GAIN)])) #read ADC and store to column two
+        if (user_test != 'end'):
+            columnOne[len(columnOne)-1] = user_test #store actual soil mositure content to column one
+        columnTwo[len(columnTwo)-1] = adc.read_adc(ADC_PIN, gain=ADC_GAIN) #read ADC and store to column two
 
-        print("ADC Value: %f" % columnTwo[len(columnTwo)-1]) #print ADC value to console
+        print("ADC Value: %f" % columnTwo) #print ADC value to console
         Calibration_writer.writerow([columnOne[len(columnOne)-1], columnTwo[len(columnTwo)-1]]) #write to csv
 
 print("Calibration.csv created!")
