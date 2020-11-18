@@ -104,7 +104,7 @@ else:
         print("Calibration.csv created!")
 
 ##Create linear regression from inputs
-print("Now creating a linear regression from the data
+print("Now creating a linear regression from the data")
 with open('Calibration.csv', 'r') as Calibration:
     lines = Calibration.readlines()
     columnOne = []
