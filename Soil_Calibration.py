@@ -132,6 +132,7 @@ slope = (n*sigXY - sigX*sigY)/(n*sigXSq - sigX**2) #calculate slope
 
 intercept = (sigY - slope*sigX)/n #calculate y intercept
 
+print(sigXY, sigx, sigY, sigXSq)
 print("Slope: %s\n" % slope)
 print("Y intercept: %s\n" % intercept)
 
