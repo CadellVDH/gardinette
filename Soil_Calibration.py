@@ -122,15 +122,15 @@ n = len(columnOne) #number of terms is equal to column length
 
 sigXY = numpy.sum(numpy.multiply(actualMoisture, sensorValue)) #Sum of all x*y values for regression
 
-SigX = numpy.sum(actualMoisture) #Sum of all x for regression
+sigX = numpy.sum(actualMoisture) #Sum of all x for regression
 
-SigY = numpy.sum(sensorValue) #Sum of all y for regression
+sigY = numpy.sum(sensorValue) #Sum of all y for regression
 
-SigXSq = numpy.sum(numpy.power(actualMoisture, [2])) #Sum of all x^2 for regression
+sigXSq = numpy.sum(numpy.power(actualMoisture, [2])) #Sum of all x^2 for regression
 
-slope = (n*SigXY - SigX*SigY)/(n*SigXSq - SigX**2) #calculate slope
+slope = (n*sigXY - sigX*SigY)/(n*sigXSq - sigX**2) #calculate slope
 
-intercept = (SigY - slope*SigX)/n #calculate y intercept
+intercept = (sigY - slope*sigX)/n #calculate y intercept
 
 print("Slope: %s\n" % slope)
 print("Y intercept: %s\n" % intercept)
