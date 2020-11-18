@@ -61,11 +61,11 @@ with open('Calibration.csv', mode="w") as Calibration:
 
         if (user_test != 'end'):
             print(len(columnOne))
-            columnOne[len(columnOne)-1] = user_test #store actual soil mositure content to column one
-        columnTwo[len(columnTwo)-1] = adc.read_adc(ADC_PIN, gain=ADC_GAIN) #read ADC and store to column two
+            columnOne[len(columnOne)] = user_test #store actual soil mositure content to column one
+        columnTwo[len(columnTwo)] = adc.read_adc(ADC_PIN, gain=ADC_GAIN) #read ADC and store to column two
 
         print("ADC Value: %f" % columnTwo) #print ADC value to console
-        Calibration_writer.writerow([columnOne[len(columnOne)-1], columnTwo[len(columnTwo)-1]]) #write to csv
+        Calibration_writer.writerow([columnOne[len(columnOne)], columnTwo[len(columnTwo)]]) #write to csv
 
 print("Calibration.csv created!")
 print(columnOne)
