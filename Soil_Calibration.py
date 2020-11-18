@@ -74,7 +74,7 @@ else:
         print("Please enter only 'Y' or 'N'\n")
         user_test = input("Would you like to create a new calibration table? \nWARNING! Doing so will overwrite any old calibration table. (Y/N)")
 
-    if (user_test.lower = "y"): #create new calibration table if one is desired
+    if (user_test.lower == "y"): #create new calibration table if one is desired
 
         with open('Calibration.csv', mode="w") as Calibration: #open calibration file
             Calibration_writer = csv.writer(Calibration, quotechar='"', quoting=csv.QUOTE_MINIMAL)
