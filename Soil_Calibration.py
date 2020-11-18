@@ -70,12 +70,12 @@ if(os.path.isfile(PATH) == False):
 
 else:
     user_test = input("Would you like to create a new calibration table? \nWARNING! Doing so will overwrite any old calibration table. (Y/N)") #check if user would like to create a new calibration table
-    while (user_test.lower != "y" and user_test.lower != "n"): #check that user input is valid
+    while (user_test.lower() != "y" and user_test.lower() != "n"): #check that user input is valid
         print("Please enter only 'Y' or 'N'\n")
-        print(user_test.lower)
+        print(user_test.lower())
         user_test = input("Would you like to create a new calibration table? \nWARNING! Doing so will overwrite any old calibration table. (Y/N)")
 
-    if (user_test.lower == "y"): #create new calibration table if one is desired
+    if (user_test.lower() == "y"): #create new calibration table if one is desired
 
         with open('Calibration.csv', mode="w") as Calibration: #open calibration file
             Calibration_writer = csv.writer(Calibration, quotechar='"', quoting=csv.QUOTE_MINIMAL)
