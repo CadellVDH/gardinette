@@ -104,6 +104,34 @@ else:
         print("Calibration.csv created!")
 
 ##Create linear regression from inputs
-print("Now creating a linear regression from the data...")
-actualMoisture = numpy.array(columnOne)
+print("Now creating a linear regression from the data
+with open('Calibration.csv', 'r') as Calibration:
+    lines = Calibration.readlines()
+    columnOne = []
+    columnTwo = []
+    for line in lines:
+        data = line.split(',')
+        columnOne.append(data[0])
+        columnTwo.append(data[1])
+
+actualMoisture = numpy.array(columnOne) #get columns into numpy arrays
 sensorValue = numpy.array(columnTwo)
+
+n = len(columnOne) #number of terms is equal to column length
+
+sigXY = numpy.sum(numpy.multiply(actualMoisture, sensorValue)) #Sum of all x*y values for regression
+
+SigX = numpy.sum(actualMoisture) #Sum of all x for regression
+
+SigY = numpy.sum(sensorValue) #Sum of all y for regression
+
+SigXSq = numpy.sum(numpy.power(actualMoisture, [2])) #Sum of all x^2 for regression
+
+slope = (n*SigXY - SigX*SigY)/(n*SigXSq - SigX**2) #calculate slope
+
+intercept = (SigY - slope*SigX)/n #calculate y intercept
+
+print("Slope: %s\n" % slope)
+print("Y intercept: %s\n" % intercept)
+
+print("Regression complete!")
