@@ -113,8 +113,10 @@ with open('Calibration.csv', 'r') as Calibration:
         data = line.split(',')
         columnOne.append(data[0])
         columnTwo.append(data[1])
-        print(line[0])
-
+        print(data[0])
+        print(date[1])
+columnOne.remove('Moisture Percent')
+columnTwo.remove('ADC Reading')
 
 actualMoisture = numpy.array(columnOne) #get columns into numpy arrays
 sensorValue = numpy.array(columnTwo)
