@@ -37,9 +37,9 @@ def adc_read(retry=1):
     ADC_GAIN = int(Config.get('Pin_Values', 'ADC_GAIN')) #set ADC_GAIN to value read in config file
     adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
     readings = []
-    for i in range(1, retry):
+    for i in range(0, retry):
         readings.append(adc.read_adc(ADC_PIN, gain=ADC_GAIN))
-        print(readings[i-1])
+        print(readings[i])
     return mean(readings)
 
 print("Now beginning soil sensor calibration...\n")
