@@ -39,7 +39,7 @@ def adc_read(retry=1):
     readings = []
     for i in range(1, retry):
         readings.append(adc.read_adc(ADC_PIN, gain=ADC_GAIN))
-        print(readings[i])
+        print(readings[i-1])
     return mean(readings)
 
 print("Now beginning soil sensor calibration...\n")
