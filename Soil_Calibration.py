@@ -6,11 +6,11 @@ from configparser import ConfigParser #ini file manipulation
 
 #Get current directory for log files and for pin file
 PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
-PATH = "%s/Pinout.ini" % PROJECT_DIRECTORY
+path = "%s/Pinout.ini" % PROJECT_DIRECTORY
 
 Config = ConfigParser()
-if (os.path.isfile(PATH) == False): #check if file already exists
-    Pinout = open(PATH, "w+") #create file if none exists
+if (os.path.isfile(path) == False): #check if file already exists
+    Pinout = open(path, "w+") #create file if none exists
     Pinout.close()
     Config.add_section('Pin_Values')
     Config.add_section('Address_Values')
@@ -31,7 +31,8 @@ if (os.path.isfile(PATH) == False): #check if file already exists
 
 ##Create a function for reading the ADC
 def adc_read(retry=1):
-    Config.read(PATH) #begin reading the config file
+    path = "%s/Pinout.ini" % PROJECT_DIRECTORY
+    Config.read(path) #begin reading the config file
     ADC_PIN = int(Config.get('Pin_Values', 'ADC_PIN')) #set ADC_PIN to value read in config file
     ADC_GAIN = int(Config.get('Pin_Values', 'ADC_GAIN')) #set ADC_GAIN to value read in config file
     adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
@@ -43,9 +44,9 @@ def adc_read(retry=1):
 
 print("Now beginning soil sensor calibration...\n")
 
-PATH = "%s/Calibration.csv" % PROJECT_DIRECTORY
-if(os.path.isfile(PATH) == False):
-    Calibration = open(PATH, "w+") #create file if none exists
+path = "%s/Calibration.csv" % PROJECT_DIRECTORY
+if(os.path.isfile(path) == False):
+    Calibration = open(path, "w+") #create file if none exists
     Calibration.close()
 
     with open('Calibration.csv', mode="w") as Calibration: #open calibration file
