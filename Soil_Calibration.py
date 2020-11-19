@@ -138,3 +138,10 @@ print("Slope: %s\n" % slope)
 print("Y intercept: %s\n" % intercept)
 
 print("Regression complete!")
+print("Now writing values to pinout file")
+
+Config.add_section('Calibration_Constants')
+Config.set('Calibration_Constants', 'SLOPE', slope) #set value of BUTTON_THREE in ini file
+Config.set('Calibration_Constants', 'INTERCEPT', intercept) #set value of OLED in ini file
+with open('Pinout.ini', 'w') as configfile: #open pinout.ini as file object
+    Config.write(configfile) #save ini file
