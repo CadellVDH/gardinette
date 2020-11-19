@@ -25,6 +25,7 @@ if (os.path.isfile(PATH) == False): #check if file already exists
     Pinout.close()
     Config.add_section('Pin_Values')
     Config.add_section('Address_Values')
+    Config.add_section('Calibration_Constants')
     Config.set('Pin_Values', 'FAN_ONE', '13') #set value of FAN_ONE in ini file
     Config.set('Pin_Values', 'FAN_TWO', '12') #set value of FAN_TWO in ini file
     Config.set('Pin_Values', 'ADC_PIN', '1') #set value of ADC_PIN in ini file
