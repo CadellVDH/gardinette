@@ -47,7 +47,8 @@ if(os.path.isfile(path) == False):
         columnTwo =
         print("To perform the calibration, place the sensor into your calibration sample of known moisture content.")
         print("Type in your known moisture content, then hit [ENTER]")
-        print("Repeat until you have tested all you samples. Then type 'end'\n")
+        print("Repeat until you have tested all you samples. Then type 'end'")
+        print("Be sure to wipe off the sensor between tests\n")
         while (user_test != 'end'):
             user_test = input("Enter the soil moisture percentage for the current test (or 'end' to end):")
             try:
@@ -86,6 +87,7 @@ else:
             print("To perform the calibration, place the sensor into your calibration sample of known moisture content.")
             print("Type in your known moisture content, then hit [ENTER]")
             print("Repeat until you have tested all you samples. Then type 'end'\n")
+            print("Be sure to wipe off the sensor between tests\n")
             while (user_test != 'end'):
                 user_test = input("Enter the soil moisture percentage for the current test (or 'end' to end):")
                 try:
