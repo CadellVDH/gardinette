@@ -61,7 +61,7 @@ if(os.path.isfile(path) == False):
 
             if (user_test != 'end'):
                 columnOne.append(user_test) #store actual soil mositure content to column one
-                columnTwo.append(adc_read(retry=3)) #read ADC and store to column two
+                columnTwo.append(adc_read(retry=10)) #read ADC and store to column two
 
                 print("ADC Value: %f" % columnTwo[len(columnTwo)-1]) #print ADC value to console
                 Calibration_writer.writerow([columnOne[len(columnOne)-1], columnTwo[len(columnTwo)-1]]) #write to csv
@@ -100,7 +100,7 @@ else:
 
                 if (user_test != 'end'):
                     columnOne.append(user_test) #store actual soil mositure content to column one
-                    columnTwo.append(adc_read(retry=3)) #read ADC and store to column two
+                    columnTwo.append(adc_read(retry=10)) #read ADC and store to column two
 
                     print("ADC Value: %f" % columnTwo[len(columnTwo)-1]) #print ADC value to console
                     Calibration_writer.writerow([columnOne[len(columnOne)-1], columnTwo[len(columnTwo)-1]]) #write to csv
