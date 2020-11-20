@@ -3,7 +3,7 @@ import csv #file output
 import os #tools for working with the CLI
 import numpy #math
 from configparser import ConfigParser #ini file manipulation
-from statistics import mean #math
+from helpers.py import adc_read #import adc read function
 
 #Get current directory for log files and for pin file
 PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
@@ -30,18 +30,6 @@ if (os.path.isfile(path) == False): #check if file already exists
     Config.set('Address_Values', 'OLED', '0x3c') #set value of OLED in ini file
     with open('Pinout.ini', 'w') as configfile: #open pinout.ini as file object
         Config.write(configfile) #save ini file
-
-##Create a function for reading the ADC
-def adc_read(retry=1):
-    path = "%s/Pinout.ini" % PROJECT_DIRECTORY
-    Config.read(path) #begin reading the config file
-    ADC_PIN = int(Config.get('Pin_Values', 'ADC_PIN')) #set ADC_PIN to value read in config file
-    ADC_GAIN = int(Config.get('Pin_Values', 'ADC_GAIN')) #set ADC_GAIN to value read in config file
-    adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
-    readings = []
-    for i in range(0, retry):
-        readings.append(adc.read_adc(ADC_PIN, gain=ADC_GAIN))
-    return int(mean(readings))
 
 print("Now beginning soil sensor calibration...\n")
 
