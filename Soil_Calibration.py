@@ -3,7 +3,7 @@ import csv #file output
 import os #tools for working with the CLI
 import numpy #math
 from configparser import ConfigParser #ini file manipulation
-from helpers.py import adc_read #import adc read function
+from helpers import adc_read #import adc read function
 
 #Get current directory for log files and for pin file
 PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
