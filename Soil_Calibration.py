@@ -121,5 +121,7 @@ print("Y intercept: %s\n" % intercept)
 print("Regression complete!")
 print("Now writing values to pinout file")
 
+Config.set('Calibration_Constants', 'SLOPE', str(slope)) #set value of BUTTON_THREE in ini file 
+
 config_write('Calibration_Constants', 'SLOPE', slope) #write slope to ini file
 config_write('Calibration_Constants', 'INTERCEPT', intercept) #write intercept to ini file
