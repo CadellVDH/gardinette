@@ -9,6 +9,8 @@ from pigpio_dht import DHT22 #temp and humidity sensor
 from configparser import ConfigParser #ini file manipulation
 from datetime import datetime #needed for logging
 from PIL import Image, ImageDraw, ImageFont #oled tools
+from helpers import adc_read #import adc read function
+from helpers import pinout_init #import pinout initialization
 
 #The purpose of this script is to ensure that all peripheral hardware
 #components are connected and functioning properly, prior to startup
@@ -20,26 +22,7 @@ PATH = "%s/Pinout.ini" % PROJECT_DIRECTORY
 
 #Look for pinout file and create one if it does not exist. Otherwise, write the file values to variables
 Config = ConfigParser()
-if (os.path.isfile(PATH) == False): #check if file already exists
-    Pinout = open(PATH, "w+") #create file if none exists
-    Pinout.close()
-    Config.add_section('Pin_Values')
-    Config.add_section('Address_Values')
-    Config.add_section('Calibration_Constants')
-    Config.set('Pin_Values', 'FAN_ONE', '13') #set value of FAN_ONE in ini file
-    Config.set('Pin_Values', 'FAN_TWO', '12') #set value of FAN_TWO in ini file
-    Config.set('Pin_Values', 'ADC_PIN', '1') #set value of ADC_PIN in ini file
-    Config.set('Pin_Values', 'ADC_GAIN', '1') #set value of ADC_GAIN in ini file
-    Config.set('Pin_Values', 'PUMP', '17') #set value of PUMP in ini file
-    Config.set('Pin_Values', 'LIGHT', '27') #set value of LIGHT in ini file
-    Config.set('Pin_Values', 'FLOAT', '4') #set value of FLOAT in ini file
-    Config.set('Pin_Values', 'TEMP', '23') #set value of TEMP in ini file
-    Config.set('Pin_Values', 'BUTTON_ONE', '6') #set value of BUTTON_ONE in ini file
-    Config.set('Pin_Values', 'BUTTON_TWO', '16') #set value of BUTTON_TWO in ini file
-    Config.set('Pin_Values', 'BUTTON_THREE', '26') #set value of BUTTON_THREE in ini file
-    Config.set('Address_Values', 'OLED', '0x3c') #set value of OLED in ini file
-    with open('Pinout.ini', 'w') as configfile: #open pinout.ini as file object
-        Config.write(configfile) #save ini file
+pinout_init()
 
 #set all needed pins based on config file
 Config.read(PATH) #begin reading the config file
@@ -119,10 +102,10 @@ print("All OLED tests have been completed\n")
 
 #Next test the ADC/moisture sensor
 print("Now testing the ADC/Moisture Sensor\n")
-adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
+
 print("Attempting to read value from ADC\n")
 try:
-    ADCvalue = adc.read_adc(ADC_PIN, gain=ADC_GAIN) #ATTEMPT TO READ ADC
+    ADCvalue = adc_read(retry=5)
     print("ADC value: %f\n" % ADCvalue) #print ADC value to console
     print("ADC succesffully read\n")
     logging.debug("ADC succesffully read") #log results
