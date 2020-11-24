@@ -9,8 +9,7 @@ from pigpio_dht import DHT22 #temp and humidity sensor
 from configparser import ConfigParser #ini file manipulation
 from datetime import datetime #needed for logging
 from PIL import Image, ImageDraw, ImageFont #oled tools
-from helpers import adc_read #import adc read function
-from helpers import pinout_init #import pinout initialization
+from helpers import adc_read, pinout_init #import helper functions
 
 #The purpose of this script is to ensure that all peripheral hardware
 #components are connected and functioning properly, prior to startup

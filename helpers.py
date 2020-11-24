@@ -50,7 +50,7 @@ def config_write(section, name, value):
     PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
     PATH = "%s/Pinout.ini" % PROJECT_DIRECTORY
     Config = ConfigParser()
-    Config.read(PATH)
+    Config.read(PATH) #read pinout file (for current section names)
     Config.set(section, name, str(value)) #set value of name in section
     with open(PATH, 'w') as configfile: #open pinout.ini as file object
         Config.write(configfile) #save ini file
