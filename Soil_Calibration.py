@@ -21,7 +21,7 @@ if(os.path.isfile(path) == False):
 
         user_test = 0 #initialize user_test to 0 to start loop
         columnOne = [] #initialize arrays for calculating calibration coefficients
-        columnTwo =
+        columnTwo = []
         print("To perform the calibration, place the sensor into your calibration sample of known moisture content.")
         print("Type in your known moisture content, then hit [ENTER]")
         print("Repeat until you have tested all you samples. Then type 'end'")
