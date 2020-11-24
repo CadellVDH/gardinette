@@ -43,3 +43,13 @@ def pinout_init():
         Config.set('Address_Values', 'OLED', '0x3c') #set value of OLED in ini file
         with open('Pinout.ini', 'w') as configfile: #open pinout.ini as file object
             Config.write(configfile) #save ini file
+
+##Create a function for writing to config files
+def config_write(section, name, value):
+    #Get current directory for pin file
+    PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+    PATH = "%s/Pinout.ini" % PROJECT_DIRECTORY
+    Config = ConfigParser()
+    Config.set(section, name, str(value)) #set value of name in section
+    with open('Pinout.ini', 'w') as configfile: #open pinout.ini as file object
+        Config.write(configfile) #save ini file

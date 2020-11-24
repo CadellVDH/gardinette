@@ -3,8 +3,8 @@ import csv #file output
 import os #tools for working with the CLI
 import numpy #math
 from configparser import ConfigParser #ini file manipulation
-from helpers import adc_read #import adc read function
-from helpers import pinout_init #import pinout initialization
+from helpers import adc_read, pinout_init, config_write #import helper functions
+
 
 print("Now beginning soil sensor calibration...\n")
 pinout_init()
@@ -121,7 +121,5 @@ print("Y intercept: %s\n" % intercept)
 print("Regression complete!")
 print("Now writing values to pinout file")
 
-Config.set('Calibration_Constants', 'SLOPE', str(slope)) #set value of BUTTON_THREE in ini file
-Config.set('Calibration_Constants', 'INTERCEPT', str(intercept)) #set value of OLED in ini file
-with open('Pinout.ini', 'w') as configfile: #open pinout.ini as file object
-    Config.write(configfile) #save ini file
+config_write('Calibration_Constants', 'SLOPE', slope) #write slope to ini file
+config_write('Calibration_Constants', 'INTERCEPT', intercept) #write intercept to ini file
