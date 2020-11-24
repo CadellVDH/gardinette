@@ -2,7 +2,6 @@ import Adafruit_ADS1x15 #soil moisture sensor
 import csv #file output
 import os #tools for working with the CLI
 import numpy #math
-from configparser import ConfigParser #ini file manipulation
 from helpers import adc_read, pinout_init, config_write #import helper functions
 
 
@@ -121,8 +120,6 @@ print("Y intercept: %s\n" % intercept)
 print("Regression complete!")
 print("Now writing values to pinout file")
 
-Config = ConfigParser()
-Config.set('Calibration_Constants', 'SLOPE', str(slope)) #set value of BUTTON_THREE in ini file
 
 config_write('Calibration_Constants', 'SLOPE', slope) #write slope to ini file
 config_write('Calibration_Constants', 'INTERCEPT', intercept) #write intercept to ini file

@@ -7,8 +7,8 @@ from statistics import mean #math
 def adc_read(retry=1):
     Config = ConfigParser()
     PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
-    path = "%s/Pinout.ini" % PROJECT_DIRECTORY
-    Config.read(path) #begin reading the config file
+    PATH = "%s/Pinout.ini" % PROJECT_DIRECTORY
+    Config.read(PATH) #begin reading the config file
     ADC_PIN = int(Config.get('Pin_Values', 'ADC_PIN')) #set ADC_PIN to value read in config file
     ADC_GAIN = int(Config.get('Pin_Values', 'ADC_GAIN')) #set ADC_GAIN to value read in config file
     adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
@@ -49,8 +49,8 @@ def config_write(section, name, value):
     #Get current directory for pin file
     PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
     PATH = "%s/Pinout.ini" % PROJECT_DIRECTORY
-    print(PATH)
     Config = ConfigParser()
+    Config.read(PATH)
     Config.set(section, name, str(value)) #set value of name in section
     with open(PATH, 'w') as configfile: #open pinout.ini as file object
         Config.write(configfile) #save ini file
