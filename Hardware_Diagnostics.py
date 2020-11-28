@@ -215,20 +215,52 @@ except Exception as e:
 
 print("Fan tests have been completed\n")
 
+#Test the float sensor
+print("Now testing the float sensor\n")
+user_test = input('Is the float sensor currently floating? (Y/N)')
+while (user_test.lower() != "y" and user_test.lower() != "n"): #ask user for input until they input the correct format
+    print('Please enter only "Y" or "N"\n')
+    user_test = input('Is the float sensor currently floating? (Y/N)')
+if (user_test.lower() = "y"):
+    Float_Actual = 1
+else:
+    Float_Actual = 0
+
+try:
+    print("Now attempting to read float sensor...")
+    pi.set_mode(FLOAT, pigpio.INPUT) #set float sensor to input
+    pi.set_pull_up_down(FLOAT, pigpio.PUD_DOWN) #set internal pull down resistor
+    Float_Read = pi.read(FLOAT)
+
+    if (Float_Read == Float_Actual): #check if float sensor value agrees with reality
+        print("Float sensor succesffully read\n")
+        logging.debug("Float sensor succesffully read")
+    else:
+        print("Float sensor failed to read\n")
+        logging.error("Float sensor hardware does not agree with reality")
+except: Exception as e:
+    print("Error occured while reading float sensor\n")
+    logging.error("Error, failed to read float sensor: %s" % e)
+
+
 #Test the pump
 print("Now testing the pump\n")
 try:
-    pi.write(PUMP, 1) #turn pump on
-    user_test = input('Did the pump turn on (Y/N)') #ask user to verify real world
-    while (user_test != "Y" and user_test != "N"): #ask user for input until they input the correct format
-        print('Please enter only "Y" or "N"\n')
-        user_test = input('Did the pump turn on (Y/N)')
-    if (user_test == "N"):
-        print("Error occured while turning the pump on\n")
-        logging.error("Error, pump hardware seems to have failed") #log results
+    if (Float_Actual == 1): #check if it's safe to pump
+        pi.write(PUMP, 1) #turn pump on
+        user_test = input('Did the pump turn on (Y/N)') #ask user to verify real world
+        while (user_test != "Y" and user_test != "N"): #ask user for input until they input the correct format
+            print('Please enter only "Y" or "N"\n')
+            user_test = input('Did the pump turn on (Y/N)')
+        if (user_test == "N"):
+            print("Error occured while turning the pump on\n")
+            logging.error("Error, pump hardware seems to have failed") #log results
+        else:
+            pi.write(PUMP, 0) #turn fan two back off
+            logging.debug("The pump turns on") #log results
     else:
-        pi.write(PUMP, 0) #turn fan two back off
-        logging.debug("The pump turns on") #log results
+        print("Unable to test pump due to potentially unsafe water level\n")
+        logging.error("Error, unable to test pump due to potentially unsafe water level")        
 except Exception as e:
     print("Error occured while writing to pump pin\n")
     logging.error("Error, failed to write to pump pin: %s" % e)
