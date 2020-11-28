@@ -221,7 +221,7 @@ user_test = input('Is the float sensor currently floating? (Y/N)')
 while (user_test.lower() != "y" and user_test.lower() != "n"): #ask user for input until they input the correct format
     print('Please enter only "Y" or "N"\n')
     user_test = input('Is the float sensor currently floating? (Y/N)')
-if (user_test.lower() = "y"):
+if (user_test.lower() == "y"):
     Float_Actual = 1
 else:
     Float_Actual = 0
@@ -260,7 +260,7 @@ try:
             logging.debug("The pump turns on") #log results
     else:
         print("Unable to test pump due to potentially unsafe water level\n")
-        logging.error("Error, unable to test pump due to potentially unsafe water level")        
+        logging.error("Error, unable to test pump due to potentially unsafe water level")
 except Exception as e:
     print("Error occured while writing to pump pin\n")
     logging.error("Error, failed to write to pump pin: %s" % e)
