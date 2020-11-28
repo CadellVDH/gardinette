@@ -37,7 +37,7 @@ BUTTON_ONE = int(Config.get('Pin_Values', 'BUTTON_ONE')) #set BUTTON_ONE to valu
 BUTTON_TWO =  int(Config.get('Pin_Values', 'BUTTON_TWO')) #set BUTTON_TWO to value read in config file
 BUTTON_THREE = int(Config.get('Pin_Values', 'BUTTON_THREE')) #set BUTTON_THREE to value read in config file
 OLED = Config.get('Address_Values', 'OLED') #set OLED address to value read in config file
-print(OLED)
+print(OLED == 0x3c)
 
 #Open a log file to save diagnostic data
 TODAY = datetime.now()
