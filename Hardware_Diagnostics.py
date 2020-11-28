@@ -238,7 +238,7 @@ try:
     else:
         print("Float sensor failed to read\n")
         logging.error("Float sensor hardware does not agree with reality")
-except: Exception as e:
+except Exception as e:
     print("Error occured while reading float sensor\n")
     logging.error("Error, failed to read float sensor: %s" % e)
 
