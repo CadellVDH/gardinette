@@ -30,5 +30,6 @@ First, test the hardware using ```Hardware_Diagnostics.py```
 
 ```python3 Hardware_Diagnostics.py```
 
-If no errors occur, proceed to running the main script
-(To be written)
+After verifying that there are no issues with the hardware, you may choose to create a custom calibration table for your specific soil mixture. To do so, use the following command:
+```python3 Soil_Calibration.py```
+
