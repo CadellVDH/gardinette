@@ -40,7 +40,7 @@ def pinout_init():
         Config.set('Pin_Values', 'BUTTON_ONE', '6') #set value of BUTTON_ONE in ini file
         Config.set('Pin_Values', 'BUTTON_TWO', '16') #set value of BUTTON_TWO in ini file
         Config.set('Pin_Values', 'BUTTON_THREE', '26') #set value of BUTTON_THREE in ini file
-        Config.set('Address_Values', 'OLED', '0x3c') #set value of OLED in ini file
+        Config.set('Address_Values', 'OLED', 0x3c) #set value of OLED in ini file
         with open('Pinout.ini', 'w') as configfile: #open pinout.ini as file object
             Config.write(configfile) #save ini file
 
