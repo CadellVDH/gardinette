@@ -5,11 +5,12 @@ import Adafruit_ADS1x15 #soil moisture sensor
 import os #tools for working with the CLI
 import logging #needed for logging
 import pigpio #needed for GPIO control
+import time #needed for function timing
 from pigpio_dht import DHT22 #temp and humidity sensor
 from configparser import ConfigParser #ini file manipulation
 from datetime import datetime #needed for logging
 from PIL import Image, ImageDraw, ImageFont #oled tools
-from helpers import adc_read, pinout_init #import helper functions
+from helpers import adc_read, pinout_init, easy_input #import helper functions
 
 #The purpose of this script is to ensure that all peripheral hardware
 #components are connected and functioning properly, prior to startup
@@ -87,11 +88,7 @@ except Exception as e:
     print("Error occured while writing text to the OLED\n")
     logging.error("Error, some functions failed to execute while writing to the OLED: %s" % e) #log results
 
-user_test = input('Was the text "Gardinette!" shown? (Y/N)') #ask user to verify real world
-while (user_test != "Y" and user_test != "N"): #ask user for input until they input the correct format
-    print('Please enter only "Y" or "N"\n')
-    user_test = input('Was the text "Gardinette!" shown? (Y/N)')
-if (user_test == "N"):
+if (easy_input('Was the text "Gardinette!" shown on the display?') == False): #verify real world
     print("Error occured while writing to OLED screen\n")
     logging.error("Error, OLED hardware seems to have failed") #log results
 else:
@@ -142,11 +139,7 @@ try: #test if fan one turns on
     pi.set_mode(FAN_ONE, pigpio.OUTPUT) #set FAN_ONE to output
 
     pi.write(FAN_ONE, 1) #set FAN_ONE GPIO to high
-    user_test = input('Did fan one turn on (Y/N)') #ask user to verify real world
-    while (user_test != "Y" and user_test != "N"): #ask user for input until they input the correct format
-        print('Please enter only "Y" or "N"\n')
-        user_test = input('Did fan one turn on (Y/N)')
-    if (user_test == "N"):
+    if (easy_input('Did fan one turn on?') == False): #verify real world
         print("Error occured while turning fan one on\n")
         logging.error("Error, fan hardware seems to have failed") #log results
     else:
@@ -161,11 +154,7 @@ try: #test if fan two turns on
     pi.set_mode(FAN_TWO, pigpio.OUTPUT) #set FAN_TWO to output
 
     pi.write(FAN_TWO, 1) #set FAN_TWO GPIO to high
-    user_test = input('Did fan two turn on (Y/N)') #ask user to verify real world
-    while (user_test != "Y" and user_test != "N"): #ask user for input until they input the correct format
-        print('Please enter only "Y" or "N"\n')
-        user_test = input('Did fan two turn on (Y/N)')
-    if (user_test == "N"):
+    if (easy_input('Did fan two turn on?') == False): #verify real world
         print("Error occured while turning fan two on\n")
         logging.error("Error, fan hardware seems to have failed") #log results
     else:
@@ -182,11 +171,7 @@ try: #test if fan one works with PWM
     pi = pigpio.pi() #create instance of pigpio.pi class
 
     pi.set_PWM_dutycycle(FAN_ONE, 128) #set FAN_ONE GPIO 50% PWM
-    user_test = input('Did fan one turn on (Y/N)') #ask user to verify real world
-    while (user_test != "Y" and user_test != "N"): #ask user for input until they input the correct format
-        print('Please enter only "Y" or "N"\n')
-        user_test = input('Did fan one turn on (Y/N)')
-    if (user_test == "N"):
+    if (easy_input('Did fan one turn on?') == False): #verify real world
         print("Error occured while turning fan one on\n")
         logging.error("Error, fan hardware seems to have failed") #log results
     else:
@@ -200,11 +185,7 @@ try: #test if fan two works with PWM
     print("checking if fan two speed control works\n")
 
     pi.set_PWM_dutycycle(FAN_TWO, 128) #set FAN_TWO GPIO 50% PWM
-    user_test = input('Did fan two turn on (Y/N)') #ask user to verify real world
-    while (user_test != "Y" and user_test != "N"): #ask user for input until they input the correct format
-        print('Please enter only "Y" or "N"\n')
-        user_test = input('Did fan two turn on (Y/N)')
-    if (user_test == "N"):
+    if (easy_input('Did fan two turn on?') == False): #verify real world
         print("Error occured while turning fan two on\n")
         logging.error("Error, fan hardware seems to have failed") #log results
     else:
@@ -218,14 +199,7 @@ print("Fan tests have been completed\n")
 
 #Test the float sensor
 print("Now testing the float sensor\n")
-user_test = input('Is the float sensor currently floating? (Y/N)')
-while (user_test.lower() != "y" and user_test.lower() != "n"): #ask user for input until they input the correct format
-    print('Please enter only "Y" or "N"\n')
-    user_test = input('Is the float sensor currently floating? (Y/N)')
-if (user_test.lower() == "y"):
-    Float_Actual = 1
-else:
-    Float_Actual = 0
+Float_Actual = easy_input('Is the float sensor floating?') #verify real world
 
 try:
     print("Now attempting to read float sensor...")
@@ -249,11 +223,7 @@ print("Now testing the pump\n")
 try:
     if (Float_Actual == 1): #check if it's safe to pump
         pi.write(PUMP, 1) #turn pump on
-        user_test = input('Did the pump turn on (Y/N)') #ask user to verify real world
-        while (user_test != "Y" and user_test != "N"): #ask user for input until they input the correct format
-            print('Please enter only "Y" or "N"\n')
-            user_test = input('Did the pump turn on (Y/N)')
-        if (user_test == "N"):
+        if (easy_input('Did the pump turn on?') == False): #verify real world
             print("Error occured while turning the pump on\n")
             logging.error("Error, pump hardware seems to have failed") #log results
         else:
@@ -267,5 +237,25 @@ except Exception as e:
     logging.error("Error, failed to write to pump pin: %s" % e)
 
 print("Pump tests have been completed\n")
+
+#Test the lights
+print("Now testing the light\n")
+try:
+    pi.setmode(LIGHT, pigpio.OUTPUT) #set light pin to OUTPUT
+    pi.write(LIGHT, 0) #start with light off
+    pi.write(LIGHT, 1) #turn light on
+    time.sleep(5) #wait 5 seconds
+    pi.write(LIGHT, 0) #turn light off
+
+    if (easy_input('Did the light turn on for 5 seconds, then turn off?') == False):
+        print("Error occured while turning the light on\n")
+        logging.error("Error, failed to turn the light on: POSSIBLE HARDWARE ISSUE")
+    else:
+        print("Successfully cycled the light\n")
+        logging.debug("Successfully cycled lights")
+except Exception as e:
+    print("Error occured while trying to write to the light\n")
+    logging.error("Error occured while writing to the light: %s" % e)
+print("Light tests have been completed\n")    
 
 print("All tests have been completed\n")

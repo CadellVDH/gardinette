@@ -54,3 +54,16 @@ def config_write(section, name, value):
     Config.set(section, name, str(value)) #set value of name in section
     with open(PATH, 'w') as configfile: #open pinout.ini as file object
         Config.write(configfile) #save ini file
+
+##Create a function for taking and scrubbing user input for yes/no questions
+def easy_input(prompt):
+    user_test = input('%s (Y/N)' % prompt) #append yes/no to end of question
+    while (user_test.lower() != "y" and user_test.lower() != "n"): #disregard case of entered input
+        user_test = input('Please enter only "Y" or "N"\n%s (Y/N)', prompt) #repeat until they answer
+
+    if (user_test.lower() == "y"):
+        return_value = True
+    else:
+        return_value = False
+
+    return return_value
