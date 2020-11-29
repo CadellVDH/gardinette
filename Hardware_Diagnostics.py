@@ -241,7 +241,7 @@ print("Pump tests have been completed\n")
 #Test the lights
 print("Now testing the light\n")
 try:
-    pi.setmode(LIGHT, pigpio.OUTPUT) #set light pin to OUTPUT
+    pi.set_mode(LIGHT, pigpio.OUTPUT) #set light pin to OUTPUT
     pi.write(LIGHT, 0) #start with light off
     pi.write(LIGHT, 1) #turn light on
     time.sleep(5) #wait 5 seconds
@@ -256,6 +256,6 @@ try:
 except Exception as e:
     print("Error occured while trying to write to the light\n")
     logging.error("Error occured while writing to the light: %s" % e)
-print("Light tests have been completed\n")    
+print("Light tests have been completed\n")
 
 print("All tests have been completed\n")
