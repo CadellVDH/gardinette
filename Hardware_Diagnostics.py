@@ -1,4 +1,4 @@
-import board #oled tools
+pins.getPin('FAN_ONE')import board #oled tools
 import adafruit_ssd1306 #oled screen
 import digitalio #oled tools
 import Adafruit_ADS1x15 #soil moisture sensor
@@ -38,7 +38,7 @@ try: #attempt to detect the OLED
     print("Attempting to detect OLED...\n")
     oled_reset = digitalio.DigitalInOut(board.D4) #reset oled
     i2c = board.I2C() #these next few lines initialize the OLED
-    oled = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c, addr=pins.OLED,reset=oled_reset) #specify oled we're using
+    oled = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c, addr=pins.getAddr('OLED'),reset=oled_reset) #specify oled we're using
     print("OLED detected\n")
     logging.debug("OLED detected") #log results
 except Exception as e:
@@ -97,7 +97,7 @@ print("All ADC tests have been completed\n")
 
 #Test the temperature and humidity sensor
 print("Now testing the temperature and humidity sensor\n")
-DHT_SENSOR = DHT22(pins.TEMP) #instantiate DHT sensor
+DHT_SENSOR = DHT22(pins.getPin('TEMP')) #instantiate DHT sensor
 
 try:
     result = DHT_SENSOR.sample(samples=3) #attempt to read temp and humidity sensor
@@ -119,14 +119,14 @@ print("Now testing the ventilation fans")
 try: #test if fan one turns on
     print("Checking if fan one turns on\n")
     pi = pigpio.pi() #create instance of pigpio.pi class
-    pi.set_mode(pins.FAN_ONE, pigpio.OUTPUT) #set pins.FAN_ONE to output
+    pi.set_mode(pins.getPin('FAN_ONE'), pigpio.OUTPUT) #set fan one to output
 
-    pi.write(pins.FAN_ONE, 1) #set pins.FAN_ONE GPIO to high
+    pi.write(pins.getPin('FAN_ONE'), 1) #set fan one GPIO to high
     if (easy_input('Did fan one turn on?') == False): #verify real world
         print("Error occured while turning fan one on\n")
         logging.error("Error, fan hardware seems to have failed") #log results
     else:
-        pi.write(pins.FAN_ONE, 0) #turn fan one back off
+        pi.write(pins.getPin('FAN_ONE'), 0) #turn fan one back off
         logging.debug("Fan one turns on") #log results
 except Exception as e:
     print("Error occured while turning fan one on\n")
@@ -134,14 +134,14 @@ except Exception as e:
 
 try: #test if fan two turns on
     print("Checking if fan two turns on\n")
-    pi.set_mode(pins.FAN_TWO, pigpio.OUTPUT) #set pins.FAN_TWO to output
+    pi.set_mode(pins.getPin('FAN_TWO'), pigpio.OUTPUT) #set fan two to output
 
-    pi.write(pins.FAN_TWO, 1) #set pins.FAN_TWO GPIO to high
+    pi.write(pins.getPin('FAN_TWO'), 1) #set fan two GPIO to high
     if (easy_input('Did fan two turn on?') == False): #verify real world
         print("Error occured while turning fan two on\n")
         logging.error("Error, fan hardware seems to have failed") #log results
     else:
-        pi.write(pins.FAN_TWO, 0) #turn fan two back off
+        pi.write(pins.getPin('FAN_TWO'), 0) #turn fan two back off
         logging.debug("Fan two turns on") #log results
 except Exception as e:
     print("Error occured while turning fan two on\n")
@@ -153,12 +153,12 @@ try: #test if fan one works with PWM
     print("Checking if fan one speed control works\n")
     pi = pigpio.pi() #create instance of pigpio.pi class
 
-    pi.set_PWM_dutycycle(pins.FAN_ONE, 128) #set pins.FAN_ONE GPIO 50% PWM
+    pi.set_PWM_dutycycle(pins.getPin('FAN_ONE'), 128) #set fan one GPIO 50% PWM
     if (easy_input('Did fan one turn on?') == False): #verify real world
         print("Error occured while turning fan one on\n")
         logging.error("Error, fan hardware seems to have failed") #log results
     else:
-        pi.set_PWM_dutycycle(pins.FAN_ONE, 0) #turn fan two back off
+        pi.set_PWM_dutycycle(pins.getPin('FAN_ONE'), 0) #turn fan one back off
         logging.debug("Fan one turns on") #log results
 except Exception as e:
     print("Error occured while turning fan one on\n")
@@ -167,12 +167,12 @@ except Exception as e:
 try: #test if fan two works with PWM
     print("checking if fan two speed control works\n")
 
-    pi.set_PWM_dutycycle(pins.FAN_TWO, 128) #set pins.FAN_TWO GPIO 50% PWM
+    pi.set_PWM_dutycycle(pins.getPin('FAN_TWO'), 128) #set fan two GPIO 50% PWM
     if (easy_input('Did fan two turn on?') == False): #verify real world
         print("Error occured while turning fan two on\n")
         logging.error("Error, fan hardware seems to have failed") #log results
     else:
-        pi.set_PWM_dutycycle(pins.FAN_TWO, 0) #turn fan two back off
+        pi.set_PWM_dutycycle(pins.getPin('FAN_TWO'), 0) #turn fan two back off
         logging.debug("Fan two turns on") #log results
 except Exception as e:
     print("Error occured while turning fan two on\n")
@@ -186,9 +186,9 @@ Float_Actual = easy_input('Is the float sensor floating?') #verify real world
 
 try:
     print("Now attempting to read float sensor...")
-    pi.set_mode(pins.FLOAT, pigpio.INPUT) #set float sensor to input
-    pi.set_pull_up_down(pins.FLOAT, pigpio.PUD_DOWN) #set internal pull down resistor
-    Float_Read = pi.read(pins.FLOAT) #read float sensor value
+    pi.set_mode(pins.getPin('FLOAT'), pigpio.INPUT) #set float sensor to input
+    pi.set_pull_up_down(pins.getPin('FLOAT'), pigpio.PUD_DOWN) #set internal pull down resistor
+    Float_Read = pi.read(pins.getPin('FLOAT')) #read float sensor value
 
     if (Float_Read == Float_Actual): #check if float sensor value agrees with reality
         print("Float sensor succesffully read\n")
@@ -205,13 +205,13 @@ except Exception as e:
 print("Now testing the pump\n")
 try:
     if (Float_Actual == 1): #check if it's safe to pump
-        pi.write(pins.PUMP, 1) #turn pump on
+        pi.write(pins.getPin('PUMP'), 1) #turn pump on
         if (easy_input('Did the pump turn on?') == False): #verify real world
-            pi.write(pins.PUMP, 0) #set pins.PUMP GPIO to low in case pump starts working again
+            pi.write(pins.getPin('PUMP'), 0) #set pump GPIO to low in case pump starts working again
             print("Error occured while turning the pump on\n")
             logging.error("Error, pump hardware seems to have failed") #log results
         else:
-            pi.write(pins.PUMP, 0) #turn fan two back off
+            pi.write(pins.getPin('PUMP'), 0) #turn fan two back off
             logging.debug("The pump turns on") #log results
     else:
         print("Unable to test pump due to potentially unsafe water level\n")
@@ -225,11 +225,11 @@ print("Pump tests have been completed\n")
 #Test the lights
 print("Now testing the light\n")
 try:
-    pi.set_mode(pins.LIGHT, pigpio.OUTPUT) #set light pin to OUTPUT
-    pi.write(pins.LIGHT, 0) #start with light off
-    pi.write(pins.LIGHT, 1) #turn light on
+    pi.set_mode(pins.getPin('LIGHT'), pigpio.OUTPUT) #set light pin to OUTPUT
+    pi.write(pins.getPin('LIGHT'), 0) #start with light off
+    pi.write(pins.getPin('LIGHT'), 1) #turn light on
     time.sleep(5) #wait 5 seconds
-    pi.write(pins.LIGHT, 0) #turn light off
+    pi.write(pins.getPin('LIGHT'), 0) #turn light off
 
     if (easy_input('Did the light turn on for 5 seconds, then turn off?') == False):
         print("Error occured while turning the light on\n")

@@ -13,7 +13,7 @@ def adc_read(retry=1):
     pins = pinout() #create instance of pinout class
     readings = []
     for i in range(0, retry):
-        readings.append(adc.read_adc(pins.ADC_PIN, gain=pins.ADC_GAIN))
+        readings.append(adc.read_adc(pins.getPin('ADC_PIN'), gain=pins.getPin('ADC_GAIN')))
     return int(mean(readings))
 
 class pinout():
@@ -47,20 +47,21 @@ class pinout():
             with open('Pinout.ini', 'w') as configfile: #open pinout.ini as file object
                 Config.write(configfile) #save ini file
 
-    #set all needed pins based on config file
-    Config.read(PATH) #begin reading the config file
-    FAN_ONE = int(Config.get('Pin_Values', 'FAN_ONE')) #set FAN_ONE to value read in config file
-    FAN_TWO = int(Config.get('Pin_Values', 'FAN_TWO')) #set FAN_TWO to value read in config file
-    ADC_PIN = int(Config.get('Pin_Values', 'ADC_PIN')) #set ADC_PIN to value read in config file
-    ADC_GAIN = int(Config.get('Pin_Values', 'ADC_GAIN')) #set ADC_GAIN to value read in config file
-    PUMP = int(Config.get('Pin_Values', 'PUMP')) #set PUMP to value read in config file
-    LIGHT = int(Config.get('Pin_Values', 'LIGHT')) #set LIGHT to value read in config file
-    FLOAT = int(Config.get('Pin_Values', 'FLOAT')) #set FLOAT to value read in config file
-    TEMP = int(Config.get('Pin_Values', 'TEMP')) #set TEMP to value read in config file
-    BUTTON_ONE = int(Config.get('Pin_Values', 'BUTTON_ONE')) #set BUTTON_ONE to value read in config file
-    BUTTON_TWO =  int(Config.get('Pin_Values', 'BUTTON_TWO')) #set BUTTON_TWO to value read in config file
-    BUTTON_THREE = int(Config.get('Pin_Values', 'BUTTON_THREE')) #set BUTTON_THREE to value read in config file
-    OLED = int(Config.get('Address_Values', 'OLED'), 0) #set OLED address to value read in config file, base 0
+    #Create a function for getting pins from pinout.ini file
+    def getPin(self, pin):
+        Config.read(pinout.PATH)
+        try:
+            return int(Config.get('Pin_Values', pin)) #return pin based on pinout.ini file
+        except:
+            return None
+
+    #Create a function for getting address values from pinout.ini file
+    def getAddr(self, device):
+        Config.read(pinout.PATH)
+        try:
+            return int(Config.get('Address_Values', device), 0) #return base 0 address value
+        except:
+            return None
 
 ##Create a function for writing to config files
 def config_write(section, name, value):
