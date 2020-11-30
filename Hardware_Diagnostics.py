@@ -31,7 +31,7 @@ if (os.path.isdir("%s/Logs/" % PROJECT_DIRECTORY) == False):
 logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG, filemode='w')
 
 #Begin hardware diagnostics
-print(pins.getPin('YEET'))
+
 #First test the OLED screen
 print("Now testing the OLED screen...\n")
 try: #attempt to detect the OLED
