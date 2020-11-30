@@ -3,19 +3,7 @@ import os #tools for working with the CLI
 from configparser import ConfigParser #ini file manipulation
 from statistics import mean #math
 
-##Create a function for reading the ADC
-def adc_read(retry=1):
-    Config = ConfigParser()
-    PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
-    PATH = "%s/Pinout.ini" % PROJECT_DIRECTORY
-    Config.read(PATH) #begin reading the config file
-    adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
-    pins = pinout() #create instance of pinout class
-    readings = []
-    for i in range(0, retry):
-        readings.append(adc.read_adc(pins.getPin('ADC_PIN'), gain=pins.getPin('ADC_GAIN')))
-    return int(mean(readings))
-
+##Create a class for handling variable pinouts that may change depending on the chosen carrier board
 class pinout():
     'This class creates and accesses the pinout.ini file'
 
@@ -64,6 +52,19 @@ class pinout():
             return int(Config.get('Address_Values', device), 0) #return base 0 address value
         except:
             return None
+
+##Create a function for reading the ADC
+def adc_read(retry=1):
+    Config = ConfigParser()
+    PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+    PATH = "%s/Pinout.ini" % PROJECT_DIRECTORY
+    Config.read(PATH) #begin reading the config file
+    adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
+    pins = pinout() #create instance of pinout class
+    readings = []
+    for i in range(0, retry):
+        readings.append(adc.read_adc(pins.getPin('ADC_PIN'), gain=pins.getPin('ADC_GAIN')))
+    return int(mean(readings))
 
 ##Create a function for writing to config files
 def config_write(section, name, value):
