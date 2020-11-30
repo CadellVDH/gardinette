@@ -2,11 +2,11 @@ import Adafruit_ADS1x15 #soil moisture sensor
 import csv #file output
 import os #tools for working with the CLI
 import numpy #math
-from helpers import adc_read, pinout_init, config_write #import helper functions
+from helpers import adc_read, config_write, pinout #import helper functions
 
 
 print("Now beginning soil sensor calibration...\n")
-pinout_init()
+pins = pinout()
 
 PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__)) #Get current directory for log files and for pin file
 path = "%s/Calibration.csv" % PROJECT_DIRECTORY
