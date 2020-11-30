@@ -22,13 +22,13 @@ class pinout():
     #Get current directory for pin file
     PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
     PATH = "%s/Pinout.ini" % PROJECT_DIRECTORY
-    Config = ConfigParser()
 
     ##Create an initialization function for creating a default pinout file
     def __init__(self):
         if (os.path.isfile(pinout.PATH) == False): #check if file already exists
             Pinout = open(pinout.PATH, "w+") #create file if none exists
             Pinout.close()
+            Config = ConfigParser()
             Config.add_section('Pin_Values')
             Config.add_section('Address_Values')
             Config.add_section('Calibration_Constants')
@@ -49,6 +49,7 @@ class pinout():
 
     #Create a function for getting pins from pinout.ini file
     def getPin(self, pin):
+        Config = ConfigParser()
         Config.read(pinout.PATH)
         try:
             return int(Config.get('Pin_Values', pin)) #return pin based on pinout.ini file
@@ -57,6 +58,7 @@ class pinout():
 
     #Create a function for getting address values from pinout.ini file
     def getAddr(self, device):
+        Config = ConfigParser()
         Config.read(pinout.PATH)
         try:
             return int(Config.get('Address_Values', device), 0) #return base 0 address value
