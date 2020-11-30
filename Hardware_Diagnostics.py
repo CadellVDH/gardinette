@@ -7,7 +7,6 @@ import logging #needed for logging
 import pigpio #needed for GPIO control
 import time #needed for function timing
 from pigpio_dht import DHT22 #temp and humidity sensor
-from configparser import ConfigParser #ini file manipulation
 from datetime import datetime #needed for logging
 from PIL import Image, ImageDraw, ImageFont #oled tools
 from helpers import * #import helper functions and classes
