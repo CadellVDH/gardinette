@@ -47,6 +47,7 @@ class pinout():
                 Config.write(configfile) #save ini file
 
     #set all needed pins based on config file
+    Config = ConfigParser
     Config.read(PATH) #begin reading the config file
     FAN_ONE = int(Config.get('Pin_Values', 'FAN_ONE')) #set FAN_ONE to value read in config file
     FAN_TWO = int(Config.get('Pin_Values', 'FAN_TWO')) #set FAN_TWO to value read in config file
