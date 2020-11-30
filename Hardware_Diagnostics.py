@@ -1,4 +1,4 @@
-pins.getPin('FAN_ONE')import board #oled tools
+import board #oled tools
 import adafruit_ssd1306 #oled screen
 import digitalio #oled tools
 import Adafruit_ADS1x15 #soil moisture sensor
