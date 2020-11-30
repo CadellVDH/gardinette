@@ -26,8 +26,8 @@ class pinout():
 
     ##Create an initialization function for creating a default pinout file
     def __init__(self):
-        if (os.path.isfile(PATH) == False): #check if file already exists
-            Pinout = open(PATH, "w+") #create file if none exists
+        if (os.path.isfile(pinout.PATH) == False): #check if file already exists
+            Pinout = open(pinout.PATH, "w+") #create file if none exists
             Pinout.close()
             Config.add_section('Pin_Values')
             Config.add_section('Address_Values')
