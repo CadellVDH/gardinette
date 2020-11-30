@@ -26,9 +26,9 @@ PATH = "%s/Pinout.ini" % PROJECT_DIRECTORY
 #Open a log file to save diagnostic data
 TODAY = datetime.now()
 LOG_FILE = "%s/Logs/" % PROJECT_DIRECTORY + TODAY.strftime("%d-%m-%y-%H:%M") #name log file based on date and time
-if (os.path.isdir("%s/Logs/" % PROJECT_DIRECTORY) == False):
-    os.mkdir("%s/Logs/" % PROJECT_DIRECTORY)
-logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG, filemode='w')
+if (os.path.isdir("%s/Logs/" % PROJECT_DIRECTORY) == False): #check if log directory already exists
+    os.mkdir("%s/Logs/" % PROJECT_DIRECTORY) #make one if it doesnt
+logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG, filemode='w') #make a log file with a name based on the current date and time
 
 #Begin hardware diagnostics
 
