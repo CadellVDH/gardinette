@@ -19,12 +19,13 @@ def adc_read(retry=1):
 class pinout():
     'This class creates and accesses the pinout.ini file'
 
+    #Get current directory for pin file
+    PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+    PATH = "%s/Pinout.ini" % PROJECT_DIRECTORY
+    Config = ConfigParser()
+
     ##Create an initialization function for creating a default pinout file
     def __init__(self):
-        #Get current directory for pin file
-        self.PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
-        self.PATH = "%s/Pinout.ini" % PROJECT_DIRECTORY
-        self.Config = ConfigParser()
         if (os.path.isfile(PATH) == False): #check if file already exists
             Pinout = open(PATH, "w+") #create file if none exists
             Pinout.close()
