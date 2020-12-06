@@ -20,6 +20,7 @@ class pinout():
         if (os.path.isfile(pinout.PATH) == False): #check if file already exists
             self.Pinout = open(pinout.PATH, "w+") #create file if none exists
             self.Pinout.close()
+            self.configfile = open(pinout.PATH, "w+")
             self.Config = ConfigParser()
             self.Config.add_section('Pin_Values')
             self.Config.add_section('Address_Values')
@@ -36,8 +37,8 @@ class pinout():
             self.Config.set('Pin_Values', 'BUTTON_TWO', '16') #set value of BUTTON_TWO in ini file
             self.Config.set('Pin_Values', 'BUTTON_THREE', '26') #set value of BUTTON_THREE in ini file
             self.Config.set('Address_Values', 'OLED', '0x3c') #set value of OLED in ini file
-            with open('Pinout.ini', 'w') as self.configfile: #open pinout.ini as file object
-                self.Config.write(self.configfile) #save ini file
+            self.Config.write(self.configfile) #save ini file
+            self.configfile.close()
 
     #Create a function for getting pins from pinout.ini file
     def getPin(self, pin):
