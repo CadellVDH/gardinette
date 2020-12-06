@@ -99,10 +99,6 @@ class oled_utility():
 
 ##Create a function for reading the ADC
 def adc_read(retry=1):
-    Config = ConfigParser()
-    PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
-    PATH = "%s/CalibrationAndDiagnostics/Pinout.ini" % PROJECT_DIRECTORY
-    Config.read(PATH) #begin reading the config file
     adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
     pins = pinout() #create instance of pinout class
     readings = []
