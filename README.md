@@ -26,10 +26,23 @@ Install the requirements
 
 # Usage
 After installation, ensure the hardware device is powered on and connected to the internet. Also insure all peripherals are connected. 
-First, test the hardware using ```Hardware_Diagnostics.py```
+
+First, start the pigpio daemon
+
+```sudo pigpiod```
+
+Next, test the hardware using the hardware diagnostics script, in the ```/CalibrationAndDiagnostics/``` directory
 
 ```python3 Hardware_Diagnostics.py```
 
-After verifying that there are no issues with the hardware, you may choose to create a custom calibration table for your specific soil mixture. To do so, use the following command:
+After verifying that there are no issues with the hardware, you may choose to create a custom calibration table for your specific soil mixture. To do so, use the following command (also in the ```/CalibrationAndDiagnostics/``` directory:
+
 ```python3 Soil_Calibration.py```
 
+*Note: this step is optional, and a default calibration table is already provided for you.
+
+Now you can run the main gardening script. 
+
+```Main.py```
+
+Lastly, wait a few weeks to a few months (depending on your crop of choice), and enjoy the fruits of your labor!
