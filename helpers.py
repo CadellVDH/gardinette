@@ -92,7 +92,7 @@ class oled_utility():
         self.oled.show() #draw image
 
     ##Create a functino for writing body messages
-    def write_center(self, title="", message, font_size):
+    def write_center(self, message, font_size, title=""):
         self.image = Image.new("1", (self.oled.width, self.oled.height)) #create blank image
         self.draw = ImageDraw.Draw(self.image) #draw blank Image
 
