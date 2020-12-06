@@ -1,7 +1,11 @@
 import Adafruit_ADS1x15 #soil moisture sensor
 import os #tools for working with the CLI
+import board #oled tools
+import adafruit_ssd1306 #oled screen
+import digitalio #oled tools
 from configparser import ConfigParser #ini file manipulation
 from statistics import mean #math
+from PIL import Image, ImageDraw, ImageFont #oled tools
 
 ##Create a class for handling variable pinouts that may change depending on the chosen carrier board
 class pinout():
@@ -52,6 +56,37 @@ class pinout():
             return int(Config.get('Address_Values', device), 0) #return base 0 address value
         except:
             return None
+
+##Create class for initializing and interacting with the OLED display
+class oled_utility():
+    'This class initializes and writes to the OLED display'
+
+    ##Create a function to intialize dependencies
+    def __init__(self, width, height, address):
+        self.width = width #specify width and height for instnace
+        self.heigh = height
+
+        self.address = address #specify i2c address used
+
+        self.i2c = board.I2C() #create i2c instance
+
+        self.oled = adafruit_ssd1306.SSD1306_I2C(self.width, self.height, self.i2c, addr=self.address) #specify oled we're using
+
+        self.oled.fill(0) #set screen to black
+        self.oled.show() #send setting to screen
+
+    ##Create a function for writing to the OLED display
+    def write(message, x_pos, y_pos):
+        self.image = Image.new("1", (self.oled.width, self.oled.height)) #create blank image
+        self.draw = ImageDraw.Draw(self.image) #draw blank Image
+
+        self.font = ImageFont.load_default()
+        draw.rectangle((0, 0, oled.width, oled.height), outline=255, fill=0)
+
+        draw.text((x_pos, y_pos), message, font=self.font, fill=255)
+
+        self.oled.image(self.image)
+        self.oled.show()
 
 ##Create a function for reading the ADC
 def adc_read(retry=1):

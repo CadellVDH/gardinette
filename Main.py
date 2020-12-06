@@ -10,3 +10,8 @@ from pigpio_dht import DHT22 #temp and humidity sensor
 from datetime import datetime #needed for logging
 from PIL import Image, ImageDraw, ImageFont #oled tools
 from helpers import * #import helper functions and classes
+
+pins = pinout()
+oled = oled_utility(128, 32, pins.getAddr('OLED'))
+
+oled.write("test", 0, 0)
