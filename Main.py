@@ -14,4 +14,4 @@ from helpers import * #import helper functions and classes
 pins = pinout() #initialize pinout
 oled = oled_utility(128, 32, pins.getAddr('OLED')) #initialize OLED display
 
-oled.write_center("Message", 10,title="Title")
+oled.write_center("70%", 8, title="Humidity")
