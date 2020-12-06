@@ -12,6 +12,6 @@ from PIL import Image, ImageDraw, ImageFont #oled tools
 from helpers import * #import helper functions and classes
 
 pins = pinout()
-oled = oled_utility(128, 32, pins.getAddr('OLED'), 10)
+oled = oled_utility(128, 32, pins.getAddr('OLED'))
 
-oled.write("test", 0, 0)
+oled.write("test", 0, 0, 10)
