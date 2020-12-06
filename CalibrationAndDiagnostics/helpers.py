@@ -36,8 +36,8 @@ class pinout():
             self.Config.set('Pin_Values', 'BUTTON_TWO', '16') #set value of BUTTON_TWO in ini file
             self.Config.set('Pin_Values', 'BUTTON_THREE', '26') #set value of BUTTON_THREE in ini file
             self.Config.set('Address_Values', 'OLED', '0x3c') #set value of OLED in ini file
-            with open('Pinout.ini', 'w') as configfile: #open pinout.ini as file object
-                self.Config.write(configfile) #save ini file
+            with open('Pinout.ini', 'w') as self.configfile: #open pinout.ini as file object
+                self.Config.write(self.configfile) #save ini file
 
     #Create a function for getting pins from pinout.ini file
     def getPin(self, pin):
