@@ -76,14 +76,33 @@ class oled_utility():
         self.oled.fill(0) #set screen to black
         self.oled.show() #send setting to screen
 
-    ##Create a function for writing to the OLED display
-    def write(self, message, x_pos, y_pos, font_size):
+    ##Create a function for writing titles
+    def title(self, message):
+        self.image = Image.new("1", (self.oled.width, self.oled.height)) #create blank image
+        self.draw = ImageDraw.Draw(self.image) #draw blank Image
+
+        self.font = ImageFont.truetype("%s/Hack-Regular.ttf" % self.PROJECT_DIRECTORY, 7) #get text font
+        self.draw.rectangle((0, 0, self.oled.width, self.oled.height), outline=255, fill=0)
+
+        (self.font_width, self.font_height) = self.font.getsize(message) #get font width and height
+        self.x_pos = self.width // 2 - self.font_width // 2 #move text to center
+        self.draw.text((self.x_pos, 0), message, font=self.font, fill=255) #draw message at position
+
+        self.oled.image(self.image) #create image
+        self.oled.show() #draw image
+
+    ##Create a functino for writing body messages
+    def write_center(self, title, message, font_size):
+        self.title(title) #write title message
+
         self.image = Image.new("1", (self.oled.width, self.oled.height)) #create blank image
         self.draw = ImageDraw.Draw(self.image) #draw blank Image
 
         self.font = ImageFont.truetype("%s/Hack-Regular.ttf" % self.PROJECT_DIRECTORY, font_size) #get text font
-        self.draw.rectangle((0, 0, self.oled.width, self.oled.height), outline=255, fill=0)
 
+        (self.font_width, self.font_height) = self.font.getsize(message) #get font width and height
+        self.x_pos = self.width // 2 - self.font_width // 2 #move text to center
+        self.y_pos = self.height // 2 - self.font_height // 2 #move text to center
         self.draw.text((x_pos, y_pos), message, font=self.font, fill=255) #draw message at position
 
         self.oled.image(self.image) #create image
