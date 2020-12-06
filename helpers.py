@@ -64,7 +64,7 @@ class oled_utility():
     ##Create a function to intialize dependencies
     def __init__(self, width, height, address):
         self.width = width #specify width and height for instnace
-        self.heigh = height
+        self.height = height
 
         self.address = address #specify i2c address used
 
