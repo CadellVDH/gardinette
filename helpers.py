@@ -63,6 +63,7 @@ class oled_utility():
 
     ##Create a function to intialize dependencies
     def __init__(self, width, height, address):
+        self.PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
         self.width = width #specify width and height for instnace
         self.height = height
 
@@ -76,17 +77,17 @@ class oled_utility():
         self.oled.show() #send setting to screen
 
     ##Create a function for writing to the OLED display
-    def write(self, message, x_pos, y_pos):
+    def write(self, message, x_pos, y_pos, font_size):
         self.image = Image.new("1", (self.oled.width, self.oled.height)) #create blank image
         self.draw = ImageDraw.Draw(self.image) #draw blank Image
 
-        self.font = ImageFont.load_default()
+        self.font = ImageFont.truetype("%s/Hack-Regular.ttf" % self.PROJECT_DIRECTORY, font_size) #get text font
         self.draw.rectangle((0, 0, self.oled.width, self.oled.height), outline=255, fill=0)
 
-        self.draw.text((x_pos, y_pos), message, font=self.font, fill=255)
+        self.draw.text((x_pos, y_pos), message, font=self.font, fill=255) #draw message at position
 
-        self.oled.image(self.image)
-        self.oled.show()
+        self.oled.image(self.image) #create image
+        self.oled.show() #draw image
 
 ##Create a function for reading the ADC
 def adc_read(retry=1):
