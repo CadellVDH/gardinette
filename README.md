@@ -36,7 +36,9 @@ Next, test the hardware using the hardware diagnostics script, in the ```/Calibr
 ```python3 Hardware_Diagnostics.py```
 
 After verifying that there are no issues with the hardware, you may choose to create a custom calibration table for your specific soil mixture. To do so, use the following command (also in the ```/CalibrationAndDiagnostics/``` directory:
+
 ```python3 Soil_Calibration.py```
+
 *Note: this step is optional, and a default calibration table is already provided for you.
 
 Now you can run the main gardening script. 
