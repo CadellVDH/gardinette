@@ -14,4 +14,4 @@ from helpers import * #import helper functions and classes
 pins = pinout()
 oled = oled_utility(128, 32, pins.getAddr('OLED'))
 
-oled.write("test", 64, 0, 7)
+oled.write("Alex you are a bitch", 5, 0, 7)
