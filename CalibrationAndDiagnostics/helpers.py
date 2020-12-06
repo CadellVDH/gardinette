@@ -63,7 +63,7 @@ class oled_utility():
 
     ##Create a function to intialize dependencies
     def __init__(self, width, height, address):
-        self.PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+        self.PROJECT_DIRECTORY = os.path.dirname(os.path.dirname(__file__))
         self.width = width #specify width and height for instnace
         self.height = height
 
@@ -76,8 +76,8 @@ class oled_utility():
         self.oled.fill(0) #set screen to black
         self.oled.show() #send setting to screen
 
-    ##Create a functino for writing messages with titles, centered on the OLED
-    def write_center(self, message, font_size, title=""):
+    ##Create a function for writing messages with titles, centered on the OLED
+    def write_center(self, message, font_size=10, title=""):
         self.image = Image.new("1", (self.oled.width, self.oled.height)) #create blank image
         self.draw = ImageDraw.Draw(self.image) #draw blank Image
 
