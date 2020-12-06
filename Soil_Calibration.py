@@ -2,7 +2,7 @@ import Adafruit_ADS1x15 #soil moisture sensor
 import csv #file output
 import os #tools for working with the CLI
 import numpy #math
-from helpers import adc_read, config_write, pinout #import helper functions
+from helpers import * #import helper functions
 
 
 print("Now beginning soil sensor calibration...\n")

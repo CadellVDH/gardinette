@@ -1,7 +1,11 @@
 import Adafruit_ADS1x15 #soil moisture sensor
 import os #tools for working with the CLI
+import board #oled tools
+import adafruit_ssd1306 #oled screen
+import digitalio #oled tools
 from configparser import ConfigParser #ini file manipulation
 from statistics import mean #math
+from PIL import Image, ImageDraw, ImageFont #oled tools
 
 ##Create a class for handling variable pinouts that may change depending on the chosen carrier board
 class pinout():
@@ -52,6 +56,46 @@ class pinout():
             return int(Config.get('Address_Values', device), 0) #return base 0 address value
         except:
             return None
+
+##Create class for initializing and interacting with the OLED display
+class oled_utility():
+    'This class initializes and writes to the OLED display'
+
+    ##Create a function to intialize dependencies
+    def __init__(self, width, height, address):
+        self.PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+        self.width = width #specify width and height for instnace
+        self.height = height
+
+        self.address = address #specify i2c address used
+
+        self.i2c = board.I2C() #create i2c instance
+
+        self.oled = adafruit_ssd1306.SSD1306_I2C(self.width, self.height, self.i2c, addr=self.address) #specify oled we're using
+
+        self.oled.fill(0) #set screen to black
+        self.oled.show() #send setting to screen
+
+    ##Create a functino for writing messages with titles, centered on the OLED
+    def write_center(self, message, font_size, title=""):
+        self.image = Image.new("1", (self.oled.width, self.oled.height)) #create blank image
+        self.draw = ImageDraw.Draw(self.image) #draw blank Image
+
+        self.font = ImageFont.truetype("%s/Hack-Regular.ttf" % self.PROJECT_DIRECTORY, 7) #get text font
+
+        (self.font_width, self.font_height) = self.font.getsize(title) #get font width and height
+        self.x_pos = self.width // 2 - self.font_width // 2 #move text to center
+        self.draw.text((self.x_pos, 0), title, font=self.font, fill=255) #draw message at position
+
+        self.font = ImageFont.truetype("%s/Hack-Regular.ttf" % self.PROJECT_DIRECTORY, font_size) #set to regular font size
+
+        (self.font_width, self.font_height) = self.font.getsize(message) #get font width and height
+        self.x_pos = self.width // 2 - self.font_width // 2 #move text to center
+        self.y_pos = self.height // 2 - self.font_height // 2 #move text to center
+        self.draw.text((self.x_pos, self.y_pos), message, font=self.font, fill=255) #draw message at position
+
+        self.oled.image(self.image) #create image
+        self.oled.show() #draw image
 
 ##Create a function for reading the ADC
 def adc_read(retry=1):

@@ -7,10 +7,9 @@ import logging #needed for logging
 import pigpio #needed for GPIO control
 import time #needed for function timing
 from pigpio_dht import DHT22 #temp and humidity sensor
-from configparser import ConfigParser #ini file manipulation
 from datetime import datetime #needed for logging
 from PIL import Image, ImageDraw, ImageFont #oled tools
-from helpers import adc_read, easy_input, pinout #import helper functions and classes
+from helpers import * #import helper functions and classes
 
 #The purpose of this script is to ensure that all peripheral hardware
 #components are connected and functioning properly, prior to startup
@@ -26,9 +25,9 @@ PATH = "%s/Pinout.ini" % PROJECT_DIRECTORY
 #Open a log file to save diagnostic data
 TODAY = datetime.now()
 LOG_FILE = "%s/Logs/" % PROJECT_DIRECTORY + TODAY.strftime("%d-%m-%y-%H:%M") #name log file based on date and time
-if (os.path.isdir("%s/Logs/" % PROJECT_DIRECTORY) == False):
-    os.mkdir("%s/Logs/" % PROJECT_DIRECTORY)
-logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG, filemode='w')
+if (os.path.isdir("%s/Logs/" % PROJECT_DIRECTORY) == False): #check if log directory already exists
+    os.mkdir("%s/Logs/" % PROJECT_DIRECTORY) #make one if it doesnt
+logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG, filemode='w') #make a log file with a name based on the current date and time
 
 #Begin hardware diagnostics
 
@@ -36,9 +35,8 @@ logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG, filemode='w')
 print("Now testing the OLED screen...\n")
 try: #attempt to detect the OLED
     print("Attempting to detect OLED...\n")
-    oled_reset = digitalio.DigitalInOut(board.D4) #reset oled
     i2c = board.I2C() #these next few lines initialize the OLED
-    oled = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c, addr=pins.getAddr('OLED'),reset=oled_reset) #specify oled we're using
+    oled = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c, addr=pins.getAddr('OLED')) #specify oled we're using
     print("OLED detected\n")
     logging.debug("OLED detected") #log results
 except Exception as e:
