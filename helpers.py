@@ -81,7 +81,7 @@ class oled_utility():
         self.draw = ImageDraw.Draw(self.image) #draw blank Image
 
         self.font = ImageFont.load_default()
-        self.draw.rectangle((0, 0, oled.width, oled.height), outline=255, fill=0)
+        self.draw.rectangle((0, 0, self.oled.width, self.oled.height), outline=255, fill=0)
 
         self.draw.text((x_pos, y_pos), message, font=self.font, fill=255)
 
