@@ -76,7 +76,7 @@ class oled_utility():
         self.oled.show() #send setting to screen
 
     ##Create a function for writing to the OLED display
-    def write(message, x_pos, y_pos):
+    def write(self, message, x_pos, y_pos):
         self.image = Image.new("1", (self.oled.width, self.oled.height)) #create blank image
         self.draw = ImageDraw.Draw(self.image) #draw blank Image
 
