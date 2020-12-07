@@ -82,14 +82,14 @@ print("All OLED tests have been completed\n")
 print("Now testing the ADC/Moisture Sensor\n")
 
 print("Attempting to read value from ADC\n")
-#try:
-ADCvalue = adc_read(retry=5)
-print("ADC value: %f\n" % ADCvalue) #print ADC value to console
-print("ADC succesffully read\n")
-logging.debug("ADC succesffully read") #log results
-#except Exception as e:
-print("Error occured while reading ADC value\n")
-logging.error("Error occured while reading ADC: %s" % e) #log results
+try:
+    ADCvalue = adc_read(retry=5)
+    print("ADC value: %f\n" % ADCvalue) #print ADC value to console
+    print("ADC succesffully read\n")
+    logging.debug("ADC succesffully read") #log results
+except Exception as e:
+    print("Error occured while reading ADC value\n")
+    logging.error("Error occured while reading ADC: %s" % e) #log results
 
 print("All ADC tests have been completed\n")
 

@@ -42,6 +42,7 @@ class pinout():
 
     #Create a function for getting pins from pinout.ini file
     def getPin(self, pin):
+        self.Config = ConfigParser()
         self.Config.read(pinout.PATH)
         try:
             return int(self.Config.get('Pin_Values', pin)) #return pin based on pinout.ini file
