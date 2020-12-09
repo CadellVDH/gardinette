@@ -15,4 +15,4 @@ pins = pinout() #initialize pinout
 oled = oled_utility(128, 32, pins.getAddr('OLED')) #initialize OLED display
 
 oled.write("Test", oled.width/2, oled.height/2)
-oled.write("Test", 10, 10, False)
+oled.write("Test", 10, 10, clear=False)
