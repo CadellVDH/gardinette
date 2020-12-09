@@ -13,6 +13,91 @@ from CalibrationAndDiagnostics.helpers import * #import helper functions and cla
 
 pins = pinout() #initialize pinout
 oled = oled_utility(128, 32, pins.getAddr('OLED')) #initialize OLED display
+pi = pigpio.pi() #Initialize pigpio
 
-oled.write("Test", oled.width/2, oled.height/2)
-oled.write("Test", 10, 10, clear=False)
+#Create constants for all pin numbers
+FAN_ONE = pins.getPin('FAN_ONE')
+FAN_TWO = pins.getPin('FAN_TWO')
+PUMP = pins.getPing('PUMP')
+LIGHT = pins.getPing('LIGHT')
+FLOAT = pins.getPing('FLOAT')
+TEMP = pins.getPing('TEMP')
+BUTTON_ONE = pins.getPing('BUTTON_ONE')
+BUTTON_TWO = pins.getPing('BUTTON_TWO')
+BUTTON_THREE = pins.getPing('BUTTON_THREE')
+
+#Set all pin modes
+pi.set_mode(FAN_ONE, pigpio.OUTPUT)
+pi.set_mode(FAN_TWO, pigpio.OUTPUT)
+pi.set_mode(PUMP, pigpio.OUTPUT)
+pi.set_mode(LIGHT, pigpio.OUTPUT)
+pi.set_mode(FLOAT, pigpio.INPUT)
+pi.set_mode(BUTTON_ONE, pigpio.INPUT)
+pi.set_mode(BUTTON_TWO, pigpio.INPUT)
+pi.set_mode(BUTTON_THREE, pigpio.INPUT)
+
+#Set needed internal pull down resistors
+pi.set_pull_up_down(BUTTON_ONE, pigpio.PUD_DOWN)
+pi.set_pull_up_down(BUTTON_TWO, pigpio.PUD_DOWN)
+pi.set_pull_up_down(BUTTON_THREE, pigpio.PUD_DOWN)
+
+##Create a class for storing menu items within a tree
+class menu_tree:
+    'This class stores menu options'
+
+    #Create an initalization function for root node
+    def __init__(self, option):
+        self.option = option #initialize option value
+        self.children = [] #intialize empty child list
+        self.parent = None #root has no parents (Aww D: )
+
+    #Create a function for adding child nodes
+    def add_child(self, child):
+        child.parent = self #parent of new instance becomes old instance
+        self.children.append(child) #add child instance to list of children
+
+#Begin creation of menu menu tree
+root = menu_tree("Main Menu") #Create root node for main menu
+
+Light = menu_tree("Light") #Create child node for light
+Light.add_child(menu_tree("Hours")) #Add child node for amount of hours to light
+Light.add_child(menu_tree("Time")) #Add child node for time of day to start lighting
+
+root.add_child(Light) #Add child node for light
+root.add_child("Water") #Add a child node for water
+root.add_child("Soil") #Add a child node for soil
+root.add_child("Temp") #Add a child node for temp
+root.add_child("Humidity") #Add a child node for humidity
+
+#Create a function for choosing between menu options
+def menu():
+
+    current_option = root.option #Set initial option to the root option
+    position = 0 #set left/right postion
+    timer = 0 #start timer
+
+    while timer <= 80: #infinite loop while user is actively choosing
+        oled.write_center(current_option.children[position]) #print the current option to the screen
+
+        if pi.read(BUTTON_ONE) == True :
+            if postion != 0: #can't have negative postion
+                position -= 1 #move one spot to the left
+            else:
+                position = len(current_option.children[])
+                timer = 0 #reset timer
+        elif pi.read(BUTTON_TWO) == True :
+            if current_option.children[] != False: #if current option has children
+                current_option = current_option.children[position] #set the current option to the chosen child
+                timer = 0 #reset timer
+            else: #if the option has no children, it is the final option
+                return current_option.option #and it's string is returned
+        elif pi.read(BUTTON_THREE) == True:
+            if postion < len(current_option.children[]) #if position is not at the end of the list
+                position += 1 #move one spot to the right
+            else:
+                position = 0 #move position back to other end
+            timer = 0 #reset timer
+        else:
+            timer += 1 #count the timer up
+
+        time.sleep(0.25) #1/4 second delay

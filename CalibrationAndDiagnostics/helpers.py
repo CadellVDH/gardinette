@@ -9,7 +9,7 @@ from statistics import mean #math
 from PIL import Image, ImageDraw, ImageFont #oled tools
 
 ##Create a class for handling variable pinouts that may change depending on the chosen carrier board
-class pinout():
+class pinout:
     'This class creates and accesses the pinout.ini file'
 
     #Get current directory for pin file
@@ -60,7 +60,7 @@ class pinout():
             return None
 
 ##Create class for initializing and interacting with the OLED display
-class oled_utility():
+class oled_utility:
     'This class initializes and writes to the OLED display'
 
     ##Create a function to intialize dependencies
