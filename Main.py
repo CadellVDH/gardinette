@@ -86,8 +86,8 @@ def menu():
                 position = len(current_option.children)
                 timer = 0 #reset timer
         elif pi.read(BUTTON_TWO) == True :
-            if current_option.children[] != False: #if current option has children
-                current_option = current_option.children[position] #set the current option to the chosen child
+            if len(current_option.children) != 0: #if current option has children
+                current_option = current_option.children[position] #set the current option to the first child of the chosen node
                 timer = 0 #reset timer
             else: #if the option has no children, it is the final option
                 return current_option.option #and it's string is returned
