@@ -64,10 +64,10 @@ Light.add_child(menu_tree("Hours")) #Add child node for amount of hours to light
 Light.add_child(menu_tree("Time")) #Add child node for time of day to start lighting
 
 root.add_child(Light) #Add child node for light
-root.add_child("Water") #Add a child node for water
-root.add_child("Soil") #Add a child node for soil
-root.add_child("Temp") #Add a child node for temp
-root.add_child("Humidity") #Add a child node for humidity
+root.add_child(menu_tree("Water")) #Add a child node for water
+root.add_child(menu_tree("Soil")) #Add a child node for soil
+root.add_child(menu_tree("Temp")) #Add a child node for temp
+root.add_child(menu_tree("Humidity")) #Add a child node for humidity
 
 #Create a function for choosing between menu options
 def menu():
