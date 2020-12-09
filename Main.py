@@ -18,13 +18,13 @@ pi = pigpio.pi() #Initialize pigpio
 #Create constants for all pin numbers
 FAN_ONE = pins.getPin('FAN_ONE')
 FAN_TWO = pins.getPin('FAN_TWO')
-PUMP = pins.getPing('PUMP')
-LIGHT = pins.getPing('LIGHT')
-FLOAT = pins.getPing('FLOAT')
-TEMP = pins.getPing('TEMP')
-BUTTON_ONE = pins.getPing('BUTTON_ONE')
-BUTTON_TWO = pins.getPing('BUTTON_TWO')
-BUTTON_THREE = pins.getPing('BUTTON_THREE')
+PUMP = pins.getPin('PUMP')
+LIGHT = pins.getPin('LIGHT')
+FLOAT = pins.getPin('FLOAT')
+TEMP = pins.getPin('TEMP')
+BUTTON_ONE = pins.getPin('BUTTON_ONE')
+BUTTON_TWO = pins.getPin('BUTTON_TWO')
+BUTTON_THREE = pins.getPin('BUTTON_THREE')
 
 #Set all pin modes
 pi.set_mode(FAN_ONE, pigpio.OUTPUT)
