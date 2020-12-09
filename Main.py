@@ -13,3 +13,5 @@ from CalibrationAndDiagnostics.helpers import * #import helper functions and cla
 
 pins = pinout() #initialize pinout
 oled = oled_utility(128, 32, pins.getAddr('OLED')) #initialize OLED display
+
+oled.write("Test", oled.width/2, oled.height/2)

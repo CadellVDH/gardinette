@@ -3,6 +3,7 @@ import os #tools for working with the CLI
 import board #oled tools
 import adafruit_ssd1306 #oled screen
 import digitalio #oled tools
+import time #adding delays
 from configparser import ConfigParser #ini file manipulation
 from statistics import mean #math
 from PIL import Image, ImageDraw, ImageFont #oled tools
@@ -98,6 +99,24 @@ class oled_utility():
         self.oled.image(self.image) #create image
         self.oled.show() #draw image
 
+    ##Create a function for writing messsages at a postion on the screen
+    def write(self, message, x_pos, y_pos, font_size=10, clear=True):
+
+        if (clear == True):
+            self.image = Image.new("1", (self.oled.width, self.oled.height)) #create blank image
+            self.draw = ImageDraw.Draw(self.image) #draw blank Image
+
+        self.font = ImageFont.truetype("%s/fonts/Hack-Regular.ttf" % self.PROJECT_DIRECTORY, font_size) #set to regular font size
+
+        self.x_pos = x_pos #set desired x and y position
+        self.y_pos = y_pos
+
+        self.draw.text((self.x_pos, self.y_pos), message, font=self.font, fill=255) #draw message at position
+
+        self.oled.image(self.image) #create image
+        self.oled.show() #draw image
+
+
 ##Create a function for reading the ADC
 def adc_read(retry=1):
     adc = Adafruit_ADS1x15.ADS1115() #store ADC class to variable
@@ -105,6 +124,7 @@ def adc_read(retry=1):
     readings = []
     for i in range(0, retry):
         readings.append(adc.read_adc(pins.getPin('ADC_PIN'), gain=pins.getPin('ADC_GAIN')))
+        time.sleep(3)
     return int(mean(readings))
 
 ##Create a function for writing to config files
