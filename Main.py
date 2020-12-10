@@ -76,7 +76,7 @@ def menu():
     position = 0 #set left/right postion
     timer = 0 #start timer
 
-    while timer <= 80: #infinite loop while user is actively choosing
+    while timer <= 40: #infinite loop while user is actively choosing
         print(len(current_option.children))
         print(position)
         print(timer)
@@ -103,7 +103,7 @@ def menu():
         else:
             timer += 1 #count the timer up
 
-        time.sleep(0.25) #1/4 second delay
+        time.sleep(0.5) #1/4 second delay
 
     return current_option #and it's node is returned
 
