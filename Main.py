@@ -72,7 +72,7 @@ root.add_child(menu_tree("Humidity")) #Add a child node for humidity
 #Create a function for choosing between menu options
 def menu():
 
-    current_option = root.option #Set initial option to the root option
+    current_option = root #Set initial option to the root option
     position = 0 #set left/right postion
     timer = 0 #start timer
 
@@ -90,7 +90,7 @@ def menu():
                 current_option = current_option.children[position] #set the current option to the first child of the chosen node
                 timer = 0 #reset timer
             else: #if the option has no children, it is the final option
-                return current_option.option #and it's string is returned
+                return current_option #and it's node is returned
         elif pi.read(BUTTON_THREE) == True:
             if postion < len(current_option.children): #if position is not at the end of the list
                 position += 1 #move one spot to the right
