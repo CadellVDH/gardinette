@@ -93,7 +93,7 @@ def menu():
                 current_option = current_option.children[position] #set the current option to the first child of the chosen node
                 timer = 0 #reset timer
             else: #if the option has no children, it is the final option
-                return current_option #and it's node is returned
+                break
         elif pi.read(BUTTON_THREE) == True:
             if position < len(current_option.children)-1: #if position is not at the end of the list
                 position += 1 #move one spot to the right
@@ -104,5 +104,7 @@ def menu():
             timer += 1 #count the timer up
 
         time.sleep(0.25) #1/4 second delay
+
+    return current_option #and it's node is returned
 
 choice = menu() #try to run the menu
