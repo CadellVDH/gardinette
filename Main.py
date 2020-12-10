@@ -85,7 +85,7 @@ def menu():
             if position != 0: #can't have negative postion
                 position -= 1 #move one spot to the left
             else:
-                position = len(current_option.children)
+                position = len(current_option.children)-1
                 timer = 0 #reset timer
         elif pi.read(BUTTON_TWO) == True :
             if len(current_option.children) != 0: #if current option has children
@@ -94,7 +94,7 @@ def menu():
             else: #if the option has no children, it is the final option
                 return current_option #and it's node is returned
         elif pi.read(BUTTON_THREE) == True:
-            if position < len(current_option.children): #if position is not at the end of the list
+            if position < len(current_option.children)-1: #if position is not at the end of the list
                 position += 1 #move one spot to the right
             else:
                 position = 0 #move position back to other end
