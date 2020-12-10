@@ -76,7 +76,7 @@ def menu():
     position = 0 #set left/right postion
     timer = 0 #start timer
 
-    while timer <= 60: #infinite loop while user is actively choosing
+    while timer <= 80: #infinite loop while user is actively choosing
         print(len(current_option.children))
         print(position)
         print(timer)
@@ -89,7 +89,7 @@ def menu():
                 position = len(current_option.children)-1
                 timer = 0 #reset timer
         elif pi.read(BUTTON_TWO) == True :
-            if len(current_option.children) != 0: #if current option has children
+            if current_option.children: #if current option has children
                 current_option = current_option.children[position] #set the current option to the first child of the chosen node
                 timer = 0 #reset timer
             else: #if the option has no children, it is the final option
@@ -103,7 +103,7 @@ def menu():
         else:
             timer += 1 #count the timer up
 
-        time.sleep(1/3) #1/3 second delay
+        time.sleep(.25) #1/3 second delay
 
     return current_option #and it's node is returned
 
