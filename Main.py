@@ -79,7 +79,7 @@ def menu():
     while timer <= 80: #infinite loop while user is actively choosing
         oled.write_center(current_option.children[position].option) #print the current option to the screen
         oled.write("<--", 0, oled.height/2, clear=False) #create left arrow
-        oled.write("-->", oled.width-7, oled.height/2, clear=False) #create right arrow
+        oled.write("-->", oled.width-15, oled.height/2, clear=False) #create right arrow
 
         if pi.read(BUTTON_ONE) == True :
             if position != 0: #can't have negative postion
