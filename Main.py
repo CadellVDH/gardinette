@@ -77,9 +77,9 @@ def menu():
     timer = 0 #start timer
 
     while timer <= 80: #infinite loop while user is actively choosing
-        oled.write_center(current_option.children[position].option) #print the current option to the screen
         print(len(current_option.children))
         print(position)
+        oled.write_center(current_option.children[position].option) #print the current option to the screen
 
         if pi.read(BUTTON_ONE) == True :
             if position != 0: #can't have negative postion
