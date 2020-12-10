@@ -6,6 +6,7 @@ import os #tools for working with the CLI
 import logging #needed for logging
 import pigpio #needed for GPIO control
 import time #needed for function timing
+import keyboard #detect key presses
 from pigpio_dht import DHT22 #temp and humidity sensor
 from datetime import datetime #needed for logging
 from PIL import Image, ImageDraw, ImageFont #oled tools
@@ -239,5 +240,32 @@ except Exception as e:
     print("Error occured while trying to write to the light\n")
     logging.error("Error occured while writing to the light: %s" % e)
 print("Light tests have been completed\n")
+
+#Test the buttons
+print("Now testing the buttons\n")
+try:
+    print("Now setting button modes\n")
+    pi.set_mode(pins.getPin('BUTTON_ONE'), pigpio.INPUT) #set all buttons to input
+    pi.set_mode(pins.getPin('BUTTON_TWO'), pigpio.INPUT)
+    pi.set_mode(pins.getPin('BUTTON_THREE'), pigpio.INPUT)
+
+    pi.set_pull_up_down('BUTTON_ONE', pigpio.PUD_DOWN) #set all buttons to an internal pull down resistor
+    pi.set_pull_up_down('BUTTON_TWO', pigpio.PUD_DOWN)
+    pi.set_pull_up_down('BUTTON_THREE', pigpio.PUD_DOWN)
+
+    print("Successfully set button modes\n")
+    logging.debug("Successfully set button modes")
+    failed = False #track if buttons don't fail
+except Exception as e:
+    print("Failed to set button modes\n")
+    logging.error("Error occured while setting button modes: %s" % e)
+    failed = True #track if buttons fail
+
+if failed == False: #only do this if buttons are set
+    print('Please press button one (or press "e" to exit)')
+    while keyboard.read_key() != 'e':
+
+
+
 
 print("All tests have been completed\n")

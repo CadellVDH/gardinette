@@ -101,3 +101,5 @@ def menu():
             timer += 1 #count the timer up
 
         time.sleep(0.25) #1/4 second delay
+
+choice = menu() #try to run the menu
