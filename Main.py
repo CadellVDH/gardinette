@@ -108,3 +108,5 @@ def menu():
     return current_option #and it's node is returned
 
 choice = menu() #try to run the menu
+
+t
