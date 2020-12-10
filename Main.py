@@ -80,6 +80,7 @@ def menu():
         print(len(current_option.children))
         print(position)
         print(timer)
+        print()
         oled.write_center(current_option.children[position].option) #print the current option to the screen
 
         if pi.read(BUTTON_ONE) == True :
@@ -89,8 +90,9 @@ def menu():
                 position = len(current_option.children)-1
                 timer = 0 #reset timer
         elif pi.read(BUTTON_TWO) == True :
-            if current_option.children: #if current option has children
+            if current_option.children:
                 current_option = current_option.children[position] #set the current option to the first child of the chosen node
+            if current_option.children: #if current option has children
                 timer = 0 #reset timer
             else: #if the option has no children, it is the final option
                 break
