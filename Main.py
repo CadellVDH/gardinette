@@ -80,7 +80,7 @@ def menu():
         oled.write_center(current_option.children[position].option) #print the current option to the screen
 
         if pi.read(BUTTON_ONE) == True :
-            if postion != 0: #can't have negative postion
+            if position != 0: #can't have negative postion
                 position -= 1 #move one spot to the left
             else:
                 position = len(current_option.children)
@@ -92,7 +92,7 @@ def menu():
             else: #if the option has no children, it is the final option
                 return current_option #and it's node is returned
         elif pi.read(BUTTON_THREE) == True:
-            if postion < len(current_option.children): #if position is not at the end of the list
+            if position < len(current_option.children): #if position is not at the end of the list
                 position += 1 #move one spot to the right
             else:
                 position = 0 #move position back to other end
