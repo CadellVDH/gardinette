@@ -56,7 +56,7 @@ class menu_tree:
         child.parent = self #parent of new instance becomes old instance
         self.children.append(child) #add child instance to list of children
 
-#Begin creation of menu menu tree
+#Begin creation of menu tree
 root = menu_tree("Main Menu") #Create root node for main menu
 
 Light = menu_tree("Light") #Create child node for light
@@ -73,7 +73,7 @@ root.add_child(menu_tree("Humidity")) #Add a child node for humidity
 def menu():
 
     current_option = root #Set initial option to the root option
-    position = 0 #set left/right postion
+    position = 0 #set left/right position
     timer = 0 #start timer
 
     while timer <= 80: #infinite loop while user is actively choosing
@@ -82,7 +82,7 @@ def menu():
         oled.write("-->", oled.width-18, oled.height/2, clear=False) #create right arrow
 
         if pi.read(BUTTON_ONE) == True :
-            if position != 0: #can't have negative postion
+            if position != 0: #can't have negative position
                 position -= 1 #move one spot to the left
             else:
                 position = len(current_option.children)-1
@@ -103,8 +103,75 @@ def menu():
         else:
             timer += 1 #count the timer up
 
-        time.sleep(.25) #1/3 second delay
+        time.sleep(.25) #1/4 second delay
 
     return current_option #and it's node is returned
 
-choice = menu() #try to run the menu
+#Create a function for choosing paramater values
+def param_adjust(choice_list, unit=""):
+    timer = 0 #create a timer
+    position = 0 #start at position 0
+
+    while timer <= 160: #while elapsed time is less than 20 seonds
+        oled.write_center(choice_list[position]) #print the current choice to the OLED
+        oled.write(unit, oled.width/2, 10, clear=False) #write the unit above the number
+        oled.write("<--", 0, oled.height/2, clear=False) #create left arrow
+        oled.write("-->", oled.width-18, oled.height/2, clear=False) #create right arrow
+
+        if pi.read(BUTTON_ONE):
+            if position != 0:
+                position -= 1 #move left
+            else:
+                position = len(choice_list) - 1 #otherwise go to end of choice_list
+
+            timer = 0 #reset timer
+        elif pi.read(BUTTON_TWO):
+            break
+        elif pi.read(BUTTON_THREE):
+            if position < len(choice_list)-1: #if position is not at end of list
+                position += 1 #move right
+            else:
+                position = 0 #move back to beginning
+        else:
+            timer += 1 #count the timer up
+
+        time.sleep(.125) #1/4 second delay
+
+    return choice_list[position] #return the chosen value
+
+#Create a function for the use to adjust box parameters
+def param_select():
+    menu_choice = menu() #call the menu function to find out what parameter the user wants to adjust
+
+    if menu_choice.option == "Hours":
+        list = list(range(1, 24)) #list is 1-24
+        return param_adjust(list, "Hours")
+    elif menu_choice.option == "Time":
+        list = [] #empty list
+        for i in range(1, 24): #generate list
+            for j in range(1, 59):
+                if j < 10:
+                    list[i*j] = "{}:0{}".format(i,j) #make list with 0 in front of minute if minute < 10
+                else:
+                    list[i*j] = "{}:{}".format(i,j) #otherwise make list using only the minute
+        return param_adjust(list)
+    elif menu_choice.option == "Water":
+        list = [] #empty list
+        for i in range(1, 24): #generate list
+            for j in range(1, 59):
+                if j < 10:
+                    list[i*j] = "{}:0{}".format(i,j) #make list with 0 in front of minute if minute < 10
+                else:
+                    list[i*j] = "{}:{}".format(i,j) #otherwise make list using only the minute
+        return param_adjust(list)
+    elif menu_choice.option ==  "Soil":
+        list = list(range(20, 80)) #create list of allowed soil moistures
+        return param_adjust(list, "%")
+    elif menu_choice.option == "Temp":
+        list = list(range(60, 90)) #create list of allowed temps
+        return param_adjust(list, "F")
+    elif menu_choice.option == "Humidity":
+        list = list(range(10, 90)) #create list of allowed humidities
+        return param_adjust(list, "%")
+    else:
+        return NULL
