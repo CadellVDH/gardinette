@@ -175,3 +175,5 @@ def param_select():
         return param_adjust(list, "%")
     else:
         return NULL
+
+output = param_select()
