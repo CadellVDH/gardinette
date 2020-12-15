@@ -113,7 +113,7 @@ def param_adjust(choice_list, unit=""):
     position = 0 #start at position 0
 
     while timer <= 160: #while elapsed time is less than 20 seonds
-        oled.write_center(choice_list[position]) #print the current choice to the OLED
+        oled.write_center(str(choice_list[position])) #print the current choice to the OLED
         oled.write(unit, oled.width/2, 10, clear=False) #write the unit above the number
         oled.write("<--", 0, oled.height/2, clear=False) #create left arrow
         oled.write("-->", oled.width-18, oled.height/2, clear=False) #create right arrow
