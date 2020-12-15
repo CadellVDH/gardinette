@@ -150,7 +150,7 @@ def param_select():
     elif menu_choice.option == "Time":
         allowed = [] #empty list
         for i in range(1, 24): #generate list
-            for j in range(1, 59):
+            for j in range(0, 55):
                 if j < 10:
                     allowed.append("{}:0{}".format(i,j)) #make list with 0 in front of minute if minute < 10
                 else:
@@ -159,7 +159,7 @@ def param_select():
     elif menu_choice.option == "Water":
         allowed = [] #empty list
         for i in range(1, 24): #generate list
-            for j in range(1, 59):
+            for j in range(0, 55):
                 if j < 10:
                     allowed.append("{}:0{}".format(i,j)) #make list with 0 in front of minute if minute < 10
                 else:
