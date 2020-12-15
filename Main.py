@@ -139,9 +139,10 @@ def param_adjust(choice_list, unit=""):
 
     return choice_list[position] #return the chosen value
 
-#Create a function for the use to adjust box parameters
+#Create a function for the user to adjust box parameters
 def param_select():
     menu_choice = menu() #call the menu function to find out what parameter the user wants to adjust
+    time.sleep(0.5) #delay so user doesn't accidentally choose first value
 
     if menu_choice.option == "Hours":
         allowed = list(range(1, 24)) #list is 1-24
