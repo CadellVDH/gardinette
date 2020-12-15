@@ -108,7 +108,7 @@ def menu():
     return current_option #and it's node is returned
 
 #Create a function for choosing paramater values
-def param_adjust(choice_list, unit="", step=1):
+def param_adjust(choice_list, unit=""):
     timer = 0 #create a timer
     position = 0 #start at position 0
 
@@ -120,7 +120,7 @@ def param_adjust(choice_list, unit="", step=1):
 
         if pi.read(BUTTON_ONE):
             if position != 0:
-                position -= step #move left
+                position -= 1 #move left
             else:
                 position = len(choice_list) - 1 #otherwise go to end of choice_list
 
@@ -129,7 +129,7 @@ def param_adjust(choice_list, unit="", step=1):
             break
         elif pi.read(BUTTON_THREE):
             if position < len(choice_list)-1: #if position is not at end of list
-                position += step #move right
+                position += 1 #move right
             else:
                 position = 0 #move back to beginning
         else:
@@ -150,22 +150,22 @@ def param_select():
     elif menu_choice.option == "Time":
         allowed = [] #empty list
         for i in range(1, 24): #generate list
-            for j in range(0, 55):
+            for j in range(0, 56, 5):
                 if j < 10:
                     allowed.append("{}:0{}".format(i,j)) #make list with 0 in front of minute if minute < 10
                 else:
                     allowed.append("{}:{}".format(i,j)) #otherwise make list using only the minute
-        return param_adjust(allowed, step=5)
+        return param_adjust(allowed)
     elif menu_choice.option == "Water":
         allowed = [] #empty list
         for i in range(1, 24): #generate list
-            for j in range(0, 56):
+            for j in range(0, 56, 5):
                 if j < 10:
                     allowed.append("{}:0{}".format(i,j)) #make list with 0 in front of minute if minute < 10
                 else:
                     allowed.append("{}:{}".format(i,j)) #otherwise make list using only the minute
-        print(allowed)            
-        return param_adjust(allowed, step=5)
+        print(allowed)
+        return param_adjust(allowed)
     elif menu_choice.option ==  "Soil":
         allowed = list(range(20, 80)) #create list of allowed soil moistures
         return param_adjust(allowed, "%")
