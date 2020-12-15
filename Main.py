@@ -144,35 +144,35 @@ def param_select():
     menu_choice = menu() #call the menu function to find out what parameter the user wants to adjust
 
     if menu_choice.option == "Hours":
-        list = list(range(1, 24)) #list is 1-24
-        return param_adjust(list, "Hours")
+        allowed = list(range(1, 24)) #list is 1-24
+        return param_adjust(allowed, "Hours")
     elif menu_choice.option == "Time":
-        list = [] #empty list
+        allowed = [] #empty list
         for i in range(1, 24): #generate list
             for j in range(1, 59):
                 if j < 10:
-                    list[i*j] = "{}:0{}".format(i,j) #make list with 0 in front of minute if minute < 10
+                    allowed[i*j] = "{}:0{}".format(i,j) #make list with 0 in front of minute if minute < 10
                 else:
-                    list[i*j] = "{}:{}".format(i,j) #otherwise make list using only the minute
-        return param_adjust(list)
+                    allowed[i*j] = "{}:{}".format(i,j) #otherwise make list using only the minute
+        return param_adjust(allowed)
     elif menu_choice.option == "Water":
-        list = [] #empty list
+        allowed = [] #empty list
         for i in range(1, 24): #generate list
             for j in range(1, 59):
                 if j < 10:
-                    list[i*j] = "{}:0{}".format(i,j) #make list with 0 in front of minute if minute < 10
+                    allowed[i*j] = "{}:0{}".format(i,j) #make list with 0 in front of minute if minute < 10
                 else:
-                    list[i*j] = "{}:{}".format(i,j) #otherwise make list using only the minute
-        return param_adjust(list)
+                    allowed[i*j] = "{}:{}".format(i,j) #otherwise make list using only the minute
+        return param_adjust(allowed)
     elif menu_choice.option ==  "Soil":
-        list = list(range(20, 80)) #create list of allowed soil moistures
-        return param_adjust(list, "%")
+        allowed = list(range(20, 80)) #create list of allowed soil moistures
+        return param_adjust(allowed, "%")
     elif menu_choice.option == "Temp":
-        list = list(range(60, 90)) #create list of allowed temps
-        return param_adjust(list, "F")
+        allowed = list(range(60, 90)) #create list of allowed temps
+        return param_adjust(allowed, "F")
     elif menu_choice.option == "Humidity":
-        list = list(range(10, 90)) #create list of allowed humidities
-        return param_adjust(list, "%")
+        allowed = list(range(10, 90)) #create list of allowed humidities
+        return param_adjust(allowed, "%")
     else:
         return NULL
 
