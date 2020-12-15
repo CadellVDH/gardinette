@@ -150,7 +150,7 @@ def param_select():
     elif menu_choice.option == "Time":
         allowed = [] #empty list
         for i in range(1, 24): #generate list
-            for j in range(0, 56):
+            for j in range(0, 55):
                 if j < 10:
                     allowed.append("{}:0{}".format(i,j)) #make list with 0 in front of minute if minute < 10
                 else:
@@ -164,6 +164,7 @@ def param_select():
                     allowed.append("{}:0{}".format(i,j)) #make list with 0 in front of minute if minute < 10
                 else:
                     allowed.append("{}:{}".format(i,j)) #otherwise make list using only the minute
+        print(allowed)            
         return param_adjust(allowed, step=5)
     elif menu_choice.option ==  "Soil":
         allowed = list(range(20, 80)) #create list of allowed soil moistures
