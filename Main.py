@@ -129,11 +129,11 @@ def param_adjust(choice_list, unit="", step=1):
             break
         elif pi.read(BUTTON_THREE):
             if position < len(choice_list)-1: #if position is not at end of list
-                position += 1 #move right
+                position += step #move right
             else:
                 position = 0 #move back to beginning
         else:
-            timer += step #count the timer up
+            timer += 1 #count the timer up
 
         time.sleep(.125) #1/4 second delay
 
