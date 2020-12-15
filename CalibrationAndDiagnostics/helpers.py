@@ -34,9 +34,9 @@ class pinout:
             self.Config.set('Pin_Values', 'LIGHT', '27') #set value of LIGHT in ini file
             self.Config.set('Pin_Values', 'FLOAT', '4') #set value of FLOAT in ini file
             self.Config.set('Pin_Values', 'TEMP', '23') #set value of TEMP in ini file
-            self.Config.set('Pin_Values', 'BUTTON_ONE', '26') #set value of BUTTON_ONE in ini file
+            self.Config.set('Pin_Values', 'BUTTON_ONE', '6') #set value of BUTTON_ONE in ini file
             self.Config.set('Pin_Values', 'BUTTON_TWO', '16') #set value of BUTTON_TWO in ini file
-            self.Config.set('Pin_Values', 'BUTTON_THREE', '6') #set value of BUTTON_THREE in ini file
+            self.Config.set('Pin_Values', 'BUTTON_THREE', '26') #set value of BUTTON_THREE in ini file
             self.Config.set('Address_Values', 'OLED', '0x3c') #set value of OLED in ini file
             self.Config.write(self.configfile) #save ini file
             self.configfile.close()
