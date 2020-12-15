@@ -262,10 +262,45 @@ except Exception as e:
     failed = True #track if buttons fail
 
 if failed == False: #only do this if buttons are set
-    print('Please press button one (or press "e" to exit)')
     while keyboard.read_key() != 'e':
+        print('Please press button one (or press "e" to exit)')
+        if pi.read(BUTTON_ONE):
+            b1 = BUTTON_ONE #store button value
+            break
+    while keyboard.read_key() != 'e':
+        print('Please press button two (or press "e" to exit)')
+        if pi.read(BUTTON_TWO):
+            b2 = BUTTON_TWO #store button value
+            break
+    while keyboard.read_key() != 'e':
+        print('Please press button three (or press "e" to exit)')
+        if pi.read(BUTTON_THREE):
+            b3 = BUTTON_THREE #store button value
+            break
 
+#check which buttons were working and log them
+if b1 == True:
+    print("Button one is functional")
+    logging.debug("Button one is functional")
+else:
+    print("Button one is not functional")
+    logging.error("Button one failed")
 
+if b2 == True:
+    print("Button two is functional")
+    logging.debug("Button two is functional")
+else:
+    print("Button two is not functional")
+    logging.error("Button two failed")
+
+if b3 == True:
+    print("Button three is functional")
+    logging.debug("Button three is functional")
+else:
+    print("Button three is not functional")
+    logging.error("Button three failed")
+        
+print("Button tests have been completed\n")
 
 
 print("All tests have been completed\n")
