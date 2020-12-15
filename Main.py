@@ -176,4 +176,4 @@ def param_select():
     else:
         return NULL
 
-output = param_select()
+print(param_select())
