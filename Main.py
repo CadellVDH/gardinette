@@ -93,7 +93,7 @@ def menu():
             if current_option.children: #if current option has children
                 timer = 0 #reset timer
             else: #if the option has no children, it is the final option
-                break
+                return current_option #and it's node is returned
         elif pi.read(BUTTON_THREE) == True:
             if position < len(current_option.children)-1: #if position is not at the end of the list
                 position += 1 #move one spot to the right
@@ -105,7 +105,7 @@ def menu():
 
         time.sleep(.25) #1/4 second delay
 
-    return current_option #and it's node is returned
+    return NULL
 
 #Create a function for choosing paramater values
 def param_adjust(choice_list, unit=""):
@@ -126,7 +126,7 @@ def param_adjust(choice_list, unit=""):
 
             timer = 0 #reset timer
         elif pi.read(BUTTON_TWO):
-            break
+            return choice_list[position] #return the chosen value
         elif pi.read(BUTTON_THREE):
             if position < len(choice_list)-1: #if position is not at end of list
                 position += 1 #move right
@@ -137,14 +137,16 @@ def param_adjust(choice_list, unit=""):
 
         time.sleep(.125) #1/4 second delay
 
-    return choice_list[position] #return the chosen value
+    return NULL
 
 #Create a function for the user to adjust box parameters
 def param_select():
     menu_choice = menu() #call the menu function to find out what parameter the user wants to adjust
     time.sleep(0.5) #delay so user doesn't accidentally choose first value
 
-    if menu_choice.option == "Hours":
+    if menu_choice == NULL:
+        return NULL
+    elif menu_choice.option == "Hours":
         allowed = list(range(1, 24)) #list is 1-24
         return param_adjust(allowed, "Hours")
     elif menu_choice.option == "Time":
@@ -177,6 +179,3 @@ def param_select():
         return param_adjust(allowed, "%")
     else:
         return NULL
-
-print(param_select())
- 
