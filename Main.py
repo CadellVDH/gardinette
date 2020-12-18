@@ -69,7 +69,7 @@ root.add_child(menu_tree("Soil")) #Add a child node for soil
 root.add_child(menu_tree("Temp")) #Add a child node for temp
 root.add_child(menu_tree("Humidity")) #Add a child node for humidity
 
-#Create a function for choosing between menu options
+#Create a function for choosing between menu options on the OLED
 def menu():
 
     current_option = root #Set initial option to the root option
@@ -107,7 +107,7 @@ def menu():
 
     return NULL
 
-#Create a function for choosing paramater values
+#Create a function for choosing paramater values on the OLED
 def param_adjust(choice_list, unit=""):
     timer = 0 #create a timer
     position = 0 #start at position 0
@@ -139,8 +139,8 @@ def param_adjust(choice_list, unit=""):
 
     return NULL
 
-#Create a function for the user to adjust box parameters
-def param_select():
+#Create a function for the user to adjust box target values
+def target_select():
     menu_choice = menu() #call the menu function to find out what parameter the user wants to adjust
     time.sleep(0.5) #delay so user doesn't accidentally choose first value
 
@@ -148,7 +148,7 @@ def param_select():
         return NULL
     elif menu_choice.option == "Hours":
         allowed = list(range(1, 24)) #list is 1-24
-        return param_adjust(allowed, "Hours")
+        return param_adjust(allowed, "Hours"), menu_choice #return the target value and menu node
     elif menu_choice.option == "Time":
         allowed = [] #empty list
         for i in range(1, 24): #generate list
@@ -157,7 +157,7 @@ def param_select():
                     allowed.append("{}:0{}".format(i,j)) #make list with 0 in front of minute if minute < 10
                 else:
                     allowed.append("{}:{}".format(i,j)) #otherwise make list using only the minute
-        return param_adjust(allowed)
+        return param_adjust(allowed), menu_choice #return the target value and menu node
     elif menu_choice.option == "Water":
         allowed = [] #empty list
         for i in range(1, 24): #generate list
@@ -166,16 +166,17 @@ def param_select():
                     allowed.append("{}:0{}".format(i,j)) #make list with 0 in front of minute if minute < 10
                 else:
                     allowed.append("{}:{}".format(i,j)) #otherwise make list using only the minute
-        print(allowed)
-        return param_adjust(allowed)
+        return param_adjust(allowed), menu_choice #return the target value and menu node
     elif menu_choice.option ==  "Soil":
         allowed = list(range(20, 80)) #create list of allowed soil moistures
-        return param_adjust(allowed, "%")
+        return param_adjust(allowed, "%"), menu_choice #return the target value and menu node
     elif menu_choice.option == "Temp":
         allowed = list(range(60, 90)) #create list of allowed temps
-        return param_adjust(allowed, "F")
+        return param_adjust(allowed, "F"), menu_choice #return the target value and menu node
     elif menu_choice.option == "Humidity":
         allowed = list(range(10, 90)) #create list of allowed humidities
-        return param_adjust(allowed, "%")
+        return param_adjust(allowed, "%"), menu_choice #return the target value and menu node
     else:
         return NULL
+
+print(target_select())
