@@ -179,4 +179,62 @@ def target_select():
     else:
         return NULL
 
-print(target_select())
+##Create a class for handling variable target values, including default target values
+class target:
+    'This class creates and accesses the Target.ini file'
+
+    #Get current directory for target value file
+    PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+    PATH = "%s/Target.ini" % PROJECT_DIRECTORY
+
+    ##Create an initialization function for creating a default pinout file
+    def __init__(self):
+        if (os.path.isfile(target.PATH) == False): #check if file already exists
+            self.Target = open(target.PATH, "w+") #create file if none exists
+            self.Target.close()
+
+            self.configfile = open(target.PATH, "w+")
+            self.Config = ConfigParser()
+
+            self.Config.add_section('Water')
+            self.Config.add_section('Soil')
+            self.Config.add_section('Light')
+            self.Config.add_section('Temp')
+            self.Config.add_section('Humidity')
+
+            self.Config.set('Light', 'Hours', '16') #set value of lighting hours in ini file
+            self.Config.set('Light', 'Time', '12:00') #set value of lighting start time in ini file
+            self.Config.set('Water', 'Water', '12:00') #set value of water start time in ini file
+            self.Config.set('Soil', 'Soil', '25') #set value of soil moisture in ini file
+            self.Config.set('Temp', 'Temp', '70') #set value of temperature in ini file
+            self.Config.set('Humidity', 'Humidity', '55') #set value of humidity in ini file
+
+            self.Config.write(self.configfile) #save ini file
+            self.configfile.close()
+
+    #Create a function for getting pins from pinout.ini file
+    def getTarget(self, param, parent=None):
+        self.Config = ConfigParser()
+        self.Config.read(pinout.PATH)
+
+        try:
+            if parent == None:
+                return self.Config.get(param, param) #return target based on Target.ini file
+            else:
+                return self.Config.get(parent, param) #return target based on Target.ini file
+        except:
+            return None
+
+    def setTarget(self, param, value, parent=None):
+        self.Config = ConfigParser()
+
+        try:
+            if parent == None:
+                self.Config.set(param, param, value) #if param has no parent, param is the parent and also the section
+            else:
+                self.Config.set(parent, param, value) #otherise, parent is the section
+        except:
+            return 'Failed'
+
+        self.Config.write(self.configfile) #save ini file
+        self.configfile.close()
