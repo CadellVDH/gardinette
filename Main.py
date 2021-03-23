@@ -251,3 +251,8 @@ targets.setTarget('Soil', '20')
 targets.setTarget('Temp', '60')
 targets.setTarget('Hours', '10', parent='Light')
 targets.setTarget('Time', '10:00', parent='Light')
+
+print(targets.getTarget('Soil'))
+print(targets.getTarget('Temp'))
+print(targets.getTarget('Hours', parent='Light'))
+print(targets.getTarget('Time', parent='Light'))
