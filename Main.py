@@ -246,7 +246,4 @@ class target:
 
 
 targets = target() #initialize target setting class
-print(targets.getTarget('Water'))
-print(targets.getTarget('Soil'))
-print(targets.getTarget('Hours', parent='Light'))
-print(targets.getTarget('Time', parent='Light'))
+targets.setTarget('Soil', 20)
