@@ -224,7 +224,8 @@ class target:
                 return self.Config.get(param, param) #return target based on Target.ini file
             else:
                 return self.Config.get(parent, param) #return target based on Target.ini file
-        except:
+        except Exception as e:
+            logging.error("Failed get target value: %s" % e)
             return None
 
     def setTarget(self, param, value, parent=None):
@@ -235,7 +236,8 @@ class target:
                 self.Config.set(param, param, value) #if param has no parent, param is the parent and also the section
             else:
                 self.Config.set(parent, param, value) #otherise, parent is the section
-        except:
+        except Exception as e:
+            logging.error("Failed set target value: %s" % e)
             return 'Failed'
 
         self.Config.write(self.configfile) #save ini file
