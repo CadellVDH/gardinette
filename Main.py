@@ -241,8 +241,8 @@ class target:
             logging.error("Failed to set target value: %s" % e)
             return 'Failed'
 
-        with open(target.PATH, 'w') as configfile: #open pinout.ini as file object
-            self.Config.write(configfile) #save ini file
+        self.Config.write(self.configfile) #save ini file
+        self.configfile.close()
 
 
 targets = target() #initialize target setting class
