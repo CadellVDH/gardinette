@@ -242,4 +242,5 @@ class target:
         self.configfile.close()
 
 
-targets = target() #initialize target setting class 
+targets = target() #initialize target setting class
+print(targets.getTarget("Water"))
