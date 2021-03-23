@@ -213,6 +213,8 @@ class target:
             self.configfile.close()
 
     #Create a function for getting pins from pinout.ini file
+    #param - parameter to be adjusted (Water, Soil, Hours, etc)
+    #parent - config section to look in (Light, Water, Soil, etc)
     def getTarget(self, param, parent=None):
         self.Config = ConfigParser()
         self.Config.read(pinout.PATH)
