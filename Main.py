@@ -245,4 +245,4 @@ class target:
 
 
 targets = target() #initialize target setting class
-print(targets.getTarget("WATER"))
+print(targets.getTarget('Water'))
