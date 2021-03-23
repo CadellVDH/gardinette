@@ -242,7 +242,7 @@ class target:
             return 'Failed'
 
         with open(target.PATH, 'w') as configfile: #open pinout.ini as file object
-            Config.write(configfile) #save ini file
+            self.Config.write(configfile) #save ini file
 
 
 targets = target() #initialize target setting class
