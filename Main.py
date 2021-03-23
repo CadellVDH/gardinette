@@ -241,9 +241,9 @@ class target:
             logging.error("Failed to set target value: %s" % e)
             return 'Failed'
 
-        with open(target.PATH, 'w') as configfile: #open pinout.ini as file object
+        with open(target.PATH, 'w+') as configfile: #open pinout.ini as file object
             self.Config.write(configfile) #save ini file
 
 
 targets = target() #initialize target setting class
-#targets.setTarget('Soil', '20')
+targets.setTarget('Soil', '20')
