@@ -249,5 +249,5 @@ class target:
 targets = target() #initialize target setting class
 targets.setTarget('Soil', '20')
 targets.setTarget('Temp', '60')
-targets.setTarget('Hours', '10', , parent='Light')
+targets.setTarget('Hours', '10', parent='Light')
 targets.setTarget('Time', '10:00', parent='Light')
