@@ -186,7 +186,7 @@ class target:
     #Get current directory for target value file
     PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
     PATH = "%s/Data/Target.ini" % PROJECT_DIRECTORY
-
+    print(PATH)
     ##Create an initialization function for creating a default pinout file
     def __init__(self):
         if (os.path.isfile(target.PATH) == False): #check if file already exists
