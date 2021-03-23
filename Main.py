@@ -240,3 +240,6 @@ class target:
 
         self.Config.write(self.configfile) #save ini file
         self.configfile.close()
+
+
+targets = target() #initialize target setting class 
