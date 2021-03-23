@@ -225,7 +225,7 @@ class target:
             else:
                 return self.Config.get(parent, param) #return target based on Target.ini file
         except Exception as e:
-            logging.error("Failed get target value: %s" % e)
+            logging.error("Failed to get target value: %s" % e)
             return None
 
     def setTarget(self, param, value, parent=None):
@@ -237,7 +237,7 @@ class target:
             else:
                 self.Config.set(parent, param, value) #otherise, parent is the section
         except Exception as e:
-            logging.error("Failed set target value: %s" % e)
+            logging.error("Failed to set target value: %s" % e)
             return 'Failed'
 
         self.Config.write(self.configfile) #save ini file
@@ -245,4 +245,4 @@ class target:
 
 
 targets = target() #initialize target setting class
-print(targets.getTarget("water"))
+print(targets.getTarget("WATER"))
