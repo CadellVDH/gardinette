@@ -246,4 +246,4 @@ class target:
 
 
 targets = target() #initialize target setting class
-targets.setTarget('Soil', '20')
+#targets.setTarget('Soil', '20')
