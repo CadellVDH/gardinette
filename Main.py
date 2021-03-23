@@ -186,7 +186,7 @@ class target:
     #Get current directory for target value file
     PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
     PATH = "%s/Data/Target.ini" % PROJECT_DIRECTORY
-    print(PATH)
+
     ##Create an initialization function for creating a default pinout file
     def __init__(self):
         if (os.path.isfile(target.PATH) == False): #check if file already exists
@@ -217,7 +217,7 @@ class target:
     #parent - config section to look in (Light, Water, Soil, etc)
     def getTarget(self, param, parent=None):
         self.Config = ConfigParser()
-        self.Config.read(pinout.PATH)
+        self.Config.read(target.PATH)
 
         try:
             if parent == None:
@@ -229,6 +229,7 @@ class target:
             return None
 
     def setTarget(self, param, value, parent=None):
+        self.configfile = open(target.PATH, "w+")
         self.Config = ConfigParser()
 
         try:
