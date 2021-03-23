@@ -230,6 +230,7 @@ class target:
 
     def setTarget(self, param, value, parent=None):
         self.Config = ConfigParser()
+        self.Config.read(target.PATH)
         self.configfile = open(target.PATH, "w+")
 
         try:
@@ -241,7 +242,7 @@ class target:
             logging.error("Failed to set target value: %s" % e)
             return 'Failed'
 
-        with open(target.PATH, 'w+') as configfile: #open pinout.ini as file object
+        with open(target.PATH, 'w') as configfile: #open pinout.ini as file object
             self.Config.write(configfile) #save ini file
 
 
