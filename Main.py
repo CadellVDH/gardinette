@@ -229,8 +229,8 @@ class target:
             return None
 
     def setTarget(self, param, value, parent=None):
-        self.Config.read(target.PATH)
         self.Config = ConfigParser()
+        self.Config.read(target.PATH)
 
         try:
             if parent == None:
