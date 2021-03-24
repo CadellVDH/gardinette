@@ -47,8 +47,7 @@ targets = target() #initialize target setting class
 while True: #begin main control loop
     #Get current sensor values
     [current_temp, current_humidity] = getTempHumidity(TEMP)
-    current_soil = getSoilMoisture()
-    print(globals())
+    current_soil = getSoilMoisture()ß
 
     dataDisplay = dataGlance() #initialize data glance object
     dataDisplay.start() #start data quick display

@@ -268,6 +268,7 @@ class dataGlance(threading.Thread):
     #Create a function to initialize threads and data variables
     def __init__(self):
         threading.Thread.__init__(self)
+        print(globals())
         self.temp = str(globals()['current_temp'])
         self.humidity = str(globals()['current_humidity'])
         self.soil = str(globals()['current_soil'])
@@ -290,6 +291,6 @@ class dataGlance(threading.Thread):
             time.sleep(10) #sleep 10 seconds
 
             #Update displayed variables
-            self.temp = str(current_temp)
-            self.humidity = str(current_humidity)
-            self.soil = str(current_soil)
+            self.temp = str(globals()['current_temp'])
+            self.humidity = str(globals()['current_humidity'])
+            self.soil = str(globals()['current_soil'])
