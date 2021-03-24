@@ -82,6 +82,8 @@ def menu():
 def param_adjust(choice_list, unit=""):
     timer = 0 #create a timer
     position = 0 #start at position 0
+    pins = pinout() #initialize pinout
+    oled = oled_utility(128, 32, pins.getAddr('OLED')) #initialize OLED display
 
     while timer <= 160: #while elapsed time is less than 20 seonds
         oled.write_center(str(choice_list[position])) #print the current choice to the OLED
