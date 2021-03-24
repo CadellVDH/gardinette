@@ -264,7 +264,10 @@ class dataGlance(threading.Thread):
         while True:
             oled.write_center(self.temp, title="Temp") #write temp
             time.sleep(10) #sleep 10 seconds
+            print("test1")
             oled.write_center(self.humidity, title="Humidity") #write humidity
             time.sleep(10) #sleep 10 seconds
+            print("test2")
             oled.write_center(self.soil, title="Soil") #write soil
             time.sleep(10) #sleep 10 seconds
+            print("test3")
