@@ -44,12 +44,9 @@ pi.set_pull_up_down(BUTTON_THREE, pigpio.PUD_DOWN)
 
 targets = target() #initialize target setting class
 
-while True: #begin main control loop
+#while True: #begin main control loop
     #Get current sensor values
-    [current_temp, current_humidity] = getTempHumidity(TEMP)
-    current_soil = getSoilMoisture()
+[current_temp, current_humidity] = getTempHumidity(TEMP)
+current_soil = getSoilMoisture()
 
-    #Write essential data to OLED
-    oled.write('Temp: %s' % current_temp, 0, 0)
-    oled.write('Humid: %s' % current_humidity, 11, 0)
-    oled.write('Soil: %s' % current_soil, 22, 0)
+dataDisplay = dataGlance(current_temp, current_humidity, current_soil)

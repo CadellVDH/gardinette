@@ -6,6 +6,7 @@ import os #tools for working with the CLI
 import logging #needed for logging
 import pigpio #needed for GPIO control
 import time #needed for function timing
+import threading #needed for OLED data continuous updating
 from pigpio_dht import DHT22 #temp and humidity sensor
 from datetime import datetime #needed for logging
 from PIL import Image, ImageDraw, ImageFont #oled tools
@@ -247,3 +248,23 @@ def getSoilMoisture():
     except Exception as e:
         logging.error("Failed get soil mositure: %s" % e)
         return None #if reading fails return None to indicate failure
+
+#Create a class which displays key data periodically
+class dataGlance(threading.Thread):
+    #Create a function to initialize threads and data variables
+    def __init__(self, temp, humidity, soil):
+        threading.Thread.__init__(self)
+        self.temp = temp
+        self.humidity = humidity
+        self.soil = soil
+
+    #Create a function to run the thread
+    def run(self):
+        #Create a loop to loop through data to display
+        while True:
+            oled.write_center(self.temp, title="Temp") #write temp
+            time.sleep(10) #sleep 10 seconds
+            oled.write_center(self.humidity, title="Humidity") #write humidity
+            time.sleep(10) #sleep 10 seconds
+            oled.write_center(self.soil, title="Soil") #write soil
+            time.sleep(10) #sleep 10 seconds
