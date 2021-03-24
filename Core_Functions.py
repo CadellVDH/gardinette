@@ -266,11 +266,11 @@ def getSoilMoisture():
 #Create a class which displays key data periodically
 class dataGlance(threading.Thread):
     #Create a function to initialize threads and data variables
-    def __init__(self, temp, humidity, soil):
+    def __init__(self):
         threading.Thread.__init__(self)
-        self.temp = str(temp)
-        self.humidity = str(humidity)
-        self.soil = str(soil)
+        self.temp = str(current_temp)
+        self.humidity = str(current_humidity)
+        self.soil = str(current_soil)
 
         self.pins = pinout() #initialize pinout
         self.oled = oled_utility(128, 32, self.pins.getAddr('OLED')) #initialize OLED display
@@ -285,3 +285,8 @@ class dataGlance(threading.Thread):
             time.sleep(10) #sleep 10 seconds
             self.oled.write_center(self.soil, title="Soil") #write soil
             time.sleep(10) #sleep 10 seconds
+            
+            #Update displayed variables
+            self.temp = str(current_temp)
+            self.humidity = str(current_humidity)
+            self.soil = str(current_soil)

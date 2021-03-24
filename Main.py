@@ -44,13 +44,11 @@ pi.set_pull_up_down(BUTTON_THREE, pigpio.PUD_DOWN)
 
 targets = target() #initialize target setting class
 
-#while True: #begin main control loop
+while True: #begin main control loop
     #Get current sensor values
-[current_temp, current_humidity] = getTempHumidity(TEMP)
-current_soil = getSoilMoisture()
+    [current_temp, current_humidity] = getTempHumidity(TEMP)
+    current_soil = getSoilMoisture()
 
-dataDisplay = dataGlance(current_temp, current_humidity, current_soil)
 
-dataDisplay.start()
-
-test = target_select()
+    dataDisplay = dataGlance() #initialize data glance object
+    dataDisplay.start() #start data quick display
