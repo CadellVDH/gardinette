@@ -214,3 +214,30 @@ class target:
 
         with open(target.PATH, 'w') as configfile: #open pinout.ini as file object
             self.Config.write(configfile) #save ini file
+
+#Create a function which returns the current temp and humidity
+def getTempHumidity(pin):
+    DHT_SENSOR = DHT22(pin) #instantiate DHT sensor
+
+    try:
+        result = DHT_SENSOR.sample(samples=3) #attempt to read temp and humidity sensor
+        temperature = result["temp_f"] #get temp separately in F
+        humidity = result["humidity"] #get humidity separately
+        return temperature, humidity
+    except Exception as e:
+        logging.error("Error, Temp and humidity sensor failed to read: %s" % e)
+        return None #if reading fails return None to indicate failure
+
+#Create a function which returns the current soil mositure content
+def getSoilMoisture():
+    Config = ConfigParser() #initialize config parser and file path to get calibration curve
+    Config.read(pinout.PATH)
+
+    try:
+        slope = int(Config.get('Calibration_Constants', slope)) #return slope based on pinout.ini file
+        intercept = int(Config.get('Calibration_Constants', intercept)) #return intercept based on pinout.ini file
+        soil_moisture = adc_read(retry=10)*slope + intercept #calculate soil mositure
+        return soil_moisture
+    except Exception as e:
+        logging.error("Failed get soil mositure: %s" % e)
+        return None
