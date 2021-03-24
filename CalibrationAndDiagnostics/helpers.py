@@ -112,6 +112,8 @@ class oled_utility:
         if (clear == True):
             self.image = Image.new("1", (self.oled.width, self.oled.height)) #create blank image
             self.draw = ImageDraw.Draw(self.image) #draw blank Image
+        else:
+            self.draw = ImageDraw.Draw(self.image) #draw Image
 
         self.font = ImageFont.truetype("%s/fonts/Hack-Regular.ttf" % self.PROJECT_DIRECTORY, font_size) #set to regular font size
 
