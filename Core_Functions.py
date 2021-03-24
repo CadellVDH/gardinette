@@ -268,9 +268,6 @@ class dataGlance(threading.Thread):
     #Create a function to initialize threads and data variables
     def __init__(self):
         threading.Thread.__init__(self)
-        global current_temp
-        global current_humidity
-        global current_soil
         self.temp = str(current_temp)
         self.humidity = str(current_humidity)
         self.soil = str(current_soil)
