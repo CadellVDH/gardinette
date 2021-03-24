@@ -251,7 +251,7 @@ def getSoilMoisture():
     try:
         slope = int(float(Config.get('Calibration_Constants', 'slope'))) #return slope based on pinout.ini file
         intercept = int(float(Config.get('Calibration_Constants', 'intercept'))) #return intercept based on pinout.ini file
-        soil_moisture = (adc_read(retry=10)*slope) + intercept #calculate soil mositure
+        soil_moisture = (adc_read(retry=5)*slope) + intercept #calculate soil mositure
 
         if soil_moisture <= 20:
             soil_moisture = 20 #soil mositure can't be less than 20% due to sensor limitations
@@ -280,12 +280,15 @@ class dataGlance(threading.Thread):
         #Create a loop to loop through data to display
         while True:
             self.oled.write_center(self.temp, title="Temp") #write temp
+            print(current_temp)
             time.sleep(10) #sleep 10 seconds
             self.oled.write_center(self.humidity, title="Humidity") #write humidity
+            print(current_humidity)
             time.sleep(10) #sleep 10 seconds
             self.oled.write_center(self.soil, title="Soil") #write soil
+            print(current_soil)
             time.sleep(10) #sleep 10 seconds
-            
+
             #Update displayed variables
             self.temp = str(current_temp)
             self.humidity = str(current_humidity)
