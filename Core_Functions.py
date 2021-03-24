@@ -83,7 +83,7 @@ def menu():
 
         time.sleep(.25) #1/4 second delay
 
-    return NULL
+    return None
 
 #Create a function for choosing paramater values on the OLED
 def param_adjust(choice_list, unit=""):
@@ -122,15 +122,15 @@ def param_adjust(choice_list, unit=""):
 
         time.sleep(.125) #1/4 second delay
 
-    return NULL
+    return None
 
 #Create a function for the user to adjust box target values
 def target_select():
     menu_choice = menu() #call the menu function to find out what parameter the user wants to adjust
     time.sleep(0.5) #delay so user doesn't accidentally choose first value
 
-    if menu_choice == NULL:
-        return NULL
+    if menu_choice == None:
+        return None
     elif menu_choice.option == "Hours":
         allowed = list(range(1, 24)) #list is 1-24
         return param_adjust(allowed, "Hours"), menu_choice #return the target value and menu node
@@ -162,7 +162,7 @@ def target_select():
         allowed = list(range(10, 90)) #create list of allowed humidities
         return param_adjust(allowed, "%"), menu_choice #return the target value and menu node
     else:
-        return NULL
+        return None
 
 ##Create a class for handling variable target values, including default target values
 class target:
