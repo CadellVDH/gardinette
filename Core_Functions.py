@@ -234,10 +234,10 @@ def getSoilMoisture():
     Config.read(pinout.PATH)
 
     try:
-        slope = int(Config.get('Calibration_Constants', 'slope')) #return slope based on pinout.ini file
-        intercept = int(Config.get('Calibration_Constants', 'intercept')) #return intercept based on pinout.ini file
+        slope = int(float(Config.get('Calibration_Constants', 'slope'))) #return slope based on pinout.ini file
+        intercept = int(float(Config.get('Calibration_Constants', 'intercept'))) #return intercept based on pinout.ini file
         soil_moisture = adc_read(retry=10)*slope + intercept #calculate soil mositure
         return soil_moisture
     except Exception as e:
         logging.error("Failed get soil mositure: %s" % e)
-        return None
+        return None #if reading fails return None to indicate failure 
