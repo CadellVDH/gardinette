@@ -258,7 +258,7 @@ class dataGlance(threading.Thread):
         self.humidity = humidity
         self.soil = soil
         self.pins = pinout() #initialize pinout
-        self.oled = oled_utility(128, 32, pins.getAddr('OLED')) #initialize OLED display
+        self.oled = oled_utility(128, 32, self.pins.getAddr('OLED')) #initialize OLED display
 
     #Create a function to run the thread
     def run(self):
