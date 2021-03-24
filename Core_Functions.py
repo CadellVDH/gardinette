@@ -226,7 +226,7 @@ def getTempHumidity(pin):
         return temperature, humidity
     except Exception as e:
         logging.error("Error, Temp and humidity sensor failed to read: %s" % e)
-        return None #if reading fails return None to indicate failure
+        return None, None #if reading fails return None to indicate failure
 
 #Create a function which returns the current soil mositure content
 def getSoilMoisture():
