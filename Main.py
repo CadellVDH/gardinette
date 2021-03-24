@@ -50,3 +50,5 @@ targets = target() #initialize target setting class
 current_soil = getSoilMoisture()
 
 dataDisplay = dataGlance(current_temp, current_humidity, current_soil)
+
+dataDisplay.start()
