@@ -50,6 +50,9 @@ def menu():
     pins = pinout() #initialize pinout
     oled = oled_utility(128, 32, pins.getAddr('OLED')) #initialize OLED display
     pi = pigpio.pi() #Initialize pigpio
+    BUTTON_ONE = pins.getPin('BUTTON_ONE')
+    BUTTON_TWO = pins.getPin('BUTTON_TWO')
+    BUTTON_THREE = pins.getPin('BUTTON_THREE')
 
     while timer <= 80: #infinite loop while user is actively choosing
         oled.write_center(current_option.children[position].option) #print the current option to the screen
@@ -86,10 +89,13 @@ def menu():
 def param_adjust(choice_list, unit=""):
     timer = 0 #create a timer
     position = 0 #start at position 0
-    
+
     pins = pinout() #initialize pinout
     oled = oled_utility(128, 32, pins.getAddr('OLED')) #initialize OLED display
     pi = pigpio.pi() #Initialize pigpio
+    BUTTON_ONE = pins.getPin('BUTTON_ONE')
+    BUTTON_TWO = pins.getPin('BUTTON_TWO')
+    BUTTON_THREE = pins.getPin('BUTTON_THREE')
 
     while timer <= 160: #while elapsed time is less than 20 seonds
         oled.write_center(str(choice_list[position])) #print the current choice to the OLED
