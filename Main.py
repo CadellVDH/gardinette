@@ -51,5 +51,5 @@ while True: #begin main control loop
 
     #Write essential data to OLED
     oled.write('Temp: %s' % current_temp, 0, 0)
-    oled.write('Humid: %s' % current_humidity, 0, 11)
-    oled.write('Soil: %s' % current_soil, 0, 22)
+    oled.write('Humid: %s' % current_humidity, 11, 0)
+    oled.write('Soil: %s' % current_soil, 22, 0)
