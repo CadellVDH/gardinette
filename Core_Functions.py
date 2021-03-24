@@ -47,6 +47,9 @@ def menu():
     position = 0 #set left/right position
     timer = 0 #start timer
 
+    pins = pinout() #initialize pinout
+    oled = oled_utility(128, 32, pins.getAddr('OLED')) #initialize OLED display
+
     while timer <= 80: #infinite loop while user is actively choosing
         oled.write_center(current_option.children[position].option) #print the current option to the screen
         oled.write("<--", 0, oled.height/2, clear=False) #create left arrow
