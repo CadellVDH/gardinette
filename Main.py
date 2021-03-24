@@ -48,8 +48,9 @@ while True: #begin main control loop
     #Get current sensor values
     global current_temp
     global current_humidity
+    global current_soil
     [current_temp, current_humidity] = getTempHumidity(TEMP)
-    global current_soil = getSoilMoisture()
+    current_soil = getSoilMoisture()
 
 
     dataDisplay = dataGlance() #initialize data glance object
