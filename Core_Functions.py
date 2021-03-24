@@ -257,7 +257,7 @@ class dataGlance(threading.Thread):
         self.temp = str(temp)
         self.humidity = str(humidity)
         self.soil = str(soil)
-        
+
         self.pins = pinout() #initialize pinout
         self.oled = oled_utility(128, 32, self.pins.getAddr('OLED')) #initialize OLED display
 
@@ -267,10 +267,10 @@ class dataGlance(threading.Thread):
         while True:
             self.oled.write_center(self.temp, title="Temp") #write temp
             time.sleep(10) #sleep 10 seconds
-            print("test1")
+            print(self.temp)
             self.oled.write_center(self.humidity, title="Humidity") #write humidity
             time.sleep(10) #sleep 10 seconds
-            print("test2")
+            print(self.humidity)
             self.oled.write_center(self.soil, title="Soil") #write soil
             time.sleep(10) #sleep 10 seconds
-            print("test3")
+            print(self.soil)
