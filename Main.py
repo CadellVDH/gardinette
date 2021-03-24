@@ -69,7 +69,7 @@ root.add_child(menu_tree("Soil")) #Add a child node for soil
 root.add_child(menu_tree("Temp")) #Add a child node for temp
 root.add_child(menu_tree("Humidity")) #Add a child node for humidity
 
-#Create a function for choosing between menu options
+#Create a function for choosing between menu options on the OLED
 def menu():
 
     current_option = root #Set initial option to the root option
@@ -93,7 +93,7 @@ def menu():
             if current_option.children: #if current option has children
                 timer = 0 #reset timer
             else: #if the option has no children, it is the final option
-                break
+                return current_option #and it's node is returned
         elif pi.read(BUTTON_THREE) == True:
             if position < len(current_option.children)-1: #if position is not at the end of the list
                 position += 1 #move one spot to the right
@@ -105,9 +105,9 @@ def menu():
 
         time.sleep(.25) #1/4 second delay
 
-    return current_option #and it's node is returned
+    return NULL
 
-#Create a function for choosing paramater values
+#Create a function for choosing paramater values on the OLED
 def param_adjust(choice_list, unit=""):
     timer = 0 #create a timer
     position = 0 #start at position 0
@@ -126,7 +126,7 @@ def param_adjust(choice_list, unit=""):
 
             timer = 0 #reset timer
         elif pi.read(BUTTON_TWO):
-            break
+            return choice_list[position] #return the chosen value
         elif pi.read(BUTTON_THREE):
             if position < len(choice_list)-1: #if position is not at end of list
                 position += 1 #move right
@@ -137,16 +137,18 @@ def param_adjust(choice_list, unit=""):
 
         time.sleep(.125) #1/4 second delay
 
-    return choice_list[position] #return the chosen value
+    return NULL
 
-#Create a function for the user to adjust box parameters
-def param_select():
+#Create a function for the user to adjust box target values
+def target_select():
     menu_choice = menu() #call the menu function to find out what parameter the user wants to adjust
     time.sleep(0.5) #delay so user doesn't accidentally choose first value
 
-    if menu_choice.option == "Hours":
+    if menu_choice == NULL:
+        return NULL
+    elif menu_choice.option == "Hours":
         allowed = list(range(1, 24)) #list is 1-24
-        return param_adjust(allowed, "Hours")
+        return param_adjust(allowed, "Hours"), menu_choice #return the target value and menu node
     elif menu_choice.option == "Time":
         allowed = [] #empty list
         for i in range(1, 24): #generate list
@@ -155,7 +157,7 @@ def param_select():
                     allowed.append("{}:0{}".format(i,j)) #make list with 0 in front of minute if minute < 10
                 else:
                     allowed.append("{}:{}".format(i,j)) #otherwise make list using only the minute
-        return param_adjust(allowed)
+        return param_adjust(allowed), menu_choice #return the target value and menu node
     elif menu_choice.option == "Water":
         allowed = [] #empty list
         for i in range(1, 24): #generate list
@@ -164,19 +166,84 @@ def param_select():
                     allowed.append("{}:0{}".format(i,j)) #make list with 0 in front of minute if minute < 10
                 else:
                     allowed.append("{}:{}".format(i,j)) #otherwise make list using only the minute
-        print(allowed)
-        return param_adjust(allowed)
+        return param_adjust(allowed), menu_choice #return the target value and menu node
     elif menu_choice.option ==  "Soil":
         allowed = list(range(20, 80)) #create list of allowed soil moistures
-        return param_adjust(allowed, "%")
+        return param_adjust(allowed, "%"), menu_choice #return the target value and menu node
     elif menu_choice.option == "Temp":
         allowed = list(range(60, 90)) #create list of allowed temps
-        return param_adjust(allowed, "F")
+        return param_adjust(allowed, "F"), menu_choice #return the target value and menu node
     elif menu_choice.option == "Humidity":
         allowed = list(range(10, 90)) #create list of allowed humidities
-        return param_adjust(allowed, "%")
+        return param_adjust(allowed, "%"), menu_choice #return the target value and menu node
     else:
         return NULL
 
-print(param_select())
- 
+##Create a class for handling variable target values, including default target values
+class target:
+    'This class creates and accesses the Target.ini file'
+
+    #Get current directory for target value file
+    PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+    PATH = "%s/Data/Target.ini" % PROJECT_DIRECTORY
+
+    ##Create an initialization function for creating a default pinout file
+    def __init__(self):
+        if (os.path.isfile(target.PATH) == False): #check if file already exists
+            self.Target = open(target.PATH, "w+") #create file if none exists
+            self.Target.close()
+
+            self.configfile = open(target.PATH, "w+")
+            self.Config = ConfigParser()
+
+            self.Config.add_section('Water')
+            self.Config.add_section('Soil')
+            self.Config.add_section('Light')
+            self.Config.add_section('Temp')
+            self.Config.add_section('Humidity')
+
+            self.Config.set('Light', 'Hours', '16') #set value of lighting hours in ini file
+            self.Config.set('Light', 'Time', '12:00') #set value of lighting start time in ini file
+            self.Config.set('Water', 'Water', '12:00') #set value of water start time in ini file
+            self.Config.set('Soil', 'Soil', '25') #set value of soil moisture in ini file
+            self.Config.set('Temp', 'Temp', '70') #set value of temperature in ini file
+            self.Config.set('Humidity', 'Humidity', '55') #set value of humidity in ini file
+
+            self.Config.write(self.configfile) #save ini file
+            self.configfile.close()
+
+    #Create a function for getting pins from pinout.ini file
+    #param - parameter to be adjusted (Water, Soil, Hours, etc)
+    #parent - config section to look in (Light, Water, Soil, etc)
+    def getTarget(self, param, parent=None):
+        self.Config = ConfigParser()
+        self.Config.read(target.PATH)
+
+        try:
+            if parent == None:
+                return self.Config.get(param, param) #return target based on Target.ini file
+            else:
+                return self.Config.get(parent, param) #return target based on Target.ini file
+        except Exception as e:
+            logging.error("Failed to get target value: %s" % e)
+            return None
+
+    def setTarget(self, param, value, parent=None):
+        self.Config = ConfigParser()
+        self.Config.read(target.PATH)
+        self.configfile = open(target.PATH, "w+")
+
+        try:
+            if parent == None:
+                self.Config.set(param, param, value) #if param has no parent, param is the parent and also the section
+            else:
+                self.Config.set(parent, param, value) #otherise, parent is the section
+        except Exception as e:
+            logging.error("Failed to set target value: %s" % e)
+            return 'Failed'
+
+        with open(target.PATH, 'w') as configfile: #open pinout.ini as file object
+            self.Config.write(configfile) #save ini file
+
+
+targets = target() #initialize target setting class

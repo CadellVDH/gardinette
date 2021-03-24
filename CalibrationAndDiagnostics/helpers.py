@@ -4,6 +4,7 @@ import board #oled tools
 import adafruit_ssd1306 #oled screen
 import digitalio #oled tools
 import time #adding delays
+import logging #needed for logging
 from configparser import ConfigParser #ini file manipulation
 from statistics import mean #math
 from PIL import Image, ImageDraw, ImageFont #oled tools
@@ -21,11 +22,14 @@ class pinout:
         if (os.path.isfile(pinout.PATH) == False): #check if file already exists
             self.Pinout = open(pinout.PATH, "w+") #create file if none exists
             self.Pinout.close()
+
             self.configfile = open(pinout.PATH, "w+")
             self.Config = ConfigParser()
+
             self.Config.add_section('Pin_Values')
             self.Config.add_section('Address_Values')
             self.Config.add_section('Calibration_Constants')
+
             self.Config.set('Pin_Values', 'FAN_ONE', '13') #set value of FAN_ONE in ini file
             self.Config.set('Pin_Values', 'FAN_TWO', '12') #set value of FAN_TWO in ini file
             self.Config.set('Pin_Values', 'ADC_PIN', '1') #set value of ADC_PIN in ini file
@@ -38,6 +42,7 @@ class pinout:
             self.Config.set('Pin_Values', 'BUTTON_TWO', '16') #set value of BUTTON_TWO in ini file
             self.Config.set('Pin_Values', 'BUTTON_THREE', '6') #set value of BUTTON_THREE in ini file
             self.Config.set('Address_Values', 'OLED', '0x3c') #set value of OLED in ini file
+
             self.Config.write(self.configfile) #save ini file
             self.configfile.close()
 
@@ -47,7 +52,8 @@ class pinout:
         self.Config.read(pinout.PATH)
         try:
             return int(self.Config.get('Pin_Values', pin)) #return pin based on pinout.ini file
-        except:
+        except Exception as e:
+            logging.error("Failed get pin: %s" % e)
             return None
 
     #Create a function for getting address values from pinout.ini file
@@ -56,7 +62,8 @@ class pinout:
         self.Config.read(pinout.PATH)
         try:
             return int(self.Config.get('Address_Values', device), 0) #return base 0 address value
-        except:
+        except Exception as e:
+            logging.error("Failed get address: %s" % e)
             return None
 
 ##Create class for initializing and interacting with the OLED display
