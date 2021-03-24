@@ -107,11 +107,11 @@ class oled_utility:
         self.oled.show() #draw image
 
     ##Create a function for writing messsages at a postion on the screen
-    def write(self, message, x_pos, y_pos, font_size=10):
+    def write(self, message, x_pos, y_pos, font_size=10, clear=True):
 
-        self.image = Image.new("1", (self.oled.width, self.oled.height)) #create blank image
-        self.draw = ImageDraw.Draw(self.image) #draw blank Image
-
+        if (clear == True):
+            self.image = Image.new("1", (self.oled.width, self.oled.height)) #create blank image
+            self.draw = ImageDraw.Draw(self.image) #draw blank Image
 
         self.font = ImageFont.truetype("%s/fonts/Hack-Regular.ttf" % self.PROJECT_DIRECTORY, font_size) #set to regular font size
 
