@@ -243,7 +243,6 @@ def getSoilMoisture():
         elif soil_moisture >= 80:
             soil_moisture = 80 #soil moisture can't be greater than 80% due to sensor limitations
 
-        print(soil_moisture)
         return soil_moisture
     except Exception as e:
         logging.error("Failed get soil mositure: %s" % e)

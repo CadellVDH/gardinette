@@ -50,6 +50,6 @@ while True: #begin main control loop
     current_soil = getSoilMoisture()
 
     #Write essential data to OLED
-    oled.write('Temp: %s' % current_temp, 0, 0)
-    oled.write('Humid: %s' % current_humidity, 11, 0)
-    oled.write('Soil: %s' % current_soil, 22, 0)
+    oled.write('Temp: %s' % current_temp, 0, 0, clear=False)
+    oled.write('Humid: %s' % current_humidity, 11, 0, clear=False)
+    oled.write('Soil: %s' % current_soil, 22, 0, clear=False)
