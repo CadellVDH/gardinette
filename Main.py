@@ -52,3 +52,5 @@ current_soil = getSoilMoisture()
 dataDisplay = dataGlance(current_temp, current_humidity, current_soil)
 
 dataDisplay.start()
+
+test = target_select()
