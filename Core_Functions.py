@@ -257,17 +257,18 @@ class dataGlance(threading.Thread):
         self.temp = temp
         self.humidity = humidity
         self.soil = soil
+        self.oled = oled_utility(128, 32, pins.getAddr('OLED')) #initialize OLED display
 
     #Create a function to run the thread
     def run(self):
         #Create a loop to loop through data to display
         while True:
-            oled.write_center(self.temp, title="Temp") #write temp
+            self.oled.write_center(self.temp, title="Temp") #write temp
             time.sleep(10) #sleep 10 seconds
             print("test1")
-            oled.write_center(self.humidity, title="Humidity") #write humidity
+            self.oled.write_center(self.humidity, title="Humidity") #write humidity
             time.sleep(10) #sleep 10 seconds
             print("test2")
-            oled.write_center(self.soil, title="Soil") #write soil
+            self.oled.write_center(self.soil, title="Soil") #write soil
             time.sleep(10) #sleep 10 seconds
             print("test3")
