@@ -254,9 +254,10 @@ class dataGlance(threading.Thread):
     #Create a function to initialize threads and data variables
     def __init__(self, temp, humidity, soil):
         threading.Thread.__init__(self)
-        self.temp = temp
-        self.humidity = humidity
-        self.soil = soil
+        self.temp = str(temp)
+        self.humidity = str(humidity)
+        self.soil = str(soil)
+        
         self.pins = pinout() #initialize pinout
         self.oled = oled_utility(128, 32, self.pins.getAddr('OLED')) #initialize OLED display
 
