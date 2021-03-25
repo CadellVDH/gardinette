@@ -7,7 +7,7 @@ import logging #needed for logging
 import pigpio #needed for GPIO control
 import time #needed for function timing
 import threading #needed for OLED data continuous updating
-import config #import global variable initialization module
+import config as global_vars #import global variable initialization module
 from pigpio_dht import DHT22 #temp and humidity sensor
 from datetime import datetime #needed for logging
 from PIL import Image, ImageDraw, ImageFont #oled tools
@@ -276,13 +276,12 @@ class dataGlance(threading.Thread):
     def run(self):
         #Create a loop to loop through data to display
         while True:
-            print(globals())
-            self.oled.write_center(current_temp, title="Temp") #write temp
+            self.oled.write_center(global_vars.current_temp, title="Temp") #write temp
             print(current_temp)
             time.sleep(10) #sleep 10 seconds
-            self.oled.write_center(current_humidity, title="Humidity") #write humidity
+            self.oled.write_center(global_vars.current_humidity, title="Humidity") #write humidity
             print(current_humidity)
             time.sleep(10) #sleep 10 seconds
-            self.oled.write_center(current_soil, title="Soil") #write soil
+            self.oled.write_center(global_vars.current_soil, title="Soil") #write soil
             print(current_soil)
             time.sleep(10) #sleep 10 seconds

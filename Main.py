@@ -6,14 +6,12 @@ import os #tools for working with the CLI
 import logging #needed for logging
 import pigpio #needed for GPIO control
 import time #needed for function timing
-import config #import global variable initialization module
+import config as global_vars #import global variable initialization module
 from pigpio_dht import DHT22 #temp and humidity sensor
 from datetime import datetime #needed for logging
 from PIL import Image, ImageDraw, ImageFont #oled tools
 from CalibrationAndDiagnostics.helpers import * #import helper functions and classes
 from Core_Functions import * #import core functions and classes
-
-config.global_init() #initialize global variables
 
 pins = pinout() #initialize pinout
 oled = oled_utility(128, 32, pins.getAddr('OLED')) #initialize OLED display
@@ -51,7 +49,6 @@ targets = target() #initialize target setting class
 #     #Get current sensor values
 #     [current_temp, current_humidity] = getTempHumidity(TEMP)
 #     current_soil = getSoilMoisture()``
-print(globals())
 
 dataDisplay = dataGlance() #initialize data glance object
 dataDisplay.start() #start data quick display
