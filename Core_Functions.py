@@ -276,6 +276,7 @@ class dataGlance(threading.Thread):
     def run(self):
         #Create a loop to loop through data to display
         while True:
+            print(globals())
             self.oled.write_center(current_temp, title="Temp") #write temp
             print(current_temp)
             time.sleep(10) #sleep 10 seconds
