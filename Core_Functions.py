@@ -7,6 +7,7 @@ import logging #needed for logging
 import pigpio #needed for GPIO control
 import time #needed for function timing
 import threading #needed for OLED data continuous updating
+import config #import global variable initialization module
 from pigpio_dht import DHT22 #temp and humidity sensor
 from datetime import datetime #needed for logging
 from PIL import Image, ImageDraw, ImageFont #oled tools
@@ -268,11 +269,6 @@ class dataGlance(threading.Thread):
     #Create a function to initialize threads and data variables
     def __init__(self):
         threading.Thread.__init__(self)
-        print(globals())
-        self.temp = str(globals()['current_temp'])
-        self.humidity = str(globals()['current_humidity'])
-        self.soil = str(globals()['current_soil'])
-
         self.pins = pinout() #initialize pinout
         self.oled = oled_utility(128, 32, self.pins.getAddr('OLED')) #initialize OLED display
 
@@ -280,17 +276,12 @@ class dataGlance(threading.Thread):
     def run(self):
         #Create a loop to loop through data to display
         while True:
-            self.oled.write_center(self.temp, title="Temp") #write temp
+            self.oled.write_center(current_temp, title="Temp") #write temp
             print(current_temp)
             time.sleep(10) #sleep 10 seconds
-            self.oled.write_center(self.humidity, title="Humidity") #write humidity
+            self.oled.write_center(current_humidity, title="Humidity") #write humidity
             print(current_humidity)
             time.sleep(10) #sleep 10 seconds
-            self.oled.write_center(self.soil, title="Soil") #write soil
+            self.oled.write_center(current_soil, title="Soil") #write soil
             print(current_soil)
             time.sleep(10) #sleep 10 seconds
-
-            #Update displayed variables
-            self.temp = str(globals()['current_temp'])
-            self.humidity = str(globals()['current_humidity'])
-            self.soil = str(globals()['current_soil'])
