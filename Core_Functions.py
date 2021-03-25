@@ -277,11 +277,11 @@ class dataGlance(threading.Thread):
         #Create a loop to loop through data to display
         while True:
             self.oled.write_center(global_vars.current_temp, title="Temp") #write temp
-            print(current_temp)
+            print(global_vars.current_temp)
             time.sleep(10) #sleep 10 seconds
             self.oled.write_center(global_vars.current_humidity, title="Humidity") #write humidity
-            print(current_humidity)
+            print(global_vars.current_humidity)
             time.sleep(10) #sleep 10 seconds
             self.oled.write_center(global_vars.current_soil, title="Soil") #write soil
-            print(current_soil)
+            print(global_vars.current_soil)
             time.sleep(10) #sleep 10 seconds

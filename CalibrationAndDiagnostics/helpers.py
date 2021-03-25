@@ -101,7 +101,7 @@ class oled_utility:
         (self.font_width, self.font_height) = self.font.getsize(message) #get font width and height
         self.x_pos = self.width // 2 - self.font_width // 2 #move text to center
         self.y_pos = self.height // 2 - self.font_height // 2 #move text to center
-        self.draw.text((self.x_pos, self.y_pos), message, font=self.font, fill=255) #draw message at position
+        self.draw.text((self.x_pos, self.y_pos), str(message), font=self.font, fill=255) #draw message at position
 
         self.oled.image(self.image) #create image
         self.oled.show() #draw image
@@ -118,7 +118,7 @@ class oled_utility:
         self.x_pos = x_pos #set desired x and y position
         self.y_pos = y_pos
 
-        self.draw.text((self.x_pos, self.y_pos), message, font=self.font, fill=255) #draw message at position
+        self.draw.text((self.x_pos, self.y_pos), str(message), font=self.font, fill=255) #draw message at position
 
         self.oled.image(self.image) #create image
         self.oled.show() #draw image
