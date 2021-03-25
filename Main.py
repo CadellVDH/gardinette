@@ -51,6 +51,7 @@ targets = target() #initialize target setting class
 #     #Get current sensor values
 #     [current_temp, current_humidity] = getTempHumidity(TEMP)
 #     current_soil = getSoilMoisture()``
+print(globals())
 
 dataDisplay = dataGlance() #initialize data glance object
 dataDisplay.start() #start data quick display

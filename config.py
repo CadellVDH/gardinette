@@ -8,4 +8,6 @@ def global_init():
     #intialize all to 0
     current_temp = 0
     current_humidity = 0
-    current_soil = 0 
+    current_soil = 0
+
+    print(globals())
