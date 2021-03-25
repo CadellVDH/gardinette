@@ -50,5 +50,8 @@ dataDisplay.start() #start data quick display
 
 while True: #begin main control loop
     #Get current sensor values
-    [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(TEMP)
-    global_vars.current_soil = getSoilMoisture()
+    try:
+        [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(TEMP)
+        global_vars.current_soil = getSoilMoisture()
+    except Exception as e:
+        logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
