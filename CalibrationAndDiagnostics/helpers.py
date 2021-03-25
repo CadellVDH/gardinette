@@ -98,7 +98,7 @@ class oled_utility:
 
         self.font = ImageFont.truetype("%s/fonts/Hack-Regular.ttf" % self.PROJECT_DIRECTORY, font_size) #set to regular font size
 
-        (self.font_width, self.font_height) = self.font.getsize(message) #get font width and height
+        (self.font_width, self.font_height) = self.font.getsize(str(message)) #get font width and height
         self.x_pos = self.width // 2 - self.font_width // 2 #move text to center
         self.y_pos = self.height // 2 - self.font_height // 2 #move text to center
         self.draw.text((self.x_pos, self.y_pos), str(message), font=self.font, fill=255) #draw message at position
