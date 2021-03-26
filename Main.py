@@ -48,10 +48,13 @@ targets = target() #initialize target setting class
 dataDisplay = dataGlance() #initialize data glance object
 dataDisplay.start() #start data quick display
 
+#Initialize DHT 22
+DHT_SENSOR = DHT22(TEMP)
+
 while True: #begin main control loop
     #Get current sensor values
     try:
-        [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(TEMP)
+        [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(DHT_SENSOR)
         global_vars.current_soil = getSoilMoisture()
     except Exception as e:
         logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading

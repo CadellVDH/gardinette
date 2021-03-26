@@ -232,8 +232,7 @@ class target:
             self.Config.write(configfile) #save ini file
 
 #Create a function which returns the current temp and humidity
-def getTempHumidity(pin):
-    DHT_SENSOR = DHT22(pin) #instantiate DHT sensor
+def getTempHumidity(DHT_SENSOR):
 
     try:
         result = DHT_SENSOR.sample(samples=3) #attempt to read temp and humidity sensor
