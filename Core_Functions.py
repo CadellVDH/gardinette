@@ -251,7 +251,7 @@ def getSoilMoisture():
     try:
         slope = int(float(Config.get('Calibration_Constants', 'slope'))) #return slope based on pinout.ini file
         intercept = int(float(Config.get('Calibration_Constants', 'intercept'))) #return intercept based on pinout.ini file
-        soil_moisture = (adc_read(retry=5)-intercept)/intercept #calculate soil mositure
+        soil_moisture = (adc_read(retry=5)-intercept)/slope #calculate soil mositure
 
         if soil_moisture <= 20:
             soil_moisture = 20 #soil mositure can't be less than 20% due to sensor limitations
