@@ -236,8 +236,8 @@ def getTempHumidity(DHT_SENSOR):
 
     try:
         result = DHT_SENSOR.sample(samples=3) #attempt to read temp and humidity sensor
-        temperature = result["temp_f"] #get temp separately in F
-        humidity = result["humidity"] #get humidity separately
+        temperature = int(result["temp_f"]) #get temp separately in F
+        humidity = int(result["humidity"]) #get humidity separately
         return temperature, humidity
     except Exception as e:
         logging.error("Error, Temp and humidity sensor failed to read: %s" % e)
@@ -251,7 +251,7 @@ def getSoilMoisture():
     try:
         slope = int(float(Config.get('Calibration_Constants', 'slope'))) #return slope based on pinout.ini file
         intercept = int(float(Config.get('Calibration_Constants', 'intercept'))) #return intercept based on pinout.ini file
-        soil_moisture = (adc_read(retry=5)-intercept)/slope #calculate soil mositure
+        soil_moisture = int((adc_read(retry=5)-intercept)/slope) #calculate soil mositure and convert to integer
 
         if soil_moisture <= 20:
             soil_moisture = 20 #soil mositure can't be less than 20% due to sensor limitations
@@ -276,11 +276,11 @@ class dataGlance(threading.Thread):
         #Create a loop to loop through data to display
         while True:
             self.oled.write_center(global_vars.current_temp, title="Temp") #write temp
-            print(global_vars.current_temp)
+            print("Temp: %s" % ": %s" % global_vars.current_temp)
             time.sleep(10) #sleep 10 seconds
             self.oled.write_center(global_vars.current_humidity, title="Humidity") #write humidity
-            print(global_vars.current_humidity)
+            print("Humidity: %s" % global_vars.current_humidity)
             time.sleep(10) #sleep 10 seconds
             self.oled.write_center(global_vars.current_soil, title="Soil") #write soil
-            print(global_vars.current_soil)
+            print("Soil: %s" % global_vars.current_soil)
             time.sleep(10) #sleep 10 seconds
