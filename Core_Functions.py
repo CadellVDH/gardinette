@@ -241,7 +241,7 @@ def getTempHumidity(DHT_SENSOR):
         return temperature, humidity
     except Exception as e:
         logging.error("Error, Temp and humidity sensor failed to read: %s" % e)
-        return global_vars.temperature, global_vars.humidity #if reading fails return None to indicate failure
+        return global_vars.current_temperature, global_vars.current_humidity #if reading fails return None to indicate failure
 
 #Create a function which returns the current soil mositure content
 def getSoilMoisture():
