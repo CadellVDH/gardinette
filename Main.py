@@ -65,3 +65,5 @@ while True: #begin main control loop
         global_vars.current_soil = getSoilMoisture()
     except Exception as e:
         logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
+
+    time.sleep(10) #10 second delay for sensor read buffer
