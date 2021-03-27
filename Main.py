@@ -45,11 +45,8 @@ pi.set_pull_up_down(BUTTON_THREE, pigpio.PUD_DOWN)
 
 targets = target() #initialize target setting class
 
-#Initialize DHT 22
-DHT_SENSOR = DHT22(TEMP)
-
-dataCollect = dataCollect() #initialize data collect object
-dataCollect.start() #begin running the data collection thread 
+dataCollect = dataCollect(TEMP) #initialize data collect object
+dataCollect.start() #begin running the data collection thread
 
 dataGlance = dataGlance() #initialize data glance object
 dataGlance.start() #start data quick display

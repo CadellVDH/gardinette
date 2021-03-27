@@ -285,8 +285,10 @@ class dataGlance(threading.Thread):
 #Create a class which collects and stores data as fast as the sensors allow
 class dataCollect(threading.Thread):
     #Create a function to initialize thread and data variables
-    def __init__(self):
+    def __init__(self, TEMP):
         threading.Thread.__init__(self)
+        #Initialize DHT 22
+        DHT_SENSOR = DHT22(TEMP)
         #Attempt to initialize sensor data
         try:
             [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(DHT_SENSOR)
