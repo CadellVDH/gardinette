@@ -281,3 +281,26 @@ class dataGlance(threading.Thread):
             time.sleep(10) #sleep 10 seconds
             self.oled.write_center(global_vars.current_soil, title="Soil") #write soil
             time.sleep(10) #sleep 10 seconds
+
+#Create a class which collects and stores data as fast as the sensors allow
+class dataCollect(threading.Thread):
+    #Create a function to initialize thread and data variables
+    def __init__(self):
+        threading.Thread.__init__(self)
+        #Attempt to initialize sensor data
+        try:
+            [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(DHT_SENSOR)
+            global_vars.current_soil = getSoilMoisture()
+        except Exception as e:
+            logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
+
+    #Create a function to run the thread
+    def run(self):
+        #Create a loop to constantly check and update the sensor data values
+        while True:
+            #Get current sensor values
+            try:
+                [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(DHT_SENSOR)
+                global_vars.current_soil = getSoilMoisture()
+            except Exception as e:
+                logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading

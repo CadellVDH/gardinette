@@ -48,22 +48,12 @@ targets = target() #initialize target setting class
 #Initialize DHT 22
 DHT_SENSOR = DHT22(TEMP)
 
-#Attempt to initialize sensor data
-try:
-    [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(DHT_SENSOR)
-    global_vars.current_soil = getSoilMoisture()
-except Exception as e:
-    logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
+dataCollect = dataCollect() #initialize data collect object
+dataCollect.start() #begin running the data collection thread 
 
-dataDisplay = dataGlance() #initialize data glance object
-dataDisplay.start() #start data quick display
+dataGlance = dataGlance() #initialize data glance object
+dataGlance.start() #start data quick display
 
 while True: #begin main control loop
-    #Get current sensor values
-    try:
-        [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(DHT_SENSOR)
-        global_vars.current_soil = getSoilMoisture()
-    except Exception as e:
-        logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
 
-    time.sleep(10) #10 second delay for sensor read buffer
+    time.sleep(0.1) #delay to prevent button bouncing
