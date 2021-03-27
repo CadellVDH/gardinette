@@ -288,10 +288,10 @@ class dataCollect(threading.Thread):
     def __init__(self, TEMP):
         threading.Thread.__init__(self)
         #Initialize DHT 22
-        DHT_SENSOR = DHT22(TEMP)
+        self.DHT_SENSOR = DHT22(TEMP)
         #Attempt to initialize sensor data
         try:
-            [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(DHT_SENSOR)
+            [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(self.DHT_SENSOR)
             global_vars.current_soil = getSoilMoisture()
         except Exception as e:
             logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
@@ -302,7 +302,7 @@ class dataCollect(threading.Thread):
         while True:
             #Get current sensor values
             try:
-                [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(DHT_SENSOR)
+                [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(self.DHT_SENSOR)
                 global_vars.current_soil = getSoilMoisture()
             except Exception as e:
                 logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
