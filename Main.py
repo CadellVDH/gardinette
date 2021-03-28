@@ -42,19 +42,27 @@ pi.set_pull_up_down(BUTTON_ONE, pigpio.PUD_DOWN)
 pi.set_pull_up_down(BUTTON_TWO, pigpio.PUD_DOWN)
 pi.set_pull_up_down(BUTTON_THREE, pigpio.PUD_DOWN)
 
-targets = target() #initialize target setting class
-
 dataCollect = dataCollect(TEMP, FLOAT) #initialize data collect object
 dataCollect.start() #begin running the data collection thread
 
 dataGlance = dataGlance() #initialize data glance object
 dataGlance.start() #start data quick display
 
+targetAdjust = targetAdjust() #initialize target adjustment thread
+
 while True: #begin main control loop
+    #Check if any button has been pressed and wake to menu screen
+    if pi.read(BUTTON_ONE) == True or pi.read(BUTTON_TWO) == True or pi.read(BUTTON_THREE) == True:
+        if dataGlance.isAlive() == True:
+            global_vars.data_glance_exit_flag = True #if data glance is running, kill it
+        time.sleep(0.1) #delay for cleanup
+        targetAdjust.start() #start targetAdjust thread
+
     #Check if threads are alive and restart them if they have stopped
     if dataCollect.isAlive() == False:
         dataCollect.start()
-    if dataGlance.isAlive() == False:
+    if dataGlance.isAlive() == False and targetAdjust.isAlive() == False:
+        global_vars.data_glance_exit_flag = False
         dataGlance.start()
 
-    time.sleep(0.1) #delay to prevent button bouncing
+    time.sleep(0.2) #delay to prevent button bouncing

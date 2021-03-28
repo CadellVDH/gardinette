@@ -268,10 +268,10 @@ def getFloat(pi, FLOAT):
     try:
         return pi.read(FLOAT)
     except Exception as e:
-        logging.error("Failed to gett float sensor value: %s" % e)
+        logging.error("Failed to get float sensor value: %s" % e)
         return None #if reading fails return None to indicate failure
 
-#Create a class which displays key data periodically
+##Create a class which displays key data periodically
 class dataGlance(threading.Thread):
     #Create a function to initialize threads and data variables
     def __init__(self):
@@ -282,15 +282,30 @@ class dataGlance(threading.Thread):
     #Create a function to run the thread
     def run(self):
         #Create a loop to loop through data to display
-        while True:
+        while global_vars.data_glance_exit_flag == False:
             self.oled.write_center(global_vars.current_temp, title="Temp") #write temp
-            time.sleep(10) #sleep 10 seconds
+            for i in range(0, 1000): #Create controlled delay which intermittently checks for exit flag
+                if global_vars.data_glance_exit_flag == False:
+                    i = i + 1
+                    time.sleep(0.01)
+                else:
+                    break
             self.oled.write_center(global_vars.current_humidity, title="Humidity") #write humidity
-            time.sleep(10) #sleep 10 seconds
+            for i in range(0, 1000): #Create controlled delay which intermittently checks for exit flag
+                if global_vars.data_glance_exit_flag == False:
+                    i = i + 1
+                    time.sleep(0.01)
+                else:
+                    break
             self.oled.write_center(global_vars.current_soil, title="Soil") #write soil
-            time.sleep(10) #sleep 10 seconds
+            for i in range(0, 1000): #Create controlled delay which intermittently checks for exit flag
+                if global_vars.data_glance_exit_flag == False:
+                    i = i + 1
+                    time.sleep(0.01)
+                else:
+                    break
 
-#Create a class which collects and stores data as fast as the sensors allow
+##Create a class which collects and stores data as fast as the sensors allow
 class dataCollect(threading.Thread):
     #Create a function to initialize thread and data variables
     def __init__(self, TEMP, FLOAT):
@@ -322,3 +337,18 @@ class dataCollect(threading.Thread):
                 global_vars.current_float = getFloat(self.pi, self.FLOAT)
             except Exception as e:
                 logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
+
+##Create a class which adjusts target parameters on the OLED and stores the values
+class targetAdjust():
+    #Create a function to initialize the thread and target object
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.target = target() #create instance of target object
+
+    def run(self):
+        [self.user_choice, self.node] = target_select()
+        if self.user_choice != None: #if user selected a value
+                  if self.node.parent.option == "Light": #If the parent is light, be sure to include it in the ini file update
+                      self.target.setTarget(self.node.option, self.user_choice, parent="Light")
+                  else: #otherwise include only the parameter and value
+                    self.target.setTarget(self.node.option, self.user_choice)
