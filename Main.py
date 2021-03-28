@@ -48,6 +48,9 @@ dataCollect.start() #begin running the data collection thread
 dataGlance = dataGlance() #initialize data glance object
 dataGlance.start() #start data quick display
 
+pumpControl = pumpControl(PUMP) #intialize pumpControl object
+pumpControl.start() #start pumpControl thread
+
 targetAdjust = targetAdjust() #initialize target adjustment thread
 
 while True: #begin main control loop
@@ -61,6 +64,8 @@ while True: #begin main control loop
     #Check if threads are alive and restart them if they have stopped
     if dataCollect.isAlive() == False:
         dataCollect.start()
+    if pumpControl.isAlive() == False:
+        pumpControl.start()
     if dataGlance.isAlive() == False and targetAdjust.isAlive() == False:
         global_vars.data_glance_exit_flag = False
         dataGlance.start()
