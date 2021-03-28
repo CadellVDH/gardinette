@@ -288,7 +288,7 @@ class dataGlance(threading.Thread):
         #Create a loop to loop through data to display
         while global_vars.data_glance_exit_flag == False:
             self.oled.write_center(global_vars.current_temp, title="Temp") #write temp
-            print("Temp: %s" % global_vars.current_temp)
+            #print("Temp: %s" % global_vars.current_temp)
             for i in range(0, 1000): #Create controlled delay which intermittently checks for exit flag
                 if global_vars.data_glance_exit_flag == False:
                     i = i + 1
@@ -296,7 +296,7 @@ class dataGlance(threading.Thread):
                 else:
                     break
             self.oled.write_center(global_vars.current_humidity, title="Humidity") #write humidity
-            print("Humididty: %s" % global_vars.current_humidity)
+            #print("Humididty: %s" % global_vars.current_humidity)
             for i in range(0, 1000): #Create controlled delay which intermittently checks for exit flag
                 if global_vars.data_glance_exit_flag == False:
                     i = i + 1
@@ -304,7 +304,7 @@ class dataGlance(threading.Thread):
                 else:
                     break
             self.oled.write_center(global_vars.current_soil, title="Soil") #write soil
-            print("Soil: %s" % global_vars.current_soil)
+            #print("Soil: %s" % global_vars.current_soil)
             for i in range(0, 1000): #Create controlled delay which intermittently checks for exit flag
                 if global_vars.data_glance_exit_flag == False:
                     i = i + 1
@@ -382,6 +382,7 @@ class pumpControl:
 
                     #run the pump until the timer hits 30 seconds or the current soil moisture is greater than the target
                     while t <= 30 and global_vars.current_soil<target_soil:
+                        print("pumping")
                         self.pi.write(self.pump, 1) #run pump
                         t = t + 1 #increase timer
                         time.sleep(1) #1 second delay
@@ -390,4 +391,4 @@ class pumpControl:
                 else:
                     pi.write(self.pump, 0) #turn pump off as double check
             else:
-                pi.write(self.pump, 0) #turn pump off as double check 
+                pi.write(self.pump, 0) #turn pump off as double check
