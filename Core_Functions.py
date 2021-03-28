@@ -378,7 +378,7 @@ class pumpControl(threading.Thread):
             target_time = self.target.getTarget("Water") #store target time
             print(current_time)
             print(global_vars.current_float)
-            print(pi.connected)
+            print(self.pi.connected)
             if global_vars.current_float != 0: #if the float sensor is floating
                 if current_time == target_time:
                     target_soil = self.target.getTarget("Soil") #get target soil moisture value
