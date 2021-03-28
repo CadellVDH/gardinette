@@ -9,7 +9,7 @@ import time #needed for function timing
 import threading #needed for OLED data continuous updating
 import config as global_vars #import global variable initialization module
 from pigpio_dht import DHT22 #temp and humidity sensor
-from datetime #needed for control timing
+from datetime import datetime #needed for control timing
 from PIL import Image, ImageDraw, ImageFont #oled tools
 from CalibrationAndDiagnostics.helpers import * #import helper functions and classes
 
