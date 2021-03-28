@@ -263,6 +263,14 @@ def getSoilMoisture():
         logging.error("Failed get soil mositure: %s" % e)
         return None #if reading fails return None to indicate failure
 
+#Create a function which returns the float sensor value
+def getFloat(pi, FLOAT):
+    try:
+        return pi.read(FLOAT)
+    except Exception as e:
+        logging.error("Failed to gett float sensor value: %s" % e)
+        return None #if reading fails return None to indicate failure
+
 #Create a class which displays key data periodically
 class dataGlance(threading.Thread):
     #Create a function to initialize threads and data variables
@@ -285,14 +293,21 @@ class dataGlance(threading.Thread):
 #Create a class which collects and stores data as fast as the sensors allow
 class dataCollect(threading.Thread):
     #Create a function to initialize thread and data variables
-    def __init__(self, TEMP):
+    def __init__(self, TEMP, FLOAT):
         threading.Thread.__init__(self)
+        self.FLOAT = FLOAT
+
         #Initialize DHT 22
         self.DHT_SENSOR = DHT22(TEMP)
+
+        #initialize pigpio
+        self.pi = pigpio.pi() #Initialize pigpio
+
         #Attempt to initialize sensor data
         try:
             [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(self.DHT_SENSOR)
             global_vars.current_soil = getSoilMoisture()
+            global_vars.current_float = getFloat(self.pi, self.FLOAT)
         except Exception as e:
             logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
 
@@ -304,5 +319,6 @@ class dataCollect(threading.Thread):
             try:
                 [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(self.DHT_SENSOR)
                 global_vars.current_soil = getSoilMoisture()
+                global_vars.current_float = getFloat(self.pi, self.FLOAT)
             except Exception as e:
                 logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading

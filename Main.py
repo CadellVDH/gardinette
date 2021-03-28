@@ -14,7 +14,6 @@ from CalibrationAndDiagnostics.helpers import * #import helper functions and cla
 from Core_Functions import * #import core functions and classes
 
 pins = pinout() #initialize pinout
-oled = oled_utility(128, 32, pins.getAddr('OLED')) #initialize OLED display
 pi = pigpio.pi() #Initialize pigpio
 
 #Create constants for all pin numbers
@@ -52,5 +51,10 @@ dataGlance = dataGlance() #initialize data glance object
 dataGlance.start() #start data quick display
 
 while True: #begin main control loop
+    #Check if threads are alive and restart them if they have stopped
+    if dataCollect.isAlive() == False:
+        dataCollect.start()
+    if dataGlance.isAlive() == False:
+        dataGlance.start()
 
     time.sleep(0.1) #delay to prevent button bouncing
