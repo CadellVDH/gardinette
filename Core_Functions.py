@@ -320,6 +320,5 @@ class dataCollect(threading.Thread):
                 [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(self.DHT_SENSOR)
                 global_vars.current_soil = getSoilMoisture()
                 global_vars.current_float = getFloat(self.pi, self.FLOAT)
-                print(global_vars.current_float)
             except Exception as e:
                 logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
