@@ -64,11 +64,14 @@ while True: #begin main control loop
 
     #Check if threads are alive and restart them if they have stopped
     if dataCollect.isAlive() == False:
+        dataCollect = dataCollect(TEMP, FLOAT) #initialize data collect object
         dataCollect.start()
     if pumpControl.isAlive() == False:
+        pumpControl = pumpControl(PUMP) #intialize pumpControl object
         pumpControl.start()
     if dataGlance.isAlive() == False and targetAdjust.isAlive() == False:
         global_vars.data_glance_exit_flag = False
+        dataGlance = dataGlance() #initialize data glance object
         dataGlance.start()
 
     time.sleep(0.2) #delay to prevent button bouncing
