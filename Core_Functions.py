@@ -284,6 +284,7 @@ class dataGlance(threading.Thread):
         #Create a loop to loop through data to display
         while global_vars.data_glance_exit_flag == False:
             self.oled.write_center(global_vars.current_temp, title="Temp") #write temp
+            print("Temp: %s" % global_vars.current_temp)
             for i in range(0, 1000): #Create controlled delay which intermittently checks for exit flag
                 if global_vars.data_glance_exit_flag == False:
                     i = i + 1
@@ -291,6 +292,7 @@ class dataGlance(threading.Thread):
                 else:
                     break
             self.oled.write_center(global_vars.current_humidity, title="Humidity") #write humidity
+            print("Humididty: %s" % global_vars.current_humidity)
             for i in range(0, 1000): #Create controlled delay which intermittently checks for exit flag
                 if global_vars.data_glance_exit_flag == False:
                     i = i + 1
@@ -298,6 +300,7 @@ class dataGlance(threading.Thread):
                 else:
                     break
             self.oled.write_center(global_vars.current_soil, title="Soil") #write soil
+            print("Soil: %s" % global_vars.current_soil)
             for i in range(0, 1000): #Create controlled delay which intermittently checks for exit flag
                 if global_vars.data_glance_exit_flag == False:
                     i = i + 1
