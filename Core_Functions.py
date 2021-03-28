@@ -389,8 +389,8 @@ class pumpControl(threading.Thread):
                         self.pi.write(self.pump, 1) #run pump
                         t = t + 1 #increase timer
                         time.sleep(1) #1 second delay
-
                     self.pi.write(self.pump, 0) #turn pump back off
+                    time.sleep(30)
                 else:
                     self.pi.write(self.pump, 0) #turn pump off as double check
             else:
