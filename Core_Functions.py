@@ -9,7 +9,7 @@ import time #needed for function timing
 import threading #needed for OLED data continuous updating
 import config as global_vars #import global variable initialization module
 from pigpio_dht import DHT22 #temp and humidity sensor
-from datetime import datetime #needed for logging
+from datetime #needed for control timing
 from PIL import Image, ImageDraw, ImageFont #oled tools
 from CalibrationAndDiagnostics.helpers import * #import helper functions and classes
 
@@ -198,7 +198,7 @@ class target:
             self.Config.write(self.configfile) #save ini file
             self.configfile.close()
 
-    #Create a function for getting pins from pinout.ini file
+    #Create a function for getting target values from the Target.ini file
     #param - parameter to be adjusted (Water, Soil, Hours, etc)
     #parent - config section to look in (Light, Water, Soil, etc)
     def getTarget(self, param, parent=None):
@@ -214,6 +214,10 @@ class target:
             logging.error("Failed to get target value: %s" % e)
             return None
 
+    #Create a function for setting values in the Target.ini file
+    #param - parameter to be adjusted (Water, Soil, Hours, etc)
+    #value - new target value to be added
+    #parent - config section to look in (Light, Water, Soil, etc)
     def setTarget(self, param, value, parent=None):
         self.Config = ConfigParser()
         self.Config.read(target.PATH)
@@ -251,7 +255,7 @@ def getSoilMoisture():
     try:
         slope = int(float(Config.get('Calibration_Constants', 'slope'))) #return slope based on pinout.ini file
         intercept = int(float(Config.get('Calibration_Constants', 'intercept'))) #return intercept based on pinout.ini file
-        soil_moisture = int((adc_read(retry=5)-intercept)/slope) #calculate soil mositure and convert to integer
+        soil_moisture = int((adc_read(retry=3)-intercept)/slope) #calculate soil mositure and convert to integer
 
         if soil_moisture <= 20:
             soil_moisture = 20 #soil mositure can't be less than 20% due to sensor limitations
@@ -341,13 +345,14 @@ class dataCollect(threading.Thread):
             except Exception as e:
                 logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
 
-##Create a class which adjusts target parameters on the OLED and stores the values
-class targetAdjust():
+##Create a class which adjusts target parameters based on the OLED menu and stores the values
+class targetAdjust:
     #Create a function to initialize the thread and target object
     def __init__(self):
         threading.Thread.__init__(self)
         self.target = target() #create instance of target object
 
+    #Create function to run the thread, which allows the user to adjust each parameter and stores it to the Target.ini file
     def run(self):
         [self.user_choice, self.node] = target_select()
         if self.user_choice != None: #if user selected a value
@@ -355,3 +360,34 @@ class targetAdjust():
                       self.target.setTarget(self.node.option, self.user_choice, parent="Light")
                   else: #otherwise include only the parameter and value
                     self.target.setTarget(self.node.option, self.user_choice)
+
+##Create a class for operating the pump
+class pumpControl:
+    #Create a function to initalize the thread and target soil moisture value
+    def __init__(self, PUMP):
+        threading.Thread.__init__(self)
+        self.target = target() #create instance of target object
+        self.pi = pigpio.pi() #Initialize pigpio
+        self.pump = PUMP
+
+    #Create a function to run the thread, which monitors the time, soil level, and float sensor to control the pump
+    def run(self):
+        #Create inifinite loop for controlling the pump indefinitely
+        while True:
+            current_time = time.strftime("%H:%M") #store current time
+            target_time = self.target.getTarget("Water") #store target time
+            if global_vars.current_float != 0: #if the float sensor is floating
+                if current_time == target_time:
+                    target_soil = self.target.getTarget("Soil") #get target soil moisture value
+
+                    #run the pump until the timer hits 30 seconds or the current soil moisture is greater than the target
+                    while t <= 30 and global_vars.current_soil<target_soil:
+                        self.pi.write(self.pump, 1) #run pump
+                        t = t + 1 #increase timer
+                        time.sleep(1) #1 second delay
+
+                    pi.write(self.pump, 0) #turn pump back off
+                else:
+                    pi.write(self.pump, 0) #turn pump off as double check
+            else:
+                pi.write(self.pump, 0) #turn pump off as double check 
