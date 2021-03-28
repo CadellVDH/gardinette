@@ -346,7 +346,7 @@ class dataCollect(threading.Thread):
                 logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
 
 ##Create a class which adjusts target parameters based on the OLED menu and stores the values
-class targetAdjust:
+class targetAdjust(threading.Thread):
     #Create a function to initialize the thread and target object
     def __init__(self):
         threading.Thread.__init__(self)
@@ -362,7 +362,7 @@ class targetAdjust:
                     self.target.setTarget(self.node.option, self.user_choice)
 
 ##Create a class for operating the pump
-class pumpControl:
+class pumpControl(threading.Thread):
     #Create a function to initalize the thread and target soil moisture value
     def __init__(self, PUMP):
         threading.Thread.__init__(self)
