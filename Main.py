@@ -44,7 +44,7 @@ pi.set_pull_up_down(BUTTON_THREE, pigpio.PUD_DOWN)
 
 targets = target() #initialize target setting class
 
-dataCollect = dataCollect(TEMP, FLAOT) #initialize data collect object
+dataCollect = dataCollect(TEMP, FLOAT) #initialize data collect object
 dataCollect.start() #begin running the data collection thread
 
 dataGlance = dataGlance() #initialize data glance object
