@@ -41,7 +41,7 @@ pi.set_mode(BUTTON_THREE, pigpio.INPUT)
 pi.set_pull_up_down(BUTTON_ONE, pigpio.PUD_DOWN)
 pi.set_pull_up_down(BUTTON_TWO, pigpio.PUD_DOWN)
 pi.set_pull_up_down(BUTTON_THREE, pigpio.PUD_DOWN)
-pi.set_pull_up_down(FLOAT, pigpiod.PUD_DOWN)
+pi.set_pull_up_down(FLOAT, pigpio.PUD_DOWN)
 
 dataCollect = dataCollect(TEMP, FLOAT) #initialize data collect object
 dataCollect.start() #begin running the data collection thread
