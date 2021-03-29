@@ -127,9 +127,10 @@ def param_adjust(choice_list, unit=""):
 
 #Create a function for the user to adjust box target values
 def target_select():
+    print("Starting selection")
     menu_choice = menu() #call the menu function to find out what parameter the user wants to adjust
     time.sleep(0.5) #delay so user doesn't accidentally choose first value
-    print("Starting selection")
+
     if menu_choice == None:
         print("Finishing selection")
         return None, None
