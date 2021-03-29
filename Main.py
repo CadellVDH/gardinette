@@ -56,33 +56,29 @@ targetAdjustThread = targetAdjust() #initialize target adjustment thread
 
 while True: #begin main control loop
     #Check if any button has been pressed and wake to menu screen
-    if pi.read(BUTTON_ONE) == True or pi.read(BUTTON_TWO) == True or pi.read(BUTTON_THREE) == True or True:
+    if pi.read(BUTTON_ONE) == True or pi.read(BUTTON_TWO) == True or pi.read(BUTTON_THREE) == True:
         if dataGlanceThread.isAlive() == True:
             global_vars.data_glance_exit_flag = True #if data glance is running, kill it
         time.sleep(0.1) #delay for cleanup
         #Check if thread is already running
         if targetAdjustThread.isAlive() == False:
-            #Try starting the thread, if there is a runtime error due to thread being used already, delete the old instance and start a new one
+            #Try starting the thread, if there is a runtime error due to thread being used already, start a new one
             try:
                 targetAdjustThread.start() #start targetAdjust thread
             except RuntimeError:
-
                 targetAdjustThread = targetAdjust() #initialize target adjustment thread
                 targetAdjustThread.start() #start targetAdjust thread
 
 
     #Check if threads are alive and restart them if they have stopped
     if dataCollectThread.isAlive() == False:
-        del pumpControlThread
         dataCollectThread = dataCollect(TEMP, FLOAT) #initialize data collect object
         dataCollectThread.start()
     # if pumpControlThread.isAlive() == False:
-    #     del pumpControlThread
     #     pumpControlThread = pumpControl(PUMP) #intialize pumpControl object
     #     pumpControlThread.start()
     if dataGlanceThread.isAlive() == False and targetAdjustThread.isAlive() == False:
         global_vars.data_glance_exit_flag = False
-        del dataGlanceThread
         dataGlanceThread = dataGlance() #initialize data glance object
         dataGlanceThread.start()
 
