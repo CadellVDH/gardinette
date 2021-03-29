@@ -129,8 +129,9 @@ def param_adjust(choice_list, unit=""):
 def target_select():
     menu_choice = menu() #call the menu function to find out what parameter the user wants to adjust
     time.sleep(0.5) #delay so user doesn't accidentally choose first value
-
+    print("Starting selection")
     if menu_choice == None:
+        print("Finishing selection")
         return None, None
     elif menu_choice.option == "Hours":
         allowed = list(range(1, 24)) #list is 1-24
@@ -391,4 +392,4 @@ class pumpControl(threading.Thread):
             else:
                 self.pi.write(self.pump, 0) #turn pump off as double check
 
-##Create a class for operating the light 
+##Create a class for operating the light
