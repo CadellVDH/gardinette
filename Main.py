@@ -53,16 +53,15 @@ pumpControl = pumpControl(PUMP) #intialize pumpControl object
 pumpControl.start() #start pumpControl thread
 
 targetAdjust = targetAdjust() #initialize target adjustment thread
-BUTTON_ONE = True
-
+test = True
 while True: #begin main control loop
     #Check if any button has been pressed and wake to menu screen
-    if pi.read(BUTTON_ONE) == True or pi.read(BUTTON_TWO) == True or pi.read(BUTTON_THREE) == True:
+    if pi.read(BUTTON_ONE) == True or pi.read(BUTTON_TWO) == True or pi.read(BUTTON_THREE) == True or test:
         if dataGlanceThread.isAlive() == True:
             global_vars.data_glance_exit_flag = True #if data glance is running, kill it
         time.sleep(0.1) #delay for cleanup
         targetAdjust.start() #start targetAdjust thread
-        BUTTON_ONE = False
+        test = False
 
     #Check if threads are alive and restart them if they have stopped
     if dataCollect.isAlive() == False:
