@@ -390,3 +390,5 @@ class pumpControl(threading.Thread):
                     self.pi.write(self.pump, 0) #turn pump off as double check
             else:
                 self.pi.write(self.pump, 0) #turn pump off as double check
+
+##Create a class for operating the light 
