@@ -60,13 +60,15 @@ while True: #begin main control loop
         if dataGlanceThread.isAlive() == True:
             global_vars.data_glance_exit_flag = True #if data glance is running, kill it
         time.sleep(0.1) #delay for cleanup
-        #Try starting the thread, if there is a runtime error due to thread being used already, delete the old instance and start a new one
-        try:
-            targetAdjustThread.start() #start targetAdjust thread
-        except RuntimeError:
+        #Check if thread is already running
+        if targetAdjustThread.isAlive() == False:
+            #Try starting the thread, if there is a runtime error due to thread being used already, delete the old instance and start a new one
+            try:
+                targetAdjustThread.start() #start targetAdjust thread
+            except RuntimeError:
 
-            targetAdjustThread = targetAdjust() #initialize target adjustment thread
-            targetAdjustThread.start() #start targetAdjust thread
+                targetAdjustThread = targetAdjust() #initialize target adjustment thread
+                targetAdjustThread.start() #start targetAdjust thread
 
 
     #Check if threads are alive and restart them if they have stopped
