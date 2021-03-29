@@ -54,6 +54,7 @@ pumpControl.start() #start pumpControl thread
 
 targetAdjust = targetAdjust() #initialize target adjustment thread
 BUTTON_ONE = True
+
 while True: #begin main control loop
     #Check if any button has been pressed and wake to menu screen
     if pi.read(BUTTON_ONE) == True or pi.read(BUTTON_TWO) == True or pi.read(BUTTON_THREE) == True:
