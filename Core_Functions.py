@@ -392,3 +392,53 @@ class pumpControl(threading.Thread):
                 self.pi.write(self.pump, 0) #turn pump off as double check
 
 ##Create a class for operating the light
+class lightControl(threading.Thread):
+    #Create a function to initialize the thread and target "on" time and hours of light
+    def __init__(self, LIGHT):
+        threading.Thread.__init__(self)
+        self.target = target() #create instance of target object
+        self.pi = pigpio.pi() #initialize pigpio
+        self.light = LIGHT
+
+    #Create a funcion to calculate end time based on start time and hours
+    def endTime(self, start, hours):
+        minutes = int(60 * int(hours)) #calculate number of minutes in case of decimal hours
+        remaining_minutes = minutes % 60 #calculate number of non-whole hour minutes
+        whole_hours = (minutes-remaining_minutes) / 60 #calculate number of whole number hours
+
+        start_hour = int(start[0:2]) #extract starting hour
+        start_minute = int(start[3:5]) #extract starting minute
+
+        #first add the number of hours and minutes
+        end_hour = int(start_hour + whole_hours)
+        end_minute = int(start_minute + remaining_minutes)
+
+        #check if hours are over 23 or minutes are over 59 then subtract 24 and 60 respectively
+        if end_hour > 23:
+            end_hour = end_hour - 24
+        if end_minute > 59:
+            end_minute = end_minute - 60
+
+        #format the string appropriately
+        if end_hour < 10:
+            end_hour = "0%s" % end_hour #add 0 to beginning if < 10
+        if end_minute < 10:
+            end_minute = "0%s" % end_minute #add 0 to beginning if < 10
+
+        return "{}:{}".format(end_hour, end_minute) #return formatted string
+
+    #Create a function which operates the light based on the time of day
+    def run(self):
+        #Create an indefinite loop to monitor the time of day and target hours of light to control the light
+        while True:
+            current_time = time.strftime("%H:%M") #store current time
+            target_time = self.target.getTarget("Time", parent="Light") #store target time
+            target_hours = self.target.getTarget("Hours", parent="Light") #store number of hours to run
+
+            end_time = self.endTime(target_time, target_hours) #calculate end time
+
+            #turn light on if within start and end time
+            if current_time > target_time and current_time < end_time:
+                self.pi.write(self.light, 1) #turn light on
+            else:
+                self.pi.write(self.light, 0) #turn light off otherwise
