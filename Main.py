@@ -61,6 +61,7 @@ while True: #begin main control loop
             global_vars.data_glance_exit_flag = True #if data glance is running, kill it
         time.sleep(0.1) #delay for cleanup
         targetAdjust.start() #start targetAdjust thread
+        BUTTON_ONE = False
 
     #Check if threads are alive and restart them if they have stopped
     if dataCollect.isAlive() == False:
