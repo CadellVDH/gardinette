@@ -43,34 +43,42 @@ pi.set_pull_up_down(BUTTON_TWO, pigpio.PUD_DOWN)
 pi.set_pull_up_down(BUTTON_THREE, pigpio.PUD_DOWN)
 pi.set_pull_up_down(FLOAT, pigpio.PUD_DOWN)
 
-dataCollect = dataCollect(TEMP, FLOAT) #initialize data collect object
-dataCollect.start() #begin running the data collection thread
+dataCollectThread = dataCollect(TEMP, FLOAT) #initialize data collect object
+dataCollectThread.start() #begin running the data collection thread
 
 dataGlanceThread = dataGlance() #initialize data glance object
 dataGlanceThread.start() #start data quick display
 
-pumpControl = pumpControl(PUMP) #intialize pumpControl object
-pumpControl.start() #start pumpControl thread
+pumpControlThread = pumpControl(PUMP) #intialize pumpControl object
+pumpControlThread.start() #start pumpControl thread
 
-targetAdjust = targetAdjust() #initialize target adjustment thread
-test = True
+targetAdjustThread = targetAdjust() #initialize target adjustment thread
+
 while True: #begin main control loop
     #Check if any button has been pressed and wake to menu screen
-    if pi.read(BUTTON_ONE) == True or pi.read(BUTTON_TWO) == True or pi.read(BUTTON_THREE) == True or test:
+    if pi.read(BUTTON_ONE) == True or pi.read(BUTTON_TWO) == True or pi.read(BUTTON_THREE) == True:
         if dataGlanceThread.isAlive() == True:
             global_vars.data_glance_exit_flag = True #if data glance is running, kill it
         time.sleep(0.1) #delay for cleanup
-        targetAdjust.start() #start targetAdjust thread
-        test = False
+        #Try starting the thread, if there is a runtime error due to thread being used already, delete the old instance and start a new one
+        try:
+            targetAdjustThread.start() #start targetAdjust thread
+        except RuntimeError:
+            del targetAdjustThread
+            targetAdjustThread = targetAdjust() #initialize target adjustment thread
+            targetAdjustThread.start() #start targetAdjust thread
+
 
     #Check if threads are alive and restart them if they have stopped
-    if dataCollect.isAlive() == False:
-        dataCollect = dataCollect(TEMP, FLOAT) #initialize data collect object
-        dataCollect.start()
-    if pumpControl.isAlive() == False:
-        pumpControl = pumpControl(PUMP) #intialize pumpControl object
-        pumpControl.start()
-    if dataGlanceThread.isAlive() == False and targetAdjust.isAlive() == False:
+    if dataCollectThread.isAlive() == False:
+        del pumpControlThread
+        dataCollectThread = dataCollect(TEMP, FLOAT) #initialize data collect object
+        dataCollectThread.start()
+    if pumpControlThread.isAlive() == False:
+        del pumpControlThread
+        pumpControlThread = pumpControl(PUMP) #intialize pumpControl object
+        pumpControlThread.start()
+    if dataGlanceThread.isAlive() == False and targetAdjustThread.isAlive() == False:
         global_vars.data_glance_exit_flag = False
         del dataGlanceThread
         dataGlanceThread = dataGlance() #initialize data glance object

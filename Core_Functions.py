@@ -131,7 +131,7 @@ def target_select():
     time.sleep(0.5) #delay so user doesn't accidentally choose first value
 
     if menu_choice == None:
-        return None
+        return None, None
     elif menu_choice.option == "Hours":
         allowed = list(range(1, 24)) #list is 1-24
         return param_adjust(allowed, "Hours"), menu_choice #return the target value and menu node
@@ -163,7 +163,7 @@ def target_select():
         allowed = list(range(10, 90)) #create list of allowed humidities
         return param_adjust(allowed, "%"), menu_choice #return the target value and menu node
     else:
-        return None
+        return None, None
 
 ##Create a class for handling variable target values, including default target values
 class target:
