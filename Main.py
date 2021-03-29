@@ -46,8 +46,8 @@ pi.set_pull_up_down(FLOAT, pigpio.PUD_DOWN)
 dataCollect = dataCollect(TEMP, FLOAT) #initialize data collect object
 dataCollect.start() #begin running the data collection thread
 
-dataGlance = dataGlance() #initialize data glance object
-dataGlance.start() #start data quick display
+dataGlanceThread = dataGlance() #initialize data glance object
+dataGlanceThread.start() #start data quick display
 
 pumpControl = pumpControl(PUMP) #intialize pumpControl object
 pumpControl.start() #start pumpControl thread
@@ -57,7 +57,7 @@ BUTTON_ONE = True
 while True: #begin main control loop
     #Check if any button has been pressed and wake to menu screen
     if pi.read(BUTTON_ONE) == True or pi.read(BUTTON_TWO) == True or pi.read(BUTTON_THREE) == True:
-        if dataGlance.isAlive() == True:
+        if dataGlanceThread.isAlive() == True:
             global_vars.data_glance_exit_flag = True #if data glance is running, kill it
         time.sleep(0.1) #delay for cleanup
         targetAdjust.start() #start targetAdjust thread
@@ -69,9 +69,10 @@ while True: #begin main control loop
     if pumpControl.isAlive() == False:
         pumpControl = pumpControl(PUMP) #intialize pumpControl object
         pumpControl.start()
-    if dataGlance.isAlive() == False and targetAdjust.isAlive() == False:
+    if dataGlanceThread.isAlive() == False and targetAdjust.isAlive() == False:
         global_vars.data_glance_exit_flag = False
-        dataGlance = dataGlance() #initialize data glance object
-        dataGlance.start()
+        del dataGlanceThread
+        dataGlanceThread = dataGlance() #initialize data glance object
+        dataGlanceThread.start()
 
     time.sleep(0.2) #delay to prevent button bouncing
