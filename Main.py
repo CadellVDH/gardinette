@@ -49,9 +49,9 @@ dataCollectThread.start() #begin running the data collection thread
 dataGlanceThread = dataGlance() #initialize data glance object
 dataGlanceThread.start() #start data quick display
 
-# pumpControlThread = pumpControl(PUMP) #intialize pumpControl object
-# pumpControlThread.start() #start pumpControl thread
-#
+pumpControlThread = pumpControl(PUMP) #intialize pumpControl object
+pumpControlThread.start() #start pumpControl thread
+
 lightControlThread = lightControl(LIGHT) #intialize lightControl object
 lightControlThread.start() #start lightControl thread
 
@@ -77,9 +77,9 @@ while True: #begin main control loop
     if dataCollectThread.isAlive() == False:
         dataCollectThread = dataCollect(TEMP, FLOAT) #initialize data collect object
         dataCollectThread.start()
-    # if pumpControlThread.isAlive() == False:
-    #     pumpControlThread = pumpControl(PUMP) #intialize pumpControl object
-    #     pumpControlThread.start()
+    if pumpControlThread.isAlive() == False:
+        pumpControlThread = pumpControl(PUMP) #intialize pumpControl object
+        pumpControlThread.start()
     if lightControlThread.isAlive() == False:
         lightControlThread = lightControl(LIGHT) #intialize lightControl object
         lightControlThread.start() #start lightControl thread
