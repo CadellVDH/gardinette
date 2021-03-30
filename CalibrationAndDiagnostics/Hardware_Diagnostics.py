@@ -249,9 +249,9 @@ try:
     pi.set_mode(pins.getPin('BUTTON_TWO'), pigpio.INPUT)
     pi.set_mode(pins.getPin('BUTTON_THREE'), pigpio.INPUT)
 
-    pi.set_pull_up_down('BUTTON_ONE', pigpio.PUD_DOWN) #set all buttons to an internal pull down resistor
-    pi.set_pull_up_down('BUTTON_TWO', pigpio.PUD_DOWN)
-    pi.set_pull_up_down('BUTTON_THREE', pigpio.PUD_DOWN)
+    pi.set_pull_up_down(pins.getPin('BUTTON_ONE'), pigpio.PUD_DOWN) #set all buttons to an internal pull down resistor
+    pi.set_pull_up_down(pins.getPin('BUTTON_TWO'), pigpio.PUD_DOWN)
+    pi.set_pull_up_down(pins.getPin('BUTTON_THREE'), pigpio.PUD_DOWN)
 
     print("Successfully set button modes\n")
     logging.debug("Successfully set button modes")
@@ -299,7 +299,7 @@ if b3 == True:
 else:
     print("Button three is not functional")
     logging.error("Button three failed")
-        
+
 print("Button tests have been completed\n")
 
 
