@@ -233,9 +233,9 @@ class target:
 
         try:
             if parent == None:
-                self.Config.set(param, param, value) #if param has no parent, param is the parent and also the section
+                self.Config.set(param, param, str(value)) #if param has no parent, param is the parent and also the section
             else:
-                self.Config.set(parent, param, value) #otherise, parent is the section
+                self.Config.set(parent, param, str(value)) #otherise, parent is the section
         except Exception as e:
             logging.error("Failed to set target value: %s" % e)
             return 'Failed'
