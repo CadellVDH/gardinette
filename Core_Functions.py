@@ -139,8 +139,12 @@ def target_select():
         allowed = [] #empty list
         for i in range(0, 24): #generate list
             for j in range(0, 56, 5):
-                if j < 10:
-                    allowed.append("{}:0{}".format(i,j)) #make list with 0 in front of minute if minute < 10
+                if j < 10 and i < 10:
+                    allowed.append("0{}:0{}".format(i,j)) #make list with 0 in front of hour and minute if both less than 10
+                elif j < 10:
+                    allowed.append("{}:0{}".format(i,j)) #make list with 0 in front of minute if less than 10
+                elif i < 10:
+                    allowed.append("0{}:{}".format(i,j)) #make list with 0 in front of hour if less than 10
                 else:
                     allowed.append("{}:{}".format(i,j)) #otherwise make list using only the minute
         return param_adjust(allowed), menu_choice #return the target value and menu node
@@ -148,8 +152,12 @@ def target_select():
         allowed = [] #empty list
         for i in range(0, 24): #generate list
             for j in range(0, 56, 5):
-                if j < 10:
-                    allowed.append("{}:0{}".format(i,j)) #make list with 0 in front of minute if minute < 10
+                if j < 10 and i < 10:
+                    allowed.append("0{}:0{}".format(i,j)) #make list with 0 in front of hour and minute if both less than 10
+                elif j < 10:
+                    allowed.append("{}:0{}".format(i,j)) #make list with 0 in front of minute if less than 10
+                elif i < 10:
+                    allowed.append("0{}:{}".format(i,j)) #make list with 0 in front of hour if less than 10
                 else:
                     allowed.append("{}:{}".format(i,j)) #otherwise make list using only the minute
         return param_adjust(allowed), menu_choice #return the target value and menu node
