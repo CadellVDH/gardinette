@@ -439,14 +439,18 @@ class lightControl(threading.Thread):
     def run(self):
         #Create an indefinite loop to monitor the time of day and target hours of light to control the light
         while True:
-            current_time = time.strftime("%H:%M") #store current time
-            target_time = self.target.getTarget("Time", parent="Light") #store target time
-            target_hours = self.target.getTarget("Hours", parent="Light") #store number of hours to run
+            #Place whole thing in try block in case Target.ini is being modified while endTime is running
+            try:
+                current_time = time.strftime("%H:%M") #store current time
+                target_time = self.target.getTarget("Time", parent="Light") #store target time
+                target_hours = self.target.getTarget("Hours", parent="Light") #store number of hours to run
 
-            end_time = self.endTime(target_time, target_hours) #calculate end time
+                end_time = self.endTime(target_time, target_hours) #calculate end time
 
-            #turn light on if within start and end time
-            if current_time >= target_time and current_time < end_time:
-                self.pi.write(self.light, 1) #turn light on
-            else:
-                self.pi.write(self.light, 0) #turn light off otherwise
+                #turn light on if within start and end time
+                if current_time >= target_time and current_time < end_time:
+                    self.pi.write(self.light, 1) #turn light on
+                else:
+                    self.pi.write(self.light, 0) #turn light off otherwise
+            except Exception as e:
+                    logging.error("Failed to control light, reattempting: %s" % e)
