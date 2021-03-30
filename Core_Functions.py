@@ -137,7 +137,7 @@ def target_select():
         return param_adjust(allowed, "Hours"), menu_choice #return the target value and menu node
     elif menu_choice.option == "Time":
         allowed = [] #empty list
-        for i in range(1, 24): #generate list
+        for i in range(0, 24): #generate list
             for j in range(0, 56, 5):
                 if j < 10:
                     allowed.append("{}:0{}".format(i,j)) #make list with 0 in front of minute if minute < 10
@@ -146,7 +146,7 @@ def target_select():
         return param_adjust(allowed), menu_choice #return the target value and menu node
     elif menu_choice.option == "Water":
         allowed = [] #empty list
-        for i in range(1, 24): #generate list
+        for i in range(0, 24): #generate list
             for j in range(0, 56, 5):
                 if j < 10:
                     allowed.append("{}:0{}".format(i,j)) #make list with 0 in front of minute if minute < 10

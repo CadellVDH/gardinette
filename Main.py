@@ -52,8 +52,8 @@ dataGlanceThread.start() #start data quick display
 # pumpControlThread = pumpControl(PUMP) #intialize pumpControl object
 # pumpControlThread.start() #start pumpControl thread
 #
-# lightControlThread = lightControl(LIGHT) #intialize lightControl object
-# lightControlThread.start() #start lightControl thread
+lightControlThread = lightControl(LIGHT) #intialize lightControl object
+lightControlThread.start() #start lightControl thread
 
 targetAdjustThread = targetAdjust() #initialize target adjustment thread
 
@@ -80,9 +80,9 @@ while True: #begin main control loop
     # if pumpControlThread.isAlive() == False:
     #     pumpControlThread = pumpControl(PUMP) #intialize pumpControl object
     #     pumpControlThread.start()
-    # if lightControlThread.isAlive() == False:
-    #     lightControlThread = lightControl(LIGHT) #intialize lightControl object
-    #     lightControlThread.start() #start lightControl thread
+    if lightControlThread.isAlive() == False:
+        lightControlThread = lightControl(LIGHT) #intialize lightControl object
+        lightControlThread.start() #start lightControl thread
     if dataGlanceThread.isAlive() == False and targetAdjustThread.isAlive() == False:
         global_vars.data_glance_exit_flag = False
         dataGlanceThread = dataGlance() #initialize data glance object
