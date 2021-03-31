@@ -377,27 +377,46 @@ class pumpControl(threading.Thread):
 
     #Create a function to run the thread, which monitors the time, soil level, and float sensor to control the pump
     def run(self):
+        float_down = 0 #track how long float_sensor is down
         #Create inifinite loop for controlling the pump indefinitely
         while True:
-            current_time = time.strftime("%H:%M") #store current time
-            target_time = self.target.getTarget("Water") #store target time
-            if global_vars.current_float != 0: #if the float sensor is floating
-                if current_time == target_time:
-                    target_soil = self.target.getTarget("Soil") #get target soil moisture value
+            #Put entire loop in try block in case of multiple attempts at accessing Targets.ini file
+            try:
+                current_time = time.strftime("%H:%M") #store current time
+                target_time = self.target.getTarget("Water") #store target time
 
-                    #run the pump until the timer hits 30 seconds or the current soil moisture is greater than the target
-                    t = 0 #reset timer
-                    while t <= 90 and global_vars.current_soil<int(target_soil):
-                        print("pumping")
-                        self.pi.write(self.pump, 1) #run pump
-                        t = t + 1 #increase timer
-                        time.sleep(1) #1 second delay
-                    self.pi.write(self.pump, 0) #turn pump back off
-                    time.sleep(30)
-                else:
-                    self.pi.write(self.pump, 0) #turn pump off as double check
-            else:
-                self.pi.write(self.pump, 0) #turn pump off as double check
+                #if it's time to water, begin other necessary checks
+                if current_time == target_time:
+                    if global_vars.current_float != 0: #if float sensor if up, it's fine to water
+                        float_down = 0 #reset count of times float has been down
+                        target_soil = self.target.getTarget("Soil") #get target soil moisture value
+
+                        #run the pump until the timer hits 30 seconds or the current soil moisture is greater than the target
+                        t = 0 #reset timer
+                        while t <= 90 and global_vars.current_soil<int(target_soil):
+                            print("pumping")
+                            self.pi.write(self.pump, 1) #run pump
+                            t = t + 1 #increase timer
+                            time.sleep(1) #1 second delay
+                        self.pi.write(self.pump, 0) #turn pump back off
+                        time.sleep(30)
+                    elif global_vars.current_float == 0 and float_down < 4: #continue pumping as long as pump counter is less than 4 (4 days)
+                        float_down = float_down + 1 #increment counter for each watering
+                        target_soil = self.target.getTarget("Soil") #get target soil moisture value
+
+                        #run the pump until the timer hits 30 seconds or the current soil moisture is greater than the target
+                        t = 0 #reset timer
+                        while t <= 90 and global_vars.current_soil<int(target_soil):
+                            print("pumping")
+                            self.pi.write(self.pump, 1) #run pump
+                            t = t + 1 #increase timer
+                            time.sleep(1) #1 second delay
+                        self.pi.write(self.pump, 0) #turn pump back off
+                        time.sleep(30)
+
+
+            except Exception as e:
+                logging.error("Failed to control pump: %s" % e)
 
 ##Create a class for operating the light
 class lightControl(threading.Thread):
