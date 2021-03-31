@@ -493,8 +493,8 @@ class fanControl(threading.Thread):
     def run(self):
         while True:
             try:
-                target_humidity = self.target.getTarget("Humidity") #get current target humidity
-                target_temp = self.target.getTarget("Temp") #get current target temp
+                target_humidity = int(self.target.getTarget("Humidity")) #get current target humidity
+                target_temp = int(self.target.getTarget("Temp")) #get current target temp
 
                 #If either temp or humidity is too high, turn the fans on
                 if global_vars.current_temp>target_temp or global_vars.current_humidity>target_humidity:
