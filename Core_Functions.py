@@ -498,10 +498,10 @@ class fanControl(threading.Thread):
 
                 #If either temp or humidity is too high, turn the fans on
                 if global_vars.current_temp>target_temp or global_vars.current_humidity>target_humidity:
-                    pi.write(self.fan_one, 1)
-                    pi.write(self.fan_two, 1)
+                    self.pi.write(self.fan_one, 1)
+                    self.pi.write(self.fan_two, 1)
                 else: #otherwise make sure theyr're off
-                    pi.write(self.fan_one, 0)
-                    pi.write(self.fan_two, 0)
+                    self.pi.write(self.fan_one, 0)
+                    self.pi.write(self.fan_two, 0)
             except Exception as e:
                 logging.error("Failed to control temp or humidity: %s" % e)
