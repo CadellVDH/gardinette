@@ -408,7 +408,6 @@ class pumpControl(threading.Thread):
                         #run the pump until the timer hits 30 seconds or the current soil moisture is greater than the target
                         t = 0 #reset timer
                         while t <= 90 and global_vars.current_soil<int(target_soil):
-                            print("pumping")
                             self.pi.write(self.pump, 1) #run pump
                             t = t + 1 #increase timer
                             time.sleep(1) #1 second delay
