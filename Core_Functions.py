@@ -353,8 +353,9 @@ class dataCollect(threading.Thread):
                 global_vars.current_soil = getSoilMoisture()
                 global_vars.current_float = getFloat(self.pi, self.FLOAT)
 
+                #temporary code to write to csv
                 with open(path, mode='a') as data:
-                    data_writer = csv.writer(data, delimeter=',', quotechar='""', quoting=csv.QUOTE_MINIMAL)
+                    data_writer = csv.writer(data)
                     data_writer.writerow([global_vars.current_temp, global_vars.current_humidity, global_vars.current_soil])
 
             except Exception as e:
