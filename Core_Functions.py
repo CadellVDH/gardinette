@@ -121,7 +121,7 @@ def param_adjust(choice_list, unit=""):
         else:
             timer += 1 #count the timer up
 
-        time.sleep(.125) #1/4 second delay
+        time.sleep(.1) #1/10 second delay
 
     return None
 
@@ -365,7 +365,7 @@ class targetAdjust(threading.Thread):
                       self.target.setTarget(self.node.option, self.user_choice, parent="Light")
                   else: #otherwise include only the parameter and value
                     self.target.setTarget(self.node.option, self.user_choice)
-        time.sleep(1) #sleep 1 second to prevent user from entering into target adjustment mode again 
+        time.sleep(1) #sleep 1 second to prevent user from entering into target adjustment mode again
 
 ##Create a class for operating the pump
 class pumpControl(threading.Thread):
