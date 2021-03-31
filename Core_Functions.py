@@ -466,13 +466,15 @@ class lightControl(threading.Thread):
                 target_hours = self.target.getTarget("Hours", parent="Light") #store number of hours to run
 
                 end_time = self.endTime(target_time, target_hours) #calculate end time
-                print(current_time)
-                print(target_time)
-                print(end_time)
-                #turn light on if within start and end time
+
+                #turn light on if it passes checks necessary to be within time range 
                 if current_time >= target_time and current_time < end_time:
                     self.pi.write(self.light, 1) #turn light on
-                if current_time >= target_time and end_time<target_time:
+                elif current_time >= target_time and end_time<target_time:
+                    self.pi.write(self.light, 1) #turn light on
+                elif current_time<end_time and end_time<target_time:
+                    self.pi.write(self.light, 1) #turn light on
+                elif target_time == end_time:
                     self.pi.write(self.light, 1) #turn light on
                 else:
                     self.pi.write(self.light, 0) #turn light off otherwise
