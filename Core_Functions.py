@@ -7,6 +7,7 @@ import logging #needed for logging
 import pigpio #needed for GPIO control
 import time #needed for function timing
 import threading #needed for OLED data continuous updating
+import csv #needed for temporary data logging
 import config as global_vars #import global variable initialization module
 from pigpio_dht import DHT22 #temp and humidity sensor
 from datetime import datetime #needed for control timing
@@ -340,6 +341,10 @@ class dataCollect(threading.Thread):
 
     #Create a function to run the thread
     def run(self):
+        #temporary code to make a csv of sensor data
+        PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__)) #Get current directory for log files and for pin file
+        path = "%s/Data/SensorData.csv" % PROJECT_DIRECTORY
+
         #Create a loop to constantly check and update the sensor data values
         while True:
             #Get current sensor values
@@ -347,6 +352,11 @@ class dataCollect(threading.Thread):
                 [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(self.DHT_SENSOR)
                 global_vars.current_soil = getSoilMoisture()
                 global_vars.current_float = getFloat(self.pi, self.FLOAT)
+
+                with open(path, mode='a') as data:
+                    data_writer = csv.writer(data, delimeter=',', quotechar='""', quoting=csv.QUOTE_MINIMAL)
+                    data_writer.writerow([global_vars.current_temp, global_vars.current_humidity, global_vars.current_soil])
+
             except Exception as e:
                 logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
 
