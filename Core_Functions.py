@@ -472,6 +472,8 @@ class lightControl(threading.Thread):
                 #turn light on if within start and end time
                 if current_time >= target_time and current_time < end_time:
                     self.pi.write(self.light, 1) #turn light on
+                if current_time >= target_time and end_time<target_time:
+                    self.pi.write(self.light, 1) #turn light on
                 else:
                     self.pi.write(self.light, 0) #turn light off otherwise
             except Exception as e:
