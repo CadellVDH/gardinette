@@ -361,6 +361,8 @@ class dataCollect(threading.Thread):
             except Exception as e:
                 logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
 
+            time.sleep(5) #give the sensors a 5 second rest 
+
 ##Create a class which adjusts target parameters based on the OLED menu and stores the values
 class targetAdjust(threading.Thread):
     #Create a function to initialize the thread and target object
