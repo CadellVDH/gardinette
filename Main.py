@@ -14,7 +14,6 @@ from CalibrationAndDiagnostics.helpers import * #import helper functions and cla
 from Core_Functions import * #import core functions and classes
 
 pins = pinout() #initialize pinout
-oled = oled_utility(128, 32, pins.getAddr('OLED')) #initialize OLED display
 pi = pigpio.pi() #Initialize pigpio
 
 #Create constants for all pin numbers
@@ -42,28 +41,57 @@ pi.set_mode(BUTTON_THREE, pigpio.INPUT)
 pi.set_pull_up_down(BUTTON_ONE, pigpio.PUD_DOWN)
 pi.set_pull_up_down(BUTTON_TWO, pigpio.PUD_DOWN)
 pi.set_pull_up_down(BUTTON_THREE, pigpio.PUD_DOWN)
+pi.set_pull_up_down(FLOAT, pigpio.PUD_DOWN)
 
-targets = target() #initialize target setting class
+dataCollectThread = dataCollect(TEMP, FLOAT) #initialize data collect object
+dataCollectThread.start() #begin running the data collection thread
 
-#Initialize DHT 22
-DHT_SENSOR = DHT22(TEMP)
+dataGlanceThread = dataGlance() #initialize data glance object
+dataGlanceThread.start() #start data quick display
 
-#Attempt to initialize sensor data
-try:
-    [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(DHT_SENSOR)
-    global_vars.current_soil = getSoilMoisture()
-except Exception as e:
-    logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
+pumpControlThread = pumpControl(PUMP) #intialize pumpControl object
+pumpControlThread.start() #start pumpControl thread
 
-dataDisplay = dataGlance() #initialize data glance object
-dataDisplay.start() #start data quick display
+lightControlThread = lightControl(LIGHT) #intialize lightControl object
+lightControlThread.start() #start lightControl thread
+
+fanControlThread = fanControl(FAN_ONE, FAN_TWO) #intialize fanControl object
+fanControlThread.start() #start fanControl thread
+
+targetAdjustThread = targetAdjust() #initialize target adjustment thread
 
 while True: #begin main control loop
-    #Get current sensor values
-    try:
-        [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(DHT_SENSOR)
-        global_vars.current_soil = getSoilMoisture()
-    except Exception as e:
-        logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
+    #Check if any button has been pressed and wake to menu screen
+    if pi.read(BUTTON_ONE) == True or pi.read(BUTTON_TWO) == True or pi.read(BUTTON_THREE) == True:
+        if dataGlanceThread.isAlive() == True:
+            global_vars.data_glance_exit_flag = True #if data glance is running, kill it
+        time.sleep(0.1) #delay for cleanup
+        #Check if thread is already running
+        if targetAdjustThread.isAlive() == False:
+            #Try starting the thread, if there is a runtime error due to thread being used already, start a new one
+            try:
+                targetAdjustThread.start() #start targetAdjust thread
+            except RuntimeError:
+                targetAdjustThread = targetAdjust() #initialize target adjustment thread
+                targetAdjustThread.start() #start targetAdjust thread
 
-    time.sleep(10) #10 second delay for sensor read buffer
+
+    #Check if threads are alive and restart them if they have stopped
+    if dataCollectThread.isAlive() == False:
+        dataCollectThread = dataCollect(TEMP, FLOAT) #initialize data collect object
+        dataCollectThread.start()
+    if pumpControlThread.isAlive() == False:
+        pumpControlThread = pumpControl(PUMP) #intialize pumpControl object
+        pumpControlThread.start()
+    if lightControlThread.isAlive() == False:
+        lightControlThread = lightControl(LIGHT) #intialize lightControl object
+        lightControlThread.start() #start lightControl thread
+    if fanControlThread.isAlive() == False:
+        fanControlThread = lightControl(FAN_ONE, FAN_TWO) #intialize fanControl object
+        fanControlThread.start() #start fanControl thread
+    if dataGlanceThread.isAlive() == False and targetAdjustThread.isAlive() == False:
+        global_vars.data_glance_exit_flag = False
+        dataGlanceThread = dataGlance() #initialize data glance object
+        dataGlanceThread.start()
+
+    time.sleep(0.2) #delay to prevent button bouncing

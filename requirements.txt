@@ -1,7 +1,7 @@
 pigpio #GPIO interfacing
 pigpio-dht #temp and humidity sensor tools
 board #oled tools
-adafruit_ssd1306 #oled screen
+Adafruit_ssd1306 #oled screen
 Adafruit_ADS1x15 #soil moisture sensor
 numpy #math
 keyboard #detecting key presses

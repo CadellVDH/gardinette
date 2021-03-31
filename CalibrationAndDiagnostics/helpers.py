@@ -149,7 +149,7 @@ def config_write(section, name, value):
 def easy_input(prompt):
     user_test = input('%s (Y/N)' % prompt) #append yes/no to end of question
     while (user_test.lower() != "y" and user_test.lower() != "n"): #disregard case of entered input
-        user_test = input('Please enter only "Y" or "N"\n%s (Y/N)', prompt) #repeat until they answer
+        user_test = input('Please enter only "Y" or "N"\n%s (Y/N)' % prompt) #repeat until they answer
 
     if (user_test.lower() == "y"):
         return_value = True
