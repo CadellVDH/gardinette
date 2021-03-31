@@ -462,6 +462,7 @@ class lightControl(threading.Thread):
             #Place whole thing in try block in case Target.ini is being modified while endTime is running
             try:
                 current_time = time.strftime("%H:%M") #store current time
+                print(current_time)
                 target_time = self.target.getTarget("Time", parent="Light") #store target time
                 target_hours = self.target.getTarget("Hours", parent="Light") #store number of hours to run
 
