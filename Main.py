@@ -55,6 +55,9 @@ pumpControlThread.start() #start pumpControl thread
 lightControlThread = lightControl(LIGHT) #intialize lightControl object
 lightControlThread.start() #start lightControl thread
 
+fanControlThread = fanControl(FAN_ONE, FAN_TWO) #intialize fanControl object
+fanControlThread.start() #start fanControl thread
+
 targetAdjustThread = targetAdjust() #initialize target adjustment thread
 
 while True: #begin main control loop
@@ -83,6 +86,9 @@ while True: #begin main control loop
     if lightControlThread.isAlive() == False:
         lightControlThread = lightControl(LIGHT) #intialize lightControl object
         lightControlThread.start() #start lightControl thread
+    if fanControlThread.isAlive() == False:
+        fanControlThread = lightControl(FAN_ONE, FAN_TWO) #intialize fanControl object
+        fanControlThread.start() #start fanControl thread
     if dataGlanceThread.isAlive() == False and targetAdjustThread.isAlive() == False:
         global_vars.data_glance_exit_flag = False
         dataGlanceThread = dataGlance() #initialize data glance object

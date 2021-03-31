@@ -414,8 +414,6 @@ class pumpControl(threading.Thread):
                             time.sleep(1) #1 second delay
                         self.pi.write(self.pump, 0) #turn pump back off
                         time.sleep(30)
-
-
             except Exception as e:
                 logging.error("Failed to control pump: %s" % e)
 
@@ -467,7 +465,7 @@ class lightControl(threading.Thread):
 
                 end_time = self.endTime(target_time, target_hours) #calculate end time
 
-                #turn light on if it passes checks necessary to be within time range 
+                #turn light on if it passes checks necessary to be within time range
                 if current_time >= target_time and current_time < end_time:
                     self.pi.write(self.light, 1) #turn light on
                 elif current_time >= target_time and end_time<target_time:
@@ -480,3 +478,30 @@ class lightControl(threading.Thread):
                     self.pi.write(self.light, 0) #turn light off otherwise
             except Exception as e:
                     logging.error("Failed to control light, reattempting: %s" % e)
+
+##Create a class for operating the fans
+class fanControl(threading.Thread):
+    #Create a function to initalize the thread and the target and pigpio instances
+    def __init__(self, FAN_ONE, FAN_TWO):
+        threading.Thread.__init__(self)
+        self.target = target() #create instance of target object
+        self.pi = pigpio.pi() #initialize pigpio
+        self.fan_one = FAN_ONE
+        self.fan_two = FAN_TWO
+
+    #Create a function to run the thread
+    def run(self):
+        while True:
+            try:
+                target_humidity = self.target.getTarget("Humidity") #get current target humidity
+                target_temp = self.target.getTarget("Temp") #get current target temp
+
+                #If either temp or humidity is too high, turn the fans on
+                if global_vars.current_temp>target_temp or global_vars.current_humidity>target_humidity:
+                    pi.write(self.fan_one, 1)
+                    pi.write(self.fan_two, 1)
+                else: #otherwise make sure theyr're off
+                    pi.write(self.fan_one, 0)
+                    pi.write(self.fan_two, 0)
+            except Exception as e:
+                logging.error("Failed to control temp or humidity: %s" % e)
