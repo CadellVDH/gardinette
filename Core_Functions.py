@@ -248,7 +248,7 @@ class target:
 def getTempHumidity(DHT_SENSOR):
 
     try:
-        result = DHT_SENSOR.sample(samples=3) #attempt to read temp and humidity sensor
+        result = DHT_SENSOR.sample(samples=5) #attempt to read temp and humidity sensor
         temperature = int(result["temp_f"]) #get temp separately in F
         humidity = int(result["humidity"]) #get humidity separately
         return temperature, humidity
@@ -361,7 +361,7 @@ class dataCollect(threading.Thread):
             except Exception as e:
                 logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
 
-            time.sleep(5) #give the sensors a 5 second rest 
+            time.sleep(5) #give the sensors a 5 second rest
 
 ##Create a class which adjusts target parameters based on the OLED menu and stores the values
 class targetAdjust(threading.Thread):
