@@ -326,7 +326,7 @@ class dataCollect(threading.Thread):
         self.FLOAT = FLOAT
 
         #Initialize DHT 22
-        self.DHT_SENSOR = DHT22(TEMP)
+        self.DHT_SENSOR = DHT22(TEMP, timeout_secs=1)
 
         #initialize pigpio
         self.pi = pigpio.pi() #Initialize pigpio
