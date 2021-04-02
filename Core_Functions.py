@@ -341,10 +341,6 @@ class dataCollect(threading.Thread):
 
     #Create a function to run the thread
     def run(self):
-        #temporary code to make a csv of sensor data
-        PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__)) #Get current directory for log files and for pin file
-        path = "%s/Data/SensorData.csv" % PROJECT_DIRECTORY
-
         #Create a loop to constantly check and update the sensor data values
         while True:
             #Get current sensor values
@@ -353,15 +349,57 @@ class dataCollect(threading.Thread):
                 global_vars.current_soil = getSoilMoisture()
                 global_vars.current_float = getFloat(self.pi, self.FLOAT)
 
-                #temporary code to write to csv
-                with open(path, mode='a') as data:
-                    data_writer = csv.writer(data)
-                    data_writer.writerow([global_vars.current_temp, global_vars.current_humidity, global_vars.current_soil])
-
             except Exception as e:
                 logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
 
             time.sleep(5) #give the sensors a 5 second rest
+
+##Create a class which runs a thread that periodically logs sensor data and actuation times
+class dataLogger(threading.Thread):
+    #Create a function to intialize the thread
+    def __init__(self):
+        threading.Thread.__init__(self)
+
+    #Create a function to run the thread
+    def run(self):
+        #temporary code to make a csv of sensor data
+        PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__)) #Get current directory for log files and for pin file
+        path = "%s/Data/SensorData.csv" % PROJECT_DIRECTORY
+
+        #Create the main loop to poll the sensor variables
+        while True:
+            pump = False
+            light_initial = global_vars.currently_lighting
+            light_final = light_initial
+            interval = False #tracks whether it is within a 5 minute (5 or 0)
+            events = [] #holds events that occured
+
+            #Create a loop that polls for changes in pumping or lighting at 5 minute intervals
+            while time.now().strftime("%M") == "0" or time.now().strftime("%M") == "5":
+                if global_vars.currently_pumping == True:
+                    pump = True
+                light_final = global_vars.currently_lighting
+                interval = True
+
+            #If minute is divisible by 5
+            if interval == True:
+
+                if pump == True:
+                    events.append("Pumped")
+                    pump = False
+
+                if light_initial == False and light_final == True:
+                    events.append("Light on")
+                elif: light_initial == True and light_final == False:
+                    events.append("Light off")
+
+                data_row = [global_vars.current_temp, global_vars.current_humidity, global_vars.current_soil]
+                data_row.extend(events)
+                
+                #temporary code to write to csv
+                with open(path, mode='a') as data:
+                    data_writer = csv.writer(data)
+                    data_writer.writerow(data_row)
 
 ##Create a class which adjusts target parameters based on the OLED menu and stores the values
 class targetAdjust(threading.Thread):
@@ -408,10 +446,11 @@ class pumpControl(threading.Thread):
                         #run the pump until the timer hits 30 seconds or the current soil moisture is greater than the target
                         t = 0 #reset timer
                         while t <= 90 and global_vars.current_soil<int(target_soil):
-                            print("pumping")
+                            global_vars.currently_pumping = True
                             self.pi.write(self.pump, 1) #run pump
                             t = t + 1 #increase timer
                             time.sleep(1) #1 second delay
+                        global_vars.currently_pumping = False
                         self.pi.write(self.pump, 0) #turn pump back off
                         time.sleep(30)
                     elif global_vars.current_float == 0 and float_down < 4: #continue pumping as long as pump counter is less than 4 (4 days)
@@ -421,9 +460,11 @@ class pumpControl(threading.Thread):
                         #run the pump until the timer hits 30 seconds or the current soil moisture is greater than the target
                         t = 0 #reset timer
                         while t <= 90 and global_vars.current_soil<int(target_soil):
+                            global_vars.currently_pumping = True
                             self.pi.write(self.pump, 1) #run pump
                             t = t + 1 #increase timer
                             time.sleep(1) #1 second delay
+                        global_vars.currently_pumping = False
                         self.pi.write(self.pump, 0) #turn pump back off
                         time.sleep(30)
             except Exception as e:
@@ -480,14 +521,19 @@ class lightControl(threading.Thread):
                 #turn light on if it passes checks necessary to be within time range
                 if current_time >= target_time and current_time < end_time:
                     self.pi.write(self.light, 1) #turn light on
+                    global_vars.currently_lighting = True
                 elif current_time >= target_time and end_time<target_time:
                     self.pi.write(self.light, 1) #turn light on
+                    global_vars.currently_lighting = True
                 elif current_time<end_time and end_time<target_time:
                     self.pi.write(self.light, 1) #turn light on
+                    global_vars.currently_lighting = True
                 elif target_time == end_time:
                     self.pi.write(self.light, 1) #turn light on
+                    global_vars.currently_lighting = True
                 else:
                     self.pi.write(self.light, 0) #turn light off otherwise
+                    global_vars.currently_lighting = False
             except Exception as e:
                     logging.error("Failed to control light, reattempting: %s" % e)
 

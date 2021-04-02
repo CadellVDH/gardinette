@@ -5,3 +5,5 @@ current_humidity = 0
 current_soil = 0
 current_float = 0
 current_fan = 0
+currently_pumping = False
+currently_lighting = False
