@@ -47,7 +47,7 @@ dataCollectThread = dataCollect(TEMP, FLOAT) #initialize data collect object
 dataCollectThread.start() #begin running the data collection thread
 
 dataLoggerThread = dataLogger() #initalize data logger object
-dataGlanceThread.start() #run the thread
+dataLoggerThread.start() #run the thread
 
 dataGlanceThread = dataGlance() #initialize data glance object
 dataGlanceThread.start() #start data quick display
