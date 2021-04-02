@@ -99,7 +99,7 @@ def param_adjust(choice_list, unit=""):
     BUTTON_TWO = pins.getPin('BUTTON_TWO')
     BUTTON_THREE = pins.getPin('BUTTON_THREE')
 
-    while timer <= 160: #while elapsed time is less than 20 seonds
+    while timer <= 400: #while elapsed time is less than 20 seonds
         oled.write_center(str(choice_list[position])) #print the current choice to the OLED
         oled.write(unit, oled.width/2+12, 10, clear=False) #write the unit above the number
         oled.write("<--", 0, oled.height/2, clear=False) #create left arrow
