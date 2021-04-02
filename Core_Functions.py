@@ -373,7 +373,7 @@ class dataLogger(threading.Thread):
             light_final = light_initial
             interval = False #tracks whether it is within a 5 minute (5 or 0)
             events = [] #holds events that occured
-
+            print(time.strftime("%M"))
             #Create a loop that polls for changes in pumping or lighting at 5 minute intervals
             while time.strftime("%M") == "0" or time.strftime("%M") == "5":
                 print("it's time")
