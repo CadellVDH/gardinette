@@ -554,8 +554,8 @@ class fanControl(threading.Thread):
                 target_humidity = int(self.target.getTarget("Humidity")) #get current target humidity
                 target_temp = int(self.target.getTarget("Temp")) #get current target temp
 
-                #If either temp or humidity is too high, turn the fans on
-                if global_vars.current_temp>target_temp or global_vars.current_humidity>target_humidity:
+                #If either temp or humidity is too high, turn the fans on (or if temp = 0, then turn fans on to be safe)
+                if global_vars.current_temp>target_temp or global_vars.current_humidity>target_humidity or global_vars.current_temp == 0:
                     self.pi.write(self.fan_one, 1)
                     self.pi.write(self.fan_two, 1)
                 else: #otherwise make sure theyr're off
