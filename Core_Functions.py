@@ -375,7 +375,7 @@ class dataLogger(threading.Thread):
             events = [] #holds events that occured
 
             #Create a loop that polls for changes in pumping or lighting at 5 minute intervals
-            while time.now().strftime("%M") == "0" or time.now().strftime("%M") == "5":
+            while time.strftime("%M") == "0" or time.strftime("%M") == "5":
                 print("it's time")
                 if global_vars.currently_pumping == True:
                     pump = True
@@ -394,7 +394,7 @@ class dataLogger(threading.Thread):
                 elif light_initial == True and light_final == False:
                     events.append("Light off")
 
-                data_row = [time.now(), global_vars.current_temp, global_vars.current_humidity, global_vars.current_soil]
+                data_row = [datetime.now(), global_vars.current_temp, global_vars.current_humidity, global_vars.current_soil]
                 data_row.extend(events)
 
                 #temporary code to write to csv
