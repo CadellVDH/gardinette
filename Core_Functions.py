@@ -122,7 +122,7 @@ def param_adjust(choice_list, unit=""):
         else:
             timer += 1 #count the timer up
 
-        time.sleep(.1) #1/10 second delay
+        time.sleep(.05) #1/10 second delay
 
     return None
 
@@ -376,7 +376,6 @@ class dataLogger(threading.Thread):
 
             #Create a loop that polls for changes in pumping or lighting at 5 minute intervals
             while int(time.strftime("%M")) % 5 == 0:
-                print("it's time")
                 if global_vars.currently_pumping == True:
                     pump = True
                 light_final = global_vars.currently_lighting
