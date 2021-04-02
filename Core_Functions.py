@@ -390,12 +390,12 @@ class dataLogger(threading.Thread):
 
                 if light_initial == False and light_final == True:
                     events.append("Light on")
-                elif: light_initial == True and light_final == False:
+                elif light_initial == True and light_final == False:
                     events.append("Light off")
 
                 data_row = [global_vars.current_temp, global_vars.current_humidity, global_vars.current_soil]
                 data_row.extend(events)
-                
+
                 #temporary code to write to csv
                 with open(path, mode='a') as data:
                     data_writer = csv.writer(data)
