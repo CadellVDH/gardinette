@@ -267,7 +267,7 @@ def getTempHumidity(DHT_SENSOR, samples=2):
         #calculate the average for each
         temperature = int(sum(temp_list)/samples)
         humidity = int(sum(hum_list)/samples)
-        print(temperature)
+
         return temperature, humidity
     except Exception as e:
         logging.error("Error, Temp and humidity sensor failed to read: %s" % e)
