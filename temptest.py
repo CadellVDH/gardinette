@@ -19,6 +19,8 @@ TEMP = pins.getPin('TEMP')
 dht = DHT22(TEMP)
 
 while True:
-    [temp, hum] = dht.read()
+    result = dht.read()
+    temp = result["temp_f"]
+    hum = result["humidity"]
     print(temp)
     print(hum)
