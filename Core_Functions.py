@@ -253,7 +253,7 @@ def getTempHumidity(DHT_SENSOR, samples=5):
         hum_list = []
 
         i=0
-        while i <= samples:
+        while i < samples:
             result = DHT_SENSOR.read() #attempt to read temp and humidity sensor
 
             #Check that values are reasonable
