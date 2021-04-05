@@ -46,9 +46,9 @@ pi.set_pull_up_down(FLOAT, pigpio.PUD_DOWN)
 dataCollectThread = dataCollect(TEMP, FLOAT) #initialize data collect object
 dataCollectThread.start() #begin running the data collection thread
 
-# dataLoggerThread = dataLogger() #initalize data logger object
-# dataLoggerThread.start() #run the thread
-#
+dataLoggerThread = dataLogger() #initalize data logger object
+dataLoggerThread.start() #run the thread
+
 dataGlanceThread = dataGlance() #initialize data glance object
 dataGlanceThread.start() #start data quick display
 
