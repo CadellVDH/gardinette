@@ -244,17 +244,31 @@ class target:
         with open(target.PATH, 'w') as configfile: #open pinout.ini as file object
             self.Config.write(configfile) #save ini file
 
-#Create a function which returns the current temp and humidity
-def getTempHumidity(DHT_SENSOR):
+#Create a function which returns the current temp and humidity using sampling
+def getTempHumidity(DHT_SENSOR, samples=5):
 
     try:
-        result = DHT_SENSOR.sample(samples=5) #attempt to read temp and humidity sensor
-        temperature = int(result["temp_f"]) #get temp separately in F
-        humidity = int(result["humidity"]) #get humidity separately
+        #initialize temp and humidity lists
+        temp_list = []
+        hum_list = []
+        for i in range(0, samples):
+            result = DHT_SENSOR.read() #attempt to read temp and humidity sensor
+
+            #Check that values are reasonable
+            if int(result["temp_f"]) < 175 and int(result["temp_f"]) > -40 and int(result["humidity"]) > 0 and int(result["humidity"]) < 100:
+                temp_list.append(int(result["temp_f"])) #get temp separately in F
+                hum_list.append(int(result["humidity"])) #get humidity separately
+            else:
+                i = i - 1 #subtract from i until there are 5 valid results
+
+        #calculate the average for each
+        temperature = sum(temp_list)/samples
+        humidity = sum(hum_list)/samples
+
         return temperature, humidity
     except Exception as e:
         logging.error("Error, Temp and humidity sensor failed to read: %s" % e)
-        return global_vars.current_temp, global_vars.current_humidity #if reading fails return None to indicate failure
+        return global_vars.current_temp, global_vars.current_humidity #if reading fails return current values to prevent failure
 
 #Create a function which returns the current soil mositure content
 def getSoilMoisture():
