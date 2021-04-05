@@ -266,8 +266,8 @@ def getTempHumidity(DHT_SENSOR, samples=5):
             print(temp_list)
             print(hum_list)
         #calculate the average for each
-        temperature = sum(temp_list)/samples
-        humidity = sum(hum_list)/samples
+        temperature = int(sum(temp_list)/samples)
+        humidity = int(sum(hum_list)/samples)
 
         return temperature, humidity
     except Exception as e:
