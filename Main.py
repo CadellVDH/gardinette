@@ -49,8 +49,8 @@ dataCollectThread.start() #begin running the data collection thread
 # dataLoggerThread = dataLogger() #initalize data logger object
 # dataLoggerThread.start() #run the thread
 #
-# dataGlanceThread = dataGlance() #initialize data glance object
-# dataGlanceThread.start() #start data quick display
+dataGlanceThread = dataGlance() #initialize data glance object
+dataGlanceThread.start() #start data quick display
 
 # pumpControlThread = pumpControl(PUMP) #intialize pumpControl object
 # pumpControlThread.start() #start pumpControl thread
@@ -95,10 +95,10 @@ while True: #begin main control loop
     # if fanControlThread.isAlive() == False:
     #     fanControlThread = lightControl(FAN_ONE, FAN_TWO) #intialize fanControl object
     #     fanControlThread.start() #start fanControl thread
-    # if dataGlanceThread.isAlive() == False and targetAdjustThread.isAlive() == False:
-    #     global_vars.data_glance_exit_flag = False
-    #     dataGlanceThread = dataGlance() #initialize data glance object
-    #     dataGlanceThread.start()
+    if dataGlanceThread.isAlive() == False and targetAdjustThread.isAlive() == False:
+        global_vars.data_glance_exit_flag = False
+        dataGlanceThread = dataGlance() #initialize data glance object
+        dataGlanceThread.start()
 
     print(threading.active_count())
     time.sleep(0.2) #delay to prevent button bouncing
