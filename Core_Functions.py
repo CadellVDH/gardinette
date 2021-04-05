@@ -251,7 +251,9 @@ def getTempHumidity(DHT_SENSOR, samples=5):
         #initialize temp and humidity lists
         temp_list = []
         hum_list = []
-        for i in range(0, samples):
+
+        i=0
+        while i <= samples
             result = DHT_SENSOR.read() #attempt to read temp and humidity sensor
 
             #Check that values are reasonable
@@ -260,6 +262,7 @@ def getTempHumidity(DHT_SENSOR, samples=5):
                 hum_list.append(int(result["humidity"])) #get humidity separately
             else:
                 i = i - 1 #subtract from i until there are 5 valid results
+            i = i + 1
             print(temp_list)
             print(hum_list)
         #calculate the average for each
