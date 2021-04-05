@@ -97,6 +97,6 @@ while True: #begin main control loop
         dataGlanceThread = dataGlance() #initialize data glance object
         dataGlanceThread.start()
 
-        for thread in threading.enumerate():
-            print(thread)
+    for thread in threading.enumerate():
+        print(thread)
     time.sleep(0.2) #delay to prevent button bouncing
