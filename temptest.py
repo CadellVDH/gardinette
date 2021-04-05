@@ -15,6 +15,7 @@ from Core_Functions import * #import core functions and classes
 
 pins = pinout() #initialize pinout
 pi = pigpio.pi() #Initialize pigpio
+TEMP = pins.getPin('TEMP')
 DHT_SENSOR = DHT22(TEMP, timeout_secs=3)
 
 while True:
