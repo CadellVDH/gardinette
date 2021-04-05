@@ -19,6 +19,6 @@ TEMP = pins.getPin('TEMP')
 dht = DHT22(TEMP)
 
 while True:
-    [temp, hum] = dht.sample(samples=5)
+    [temp, hum] = dht.read()
     print(temp)
     print(hum)
