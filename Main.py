@@ -61,7 +61,7 @@ dataGlanceThread.start() #start data quick display
 # fanControlThread = fanControl(FAN_ONE, FAN_TWO) #intialize fanControl object
 # fanControlThread.start() #start fanControl thread
 
-actuatorControlThread = actuatorControl()
+actuatorControlThread = actuatorControl(PUMP, LIGHT, FAN_ONE, FAN_TWO)
 actuatorControlThread.start()
 
 targetAdjustThread = targetAdjust() #initialize target adjustment thread
