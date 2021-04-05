@@ -655,6 +655,7 @@ class actuatorControl(threading.Thread):
                     global_vars.currently_lighting = False
             except Exception as e:
                     logging.error("Failed to control light, reattempting: %s" % e)
+            time.sleep(10)
             #PUMP CONTROL
             try:
                 current_time = time.strftime("%H:%M") #store current time
@@ -668,21 +669,21 @@ class actuatorControl(threading.Thread):
 
                         #run the pump until the timer hits 30 seconds or the current soil moisture is greater than the target
                         t = 0 #reset timer
-                        while t <= 90 and global_vars.current_soil<int(target_soil):
+                        while t <= 40 and global_vars.current_soil<int(target_soil):
                             global_vars.currently_pumping = True
                             self.pi.write(self.pump, 1) #run pump
                             t = t + 1 #increase timer
                             time.sleep(1) #1 second delay
                         global_vars.currently_pumping = False
                         self.pi.write(self.pump, 0) #turn pump back off
-                        time.sleep(30)
+
                     elif global_vars.current_float == 0 and float_down < 4: #continue pumping as long as pump counter is less than 4 (4 days)
                         float_down = float_down + 1 #increment counter for each watering
                         target_soil = self.target.getTarget("Soil") #get target soil moisture value
 
                         #run the pump until the timer hits 30 seconds or the current soil moisture is greater than the target
                         t = 0 #reset timer
-                        while t <= 90 and global_vars.current_soil<int(target_soil):
+                        while t <= 40 and global_vars.current_soil<int(target_soil):
                             global_vars.currently_pumping = True
                             self.pi.write(self.pump, 1) #run pump
                             t = t + 1 #increase timer
