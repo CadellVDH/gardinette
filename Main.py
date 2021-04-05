@@ -55,8 +55,8 @@ dataGlanceThread.start() #start data quick display
 # pumpControlThread = pumpControl(PUMP) #intialize pumpControl object
 # pumpControlThread.start() #start pumpControl thread
 #
-# lightControlThread = lightControl(LIGHT) #intialize lightControl object
-# lightControlThread.start() #start lightControl thread
+lightControlThread = lightControl(LIGHT) #intialize lightControl object
+lightControlThread.start() #start lightControl thread
 #
 # fanControlThread = fanControl(FAN_ONE, FAN_TWO) #intialize fanControl object
 # fanControlThread.start() #start fanControl thread
@@ -86,9 +86,9 @@ while True: #begin main control loop
     # if pumpControlThread.isAlive() == False:
     #     pumpControlThread = pumpControl(PUMP) #intialize pumpControl object
     #     pumpControlThread.start()
-    # if lightControlThread.isAlive() == False:
-    #     lightControlThread = lightControl(LIGHT) #intialize lightControl object
-    #     lightControlThread.start() #start lightControl thread
+    if lightControlThread.isAlive() == False:
+        lightControlThread = lightControl(LIGHT) #intialize lightControl object
+        lightControlThread.start() #start lightControl thread
     # if fanControlThread.isAlive() == False:
     #     fanControlThread = lightControl(FAN_ONE, FAN_TWO) #intialize fanControl object
     #     fanControlThread.start() #start fanControl thread
