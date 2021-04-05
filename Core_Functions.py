@@ -344,7 +344,7 @@ class dataCollect(threading.Thread):
         self.FLOAT = FLOAT
 
         #Initialize DHT 22
-        self.DHT_SENSOR = DHT22(TEMP, timeout_secs=15)
+        self.DHT_SENSOR = DHT22(TEMP)
 
         #initialize pigpio
         self.pi = pigpio.pi() #Initialize pigpio
@@ -357,6 +357,8 @@ class dataCollect(threading.Thread):
         except Exception as e:
             logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
 
+        #Reinitialize sensor with higher timeout
+        self.DHT_SENSOR = DHT22(TEMP, timeout_secs=15)
     #Create a function to run the thread
     def run(self):
         #Create a loop to constantly check and update the sensor data values
