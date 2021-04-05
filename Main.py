@@ -100,5 +100,6 @@ while True: #begin main control loop
         dataGlanceThread = dataGlance() #initialize data glance object
         dataGlanceThread.start()
 
-    print(threading.active_count())
+    for thread in threading.enumerate():
+        print(thread)
     time.sleep(0.2) #delay to prevent button bouncing
