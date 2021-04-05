@@ -263,8 +263,7 @@ def getTempHumidity(DHT_SENSOR, samples=5):
             else:
                 i = i - 1 #subtract from i until there are 5 valid results
             i = i + 1
-            print(temp_list)
-            print(hum_list)
+
         #calculate the average for each
         temperature = int(sum(temp_list)/samples)
         humidity = int(sum(hum_list)/samples)
@@ -358,7 +357,7 @@ class dataCollect(threading.Thread):
             logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
 
         #Reinitialize sensor with higher timeout
-        self.DHT_SENSOR = DHT22(TEMP, timeout_secs=15)
+        self.DHT_SENSOR = DHT22(TEMP, timeout_secs=5)
     #Create a function to run the thread
     def run(self):
         #Create a loop to constantly check and update the sensor data values
@@ -570,6 +569,131 @@ class fanControl(threading.Thread):
     #Create a function to run the thread
     def run(self):
         while True:
+            try:
+                target_humidity = int(self.target.getTarget("Humidity")) #get current target humidity
+                target_temp = int(self.target.getTarget("Temp")) #get current target temp
+
+                #If either temp or humidity is too high, turn the fans on (or if temp = 0, then turn fans on to be safe)
+                if global_vars.current_temp>target_temp or global_vars.current_humidity>target_humidity or global_vars.current_temp == 0:
+                    self.pi.write(self.fan_one, 1)
+                    self.pi.write(self.fan_two, 1)
+                else: #otherwise make sure theyr're off
+                    self.pi.write(self.fan_one, 0)
+                    self.pi.write(self.fan_two, 0)
+            except Exception as e:
+                logging.error("Failed to control temp or humidity: %s" % e)
+
+##Create a class responsible for all aspects of actuator control
+class actuatorControl(threading.Thread):
+    #Create a function to initalize the thread and all necessary object instances
+    def __init__(self,PUMP, LIGHT, FAN_ONE, FAN_TWO):
+        threading.Thread.__init__(self)
+        self.target = target() #create instance of target object
+        self.pi = pigpio.pi() #initialize pigpio
+
+        #intialize all pin number variables
+        self.pump = PUMP
+        self.light = LIGHT
+        self.fan_one = FAN_ONE
+        self.fan_two = FAN_TWO
+
+    #Create a funcion to calculate end time based on start time and hours
+    def endTime(self, start, hours):
+        minutes = int(60 * int(hours)) #calculate number of minutes in case of decimal hours
+        remaining_minutes = minutes % 60 #calculate number of non-whole hour minutes
+        whole_hours = (minutes-remaining_minutes) / 60 #calculate number of whole number hours
+
+        start_hour = int(start[0:2]) #extract starting hour
+        start_minute = int(start[3:5]) #extract starting minute
+
+        #first add the number of hours and minutes
+        end_hour = int(start_hour + whole_hours)
+        end_minute = int(start_minute + remaining_minutes)
+
+        #check if hours are over 23 or minutes are over 59 then subtract 24 and 60 respectively
+        if end_hour > 23:
+            end_hour = end_hour - 24
+        if end_minute > 59:
+            end_minute = end_minute - 60
+
+        #format the string appropriately
+        if end_hour < 10:
+            end_hour = "0%s" % end_hour #add 0 to beginning if < 10
+        if end_minute < 10:
+            end_minute = "0%s" % end_minute #add 0 to beginning if < 10
+
+        return "{}:{}".format(end_hour, end_minute) #return formatted string
+
+    #Create a function to run the thread
+    def run(self):
+        float_down = 0 #track how long float_sensor is down
+        #Create inifinite loop for controlling the pump indefinitely
+        while True:
+            #LIGHT CONTROL
+            try:
+                current_time = time.strftime("%H:%M") #store current time
+                target_time = self.target.getTarget("Time", parent="Light") #store target time
+                target_hours = self.target.getTarget("Hours", parent="Light") #store number of hours to run
+
+                end_time = self.endTime(target_time, target_hours) #calculate end time
+
+                #turn light on if it passes checks necessary to be within time range
+                if current_time >= target_time and current_time < end_time:
+                    self.pi.write(self.light, 1) #turn light on
+                    global_vars.currently_lighting = True
+                elif current_time >= target_time and end_time<target_time:
+                    self.pi.write(self.light, 1) #turn light on
+                    global_vars.currently_lighting = True
+                elif current_time<end_time and end_time<target_time:
+                    self.pi.write(self.light, 1) #turn light on
+                    global_vars.currently_lighting = True
+                elif target_time == end_time:
+                    self.pi.write(self.light, 1) #turn light on
+                    global_vars.currently_lighting = True
+                else:
+                    self.pi.write(self.light, 0) #turn light off otherwise
+                    global_vars.currently_lighting = False
+            except Exception as e:
+                    logging.error("Failed to control light, reattempting: %s" % e)
+            #PUMP CONTROL
+            try:
+                current_time = time.strftime("%H:%M") #store current time
+                target_time = self.target.getTarget("Water") #store target time
+
+                #if it's time to water, begin other necessary checks
+                if current_time == target_time:
+                    if global_vars.current_float != 0: #if float sensor if up, it's fine to water
+                        float_down = 0 #reset count of times float has been down
+                        target_soil = self.target.getTarget("Soil") #get target soil moisture value
+
+                        #run the pump until the timer hits 30 seconds or the current soil moisture is greater than the target
+                        t = 0 #reset timer
+                        while t <= 90 and global_vars.current_soil<int(target_soil):
+                            global_vars.currently_pumping = True
+                            self.pi.write(self.pump, 1) #run pump
+                            t = t + 1 #increase timer
+                            time.sleep(1) #1 second delay
+                        global_vars.currently_pumping = False
+                        self.pi.write(self.pump, 0) #turn pump back off
+                        time.sleep(30)
+                    elif global_vars.current_float == 0 and float_down < 4: #continue pumping as long as pump counter is less than 4 (4 days)
+                        float_down = float_down + 1 #increment counter for each watering
+                        target_soil = self.target.getTarget("Soil") #get target soil moisture value
+
+                        #run the pump until the timer hits 30 seconds or the current soil moisture is greater than the target
+                        t = 0 #reset timer
+                        while t <= 90 and global_vars.current_soil<int(target_soil):
+                            global_vars.currently_pumping = True
+                            self.pi.write(self.pump, 1) #run pump
+                            t = t + 1 #increase timer
+                            time.sleep(1) #1 second delay
+                        global_vars.currently_pumping = False
+                        self.pi.write(self.pump, 0) #turn pump back off
+                        time.sleep(30)
+            except Exception as e:
+                logging.error("Failed to control pump: %s" % e)
+
+            #FAN CONTROL
             try:
                 target_humidity = int(self.target.getTarget("Humidity")) #get current target humidity
                 target_temp = int(self.target.getTarget("Temp")) #get current target temp

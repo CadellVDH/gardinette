@@ -52,14 +52,17 @@ dataLoggerThread.start() #run the thread
 dataGlanceThread = dataGlance() #initialize data glance object
 dataGlanceThread.start() #start data quick display
 
-pumpControlThread = pumpControl(PUMP) #intialize pumpControl object
-pumpControlThread.start() #start pumpControl thread
+# pumpControlThread = pumpControl(PUMP) #intialize pumpControl object
+# pumpControlThread.start() #start pumpControl thread
+#
+# lightControlThread = lightControl(LIGHT) #intialize lightControl object
+# lightControlThread.start() #start lightControl thread
+#
+# fanControlThread = fanControl(FAN_ONE, FAN_TWO) #intialize fanControl object
+# fanControlThread.start() #start fanControl thread
 
-lightControlThread = lightControl(LIGHT) #intialize lightControl object
-lightControlThread.start() #start lightControl thread
-
-fanControlThread = fanControl(FAN_ONE, FAN_TWO) #intialize fanControl object
-fanControlThread.start() #start fanControl thread
+actuatorControlThread = actuatorControl()
+actuatorControlThread.start()
 
 targetAdjustThread = targetAdjust() #initialize target adjustment thread
 
@@ -83,15 +86,15 @@ while True: #begin main control loop
     if dataCollectThread.isAlive() == False:
         dataCollectThread = dataCollect(TEMP, FLOAT) #initialize data collect object
         dataCollectThread.start()
-    if pumpControlThread.isAlive() == False:
-        pumpControlThread = pumpControl(PUMP) #intialize pumpControl object
-        pumpControlThread.start()
-    if lightControlThread.isAlive() == False:
-        lightControlThread = lightControl(LIGHT) #intialize lightControl object
-        lightControlThread.start() #start lightControl thread
-    if fanControlThread.isAlive() == False:
-        fanControlThread = lightControl(FAN_ONE, FAN_TWO) #intialize fanControl object
-        fanControlThread.start() #start fanControl thread
+    # if pumpControlThread.isAlive() == False:
+    #     pumpControlThread = pumpControl(PUMP) #intialize pumpControl object
+    #     pumpControlThread.start()
+    # if lightControlThread.isAlive() == False:
+    #     lightControlThread = lightControl(LIGHT) #intialize lightControl object
+    #     lightControlThread.start() #start lightControl thread
+    # if fanControlThread.isAlive() == False:
+    #     fanControlThread = lightControl(FAN_ONE, FAN_TWO) #intialize fanControl object
+    #     fanControlThread.start() #start fanControl thread
     if dataGlanceThread.isAlive() == False and targetAdjustThread.isAlive() == False:
         global_vars.data_glance_exit_flag = False
         dataGlanceThread = dataGlance() #initialize data glance object
