@@ -245,7 +245,7 @@ class target:
             self.Config.write(configfile) #save ini file
 
 #Create a function which returns the current temp and humidity using sampling
-def getTempHumidity(DHT_SENSOR, samples=5):
+def getTempHumidity(DHT_SENSOR, samples=2):
 
     try:
         #initialize temp and humidity lists
