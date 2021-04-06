@@ -408,53 +408,6 @@ class dataCollect(threading.Thread):
 
             time.sleep(5) #give the sensors a 5 second rest
 
-##Create a class which runs a thread that periodically logs sensor data and actuation times
-class dataLogger(threading.Thread):
-    #Create a function to intialize the thread
-    def __init__(self):
-        threading.Thread.__init__(self)
-
-    #Create a function to run the thread
-    def run(self):
-        #temporary code to make a csv of sensor data
-        PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__)) #Get current directory for log files and for pin file
-        path = "%s/Data/SensorData.csv" % PROJECT_DIRECTORY
-
-        #Create the main loop to poll the sensor variables
-        while True:
-            pump = False
-            light_initial = global_vars.currently_lighting
-            light_final = light_initial
-            interval = False #tracks whether it is within a 5 minute (5 or 0)
-            events = [] #holds events that occured
-
-            #Create a loop that polls for changes in pumping or lighting at 5 minute intervals
-            while int(time.strftime("%M")) % 5 == 0:
-                if global_vars.currently_pumping == True:
-                    pump = True
-                light_final = global_vars.currently_lighting
-                interval = True
-
-            #If minute is divisible by 5
-            if interval == True:
-
-                if pump == True:
-                    events.append("Pumped")
-                    pump = False
-
-                if light_initial == False and light_final == True:
-                    events.append("Light on")
-                elif light_initial == True and light_final == False:
-                    events.append("Light off")
-
-                data_row = [datetime.now(), global_vars.current_temp, global_vars.current_humidity, global_vars.current_soil]
-                data_row.extend(events)
-
-                #temporary code to write to csv
-                with open(path, mode='a') as data:
-                    data_writer = csv.writer(data)
-                    data_writer.writerow(data_row)
-
 ##Create a class which adjusts target parameters based on the OLED menu and stores the values
 class targetAdjust(threading.Thread):
     #Create a function to initialize the thread and target object
