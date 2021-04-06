@@ -369,7 +369,7 @@ class dataCollect(threading.Thread):
 
         #Create a loop to constantly check and update the sensor data values
         while True:
-            timer = timer + 1 #increment timer
+            prev_log_time = int(time.strftime("%M")) #store the minute that data is logged
             #Get current sensor values
             try:
                 [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(self.DHT_SENSOR)
@@ -379,10 +379,12 @@ class dataCollect(threading.Thread):
             except Exception as e:
                 logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
 
-            if timer >= 60:
-                timer = 0 #reset timer
+            #Check if it has been 5 minutes since last log
+            if int(time.strftime("%M")) >= prev_log_time + 5 or (prev_log_time >= 56 and int(time.strftime("%M")) >= 5-(60-prev_log_time)):
+                prev_log_time = int(time.strftime("%M")) #reset log time
                 events = [] #create empty list of events
-
+                print("logging")
+                
                 #check if pump occured, then reset pump flag if it did
                 if global_vars.pumped == True:
                     events.append("Pumped") #add "pumped" to events list
@@ -404,7 +406,7 @@ class dataCollect(threading.Thread):
                 with open(path, mode='a') as data:
                     data_writer = csv.writer(data)
                     data_writer.writerow(data_row)
-            print(timer)    
+
             time.sleep(5) #give the sensors a 5 second rest
 
 ##Create a class which runs a thread that periodically logs sensor data and actuation times
