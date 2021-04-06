@@ -27,11 +27,7 @@ Install the requirements
 # Usage
 After installation, ensure the hardware device is powered on and connected to the internet. Also insure all peripherals are connected. 
 
-First, start the pigpio daemon
-
-```sudo pigpiod```
-
-Next, test the hardware using the hardware diagnostics script, in the ```/CalibrationAndDiagnostics/``` directory
+First, test the hardware using the hardware diagnostics script, in the ```/CalibrationAndDiagnostics/``` directory
 
 ```python3 Hardware_Diagnostics.py```
 
@@ -43,6 +39,8 @@ After verifying that there are no issues with the hardware, you may choose to cr
 
 Now you can run the main gardening script. 
 
-```Main.py```
+```python3 Main.py```
+
+Once the ```Main.py``` script is running, you can then make any future adjustments to your growing paramaters from the on screen menu. Simply use the left-most and right-most buttons to move your selection left and right respectively. Use the middle button to make a selection. Waiting approximately 20 seconds without a selection will discard your changes and revert back to the default screen.
 
 Lastly, wait a few weeks to a few months (depending on your crop of choice), and enjoy the fruits of your labor!
