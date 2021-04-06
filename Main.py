@@ -52,8 +52,17 @@ dataLoggerThread.start() #run the thread
 dataGlanceThread = dataGlance() #initialize data glance object
 dataGlanceThread.start() #start data quick display
 
-actuatorControlThread = actuatorControl(pi, PUMP, LIGHT, FAN_ONE, FAN_TWO)
-actuatorControlThread.start()
+# actuatorControlThread = actuatorControl(pi, PUMP, LIGHT, FAN_ONE, FAN_TWO)
+# actuatorControlThread.start()
+
+fanControlThread = fanControl(pi, FAN_ONE, FAN_TWO) #initialize fanControl object
+fanControlThread.start() #run the thread
+
+lightControlThread = lightControl(pi, LIGHT) #initialize lightControl object
+lightControlThread.start() #run the thread
+
+pumpControlThread = pumpControl(pi, PUMP) #initialize pumpControl object
+pumpControlThread.start() #run the thread
 
 targetAdjustThread = targetAdjust() #initialize target adjustment thread
 
@@ -77,9 +86,18 @@ while True: #begin main control loop
     if dataCollectThread.isAlive() == False:
         dataCollectThread = dataCollect(TEMP, FLOAT) #initialize data collect object
         dataCollectThread.start()
-    if actuatorControlThread.isAlive() == False:
-        actuatorControlThread = actuatorControl(pi, PUMP, LIGHT, FAN_ONE, FAN_TWO)
-        actuatorControlThread.start()
+    if fanControlThread.isAlive() == False:
+        fanControlThread = fanControl(pi, FAN_ONE, FAN_TWO) #initialize fanControl object
+        fanControlThread.start() #run the thread
+    if lightControlThread.isAlive() == False:
+        lightControlThread = lightControl(pi, LIGHT) #initialize lightControl object
+        lightControlThread.start() #run the thread
+    if pumpControlThread.isAlive() == False:
+        pumpControlThread = pumpControl(pi, PUMP) #initialize pumpControl object
+        pumpControlThread.start() #run the thread
+    # if actuatorControlThread.isAlive() == False:
+    #     actuatorControlThread = actuatorControl(pi, PUMP, LIGHT, FAN_ONE, FAN_TWO)
+    #     actuatorControlThread.start()
     if dataGlanceThread.isAlive() == False and targetAdjustThread.isAlive() == False:
         global_vars.data_glance_exit_flag = False
         dataGlanceThread = dataGlance() #initialize data glance object

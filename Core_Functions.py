@@ -440,10 +440,10 @@ class targetAdjust(threading.Thread):
 ##Create a class for operating the pump
 class pumpControl(threading.Thread):
     #Create a function to initalize the thread and target soil moisture value
-    def __init__(self, PUMP):
+    def __init__(self, pi, PUMP):
         threading.Thread.__init__(self)
         self.target = target() #create instance of target object
-        self.pi = pigpio.pi() #Initialize pigpio
+        self.pi = pi #Initialize pigpio
         self.pump = PUMP
 
     #Create a function to run the thread, which monitors the time, soil level, and float sensor to control the pump
@@ -492,10 +492,10 @@ class pumpControl(threading.Thread):
 ##Create a class for operating the light
 class lightControl(threading.Thread):
     #Create a function to initialize the thread and target "on" time and hours of light
-    def __init__(self, LIGHT):
+    def __init__(self, pi, LIGHT):
         threading.Thread.__init__(self)
         self.target = target() #create instance of target object
-        self.pi = pigpio.pi() #initialize pigpio
+        self.pi = pi #initialize pigpio
         self.light = LIGHT
 
     #Create a funcion to calculate end time based on start time and hours
@@ -559,10 +559,10 @@ class lightControl(threading.Thread):
 ##Create a class for operating the fans
 class fanControl(threading.Thread):
     #Create a function to initalize the thread and the target and pigpio instances
-    def __init__(self, FAN_ONE, FAN_TWO):
+    def __init__(self, pi, FAN_ONE, FAN_TWO):
         threading.Thread.__init__(self)
         self.target = target() #create instance of target object
-        self.pi = pigpio.pi() #initialize pigpio
+        self.pi = pi #initialize pigpio
         self.fan_one = FAN_ONE
         self.fan_two = FAN_TWO
 
