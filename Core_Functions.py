@@ -404,7 +404,7 @@ class dataCollect(threading.Thread):
                 with open(path, mode='a') as data:
                     data_writer = csv.writer(data)
                     data_writer.writerow(data_row)
-            print(tiemr)    
+            print(timer)    
             time.sleep(5) #give the sensors a 5 second rest
 
 ##Create a class which runs a thread that periodically logs sensor data and actuation times
