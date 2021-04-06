@@ -5,6 +5,7 @@ import adafruit_ssd1306 #oled screen
 import digitalio #oled tools
 import time #adding delays
 import logging #needed for logging
+import pigpio #needed for GPIO control
 from configparser import ConfigParser #ini file manipulation
 from statistics import mean #math
 from PIL import Image, ImageDraw, ImageFont #oled tools
