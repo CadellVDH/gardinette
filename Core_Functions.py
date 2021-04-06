@@ -261,13 +261,13 @@ def getTempHumidity(DHT_SENSOR, samples=2):
                 temp_list.append(int(result["temp_f"])) #get temp separately in F
                 hum_list.append(int(result["humidity"])) #get humidity separately
             else:
-                i = i - 1 #subtract from i until there are 5 valid results
+                i = i - 1 #subtract from i until there are "samples" valid results
             i = i + 1
 
         #calculate the average for each
         temperature = int(sum(temp_list)/samples)
         humidity = int(sum(hum_list)/samples)
-
+        print(temp)
         return temperature, humidity
     except Exception as e:
         logging.error("Error, Temp and humidity sensor failed to read: %s" % e)
@@ -586,10 +586,10 @@ class fanControl(threading.Thread):
 ##Create a class responsible for all aspects of actuator control
 class actuatorControl(threading.Thread):
     #Create a function to initalize the thread and all necessary object instances
-    def __init__(self,PUMP, LIGHT, FAN_ONE, FAN_TWO):
+    def __init__(self, pi, PUMP, LIGHT, FAN_ONE, FAN_TWO):
         threading.Thread.__init__(self)
         self.target = target() #create instance of target object
-        self.pi = pigpio.pi() #initialize pigpio
+        self.pi = pi
 
         #intialize all pin number variables
         self.pump = PUMP
@@ -690,7 +690,7 @@ class actuatorControl(threading.Thread):
                             time.sleep(1) #1 second delay
                         global_vars.currently_pumping = False
                         self.pi.write(self.pump, 0) #turn pump back off
-                        time.sleep(30)
+
             except Exception as e:
                 logging.error("Failed to control pump: %s" % e)
 

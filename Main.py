@@ -52,7 +52,7 @@ dataLoggerThread.start() #run the thread
 dataGlanceThread = dataGlance() #initialize data glance object
 dataGlanceThread.start() #start data quick display
 
-actuatorControlThread = actuatorControl(PUMP, LIGHT, FAN_ONE, FAN_TWO)
+actuatorControlThread = actuatorControl(pi, PUMP, LIGHT, FAN_ONE, FAN_TWO)
 actuatorControlThread.start()
 
 targetAdjustThread = targetAdjust() #initialize target adjustment thread
@@ -78,7 +78,7 @@ while True: #begin main control loop
         dataCollectThread = dataCollect(TEMP, FLOAT) #initialize data collect object
         dataCollectThread.start()
     if actuatorControlThread.isAlive() == False:
-        actuatorControlThread = actuatorControl(PUMP, LIGHT, FAN_ONE, FAN_TWO)
+        actuatorControlThread = actuatorControl(pi, PUMP, LIGHT, FAN_ONE, FAN_TWO)
         actuatorControlThread.start()
     if dataGlanceThread.isAlive() == False and targetAdjustThread.isAlive() == False:
         global_vars.data_glance_exit_flag = False
