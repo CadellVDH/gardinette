@@ -379,12 +379,14 @@ class dataCollect(threading.Thread):
             except Exception as e:
                 logging.error("Failed one or more sensor readings: %s" % e) #exception block to prevent total failure if any sensor fails a reading
 
+            print(prev_log_time)
+            print(int(time.strftime("%M")))
             #Check if it has been 5 minutes since last log
             if int(time.strftime("%M")) >= prev_log_time + 5 or (prev_log_time >= 56 and int(time.strftime("%M")) >= 5-(60-prev_log_time)):
                 prev_log_time = int(time.strftime("%M")) #reset log time
                 events = [] #create empty list of events
                 print("logging")
-                
+
                 #check if pump occured, then reset pump flag if it did
                 if global_vars.pumped == True:
                     events.append("Pumped") #add "pumped" to events list
