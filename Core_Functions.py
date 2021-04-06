@@ -366,10 +366,10 @@ class dataCollect(threading.Thread):
         #temporary code to make a csv of sensor data
         PROJECT_DIRECTORY = os.path.dirname(os.path.realpath(__file__)) #Get current directory for log files and for pin file
         path = "%s/Data/SensorData.csv" % PROJECT_DIRECTORY
+        prev_log_time = int(time.strftime("%M")) #store the minute that data is logged
 
         #Create a loop to constantly check and update the sensor data values
         while True:
-            prev_log_time = int(time.strftime("%M")) #store the minute that data is logged
             #Get current sensor values
             try:
                 [global_vars.current_temp, global_vars.current_humidity] = getTempHumidity(self.DHT_SENSOR)
