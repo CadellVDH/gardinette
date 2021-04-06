@@ -394,7 +394,7 @@ class dataCollect(threading.Thread):
                     if prev_light == True:
                         events.append("Light Off")
                     else:
-                        events.append("Light On") 
+                        events.append("Light On")
                     prev_light = global_vars.currently_lighting #set previous lighting to the current value
 
                 data_row = [datetime.now(), global_vars.current_temp, global_vars.current_humidity, global_vars.current_soil]
@@ -404,6 +404,7 @@ class dataCollect(threading.Thread):
                 with open(path, mode='a') as data:
                     data_writer = csv.writer(data)
                     data_writer.writerow(data_row)
+            print(tiemr)    
             time.sleep(5) #give the sensors a 5 second rest
 
 ##Create a class which runs a thread that periodically logs sensor data and actuation times
