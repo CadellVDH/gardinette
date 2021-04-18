@@ -1,5 +1,5 @@
 import board #oled tools
-import Adafruit_ssd1306 #oled screen
+import adafruit_ssd1306 #oled screen
 import digitalio #oled tools
 import Adafruit_ADS1x15 #soil moisture sensor
 import os #tools for working with the CLI
